@@ -27,6 +27,20 @@ bundle exec rails db:migrate
 
 See [Decidim](https://github.com/decidim/decidim).
 
+### Run tests
+
+Create a dummy app in your application (if not present):
+
+```bash
+bin/rails decidim:generate_external_test_app
+```
+
+And run tests:
+
+```bash
+rspec spec
+```
+
 ## License
 
 This engine is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE.

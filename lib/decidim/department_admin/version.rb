@@ -3,8 +3,9 @@
 module Decidim
   # This holds the decidim-meetings version.
   module DepartmentAdmin
+    # see CHANGELOG.md
     def self.version
-      "0.16.0"
+      "0.0.1"
     end
   end
 end

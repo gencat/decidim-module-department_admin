@@ -6,6 +6,7 @@
 /pkg/
 /spec/reports/
 /tmp/
+Gemfile.lock
 
 # rspec failure tracking
 .rspec-failures
@@ -15,3 +16,4 @@ spec/decidim_dummy_app
 
 # default development application
 development_app
+
