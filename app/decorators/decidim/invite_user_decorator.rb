@@ -1,3 +1,9 @@
+# frozen_string_literal: true
+
+#
+# This decorator overwrites how InviteUser performs the invitation by associating the area to the user.
+#
+
 Decidim::InviteUser.class_eval do
 
   def update_user
