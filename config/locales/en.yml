@@ -1,0 +1,15 @@
+---
+en:
+  decidim:
+    admin:
+      models:
+        user:
+          fields:
+            roles:
+              department_admin: Department Administrator
+      users:
+        form:
+          area: Area
+    components:
+      department_admin:
+        name: Department Admin

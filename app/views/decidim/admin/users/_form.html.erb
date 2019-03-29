@@ -1,0 +1,26 @@
+<div class="row column">
+  <%= form.text_field :name, label: t(".name") %>
+</div>
+
+<div class="row column">
+  <%= form.email_field :email, label: t(".email") %>
+</div>
+
+<div class="row column">
+  <%= form.select :role, @form.available_roles_for_select, label: t(".role") %>
+</div>
+
+<div id="area-block" class="row column" <%= if form.object.role != 'department_admin' then %Q(style="display: none").html_safe end %>>
+  <%= form.select :area_id, @form.available_areas_for_select, label: t(".area") %>
+</div>
+
+<%= javascript_tag do %>
+$('#user_role').on('change', function(ev) {
+  var opt= ev.target
+  if(opt.value == 'department_admin') {
+    $('#area-block').show()
+  } else {
+    $('#area-block').hide()
+  }
+})
+<% end -%>
