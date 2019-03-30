@@ -35,9 +35,13 @@ describe "Admin invite user as department admin", type: :system do
       fill_in :user_name, with: "Cabello Loco"
       fill_in :user_email, with: "my@email.net"
       find('#user_role').find("option[value='department_admin']").select_option
+      find('#user_area_id').find("option[value='#{area.id}']").select_option
     end
   end
   def submit_form
     find("*[name=commit][type=submit]").click
+  end
+  def check_department_admin_is_created
+   fail
   end
 end

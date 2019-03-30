@@ -9,7 +9,10 @@ module Decidim
     class Engine < ::Rails::Engine
       isolate_namespace Decidim::DepartmentAdmin
 
-      config.autoload_paths << (Decidim::DepartmentAdmin::Engine.root + "app/decorators")
+      # make decorators autoload in development env
+      config.autoload_paths << File.join(
+        Decidim::DepartmentAdmin::Engine.root, 'app', 'decorators', '{**}'
+      )
 
       routes do
         # Add engine routes here
@@ -21,10 +24,7 @@ module Decidim
         app.config.assets.precompile += %w[decidim_department_admin_manifest.js decidim_department_admin_manifest.css]
       end
 
-      initializer "decidim_department_admin.autoload_paths" do |app|
-        ActiveSupport::Dependencies.autoload_paths << (Decidim::DepartmentAdmin::Engine.root + "app/decorators")
-      end
-
+      # make decorators available to applications that use this Engine
       config.to_prepare do
         Dir.glob(Decidim::DepartmentAdmin::Engine.root + "app/decorators/**/*_decorator*.rb").each do |c|
           require_dependency(c)

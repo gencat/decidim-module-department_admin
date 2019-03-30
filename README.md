@@ -38,6 +38,19 @@ bundle exec rails decidim_department_admin:install:migrations
 RAILS_ENV=test bundle exec rails db:migrate
 ```
 
+Edit dummy_app's `config/application.rb` file to enforce railties ordering:
+```ruby
+module DecidimDepartmentAdminTestApp
+  class Application < Rails::Application
+
+...
+    config.railties_order = [Decidim::Core::Engine, Decidim::DepartmentAdmin::Engine, :main_app, :all]
+...
+
+  end
+end
+```
+
 And run tests:
 
 ```bash
