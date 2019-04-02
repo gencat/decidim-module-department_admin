@@ -18,16 +18,8 @@ describe "Admin invite user as department admin", type: :system do
   it "admin is successfully created" do
     fill_the_form
     submit_form
+    check_succeess
     check_department_admin_is_created
-
-    # expect(page).to have_selector ".callout--full"
-
-    # within ".callout--full" do
-    #   page.find(".close-button").click
-    # end
-
-    # expect(page).to have_content("DASHBOARD")
-    # expect(page).to have_current_path "/admin/"
   end
 
   def fill_the_form
@@ -41,7 +33,13 @@ describe "Admin invite user as department admin", type: :system do
   def submit_form
     find("*[name=commit][type=submit]").click
   end
+  def check_succeess(action='invited')
+    # expect(page).to have_content("Participant successfully updated.")
+    expect(page).to have_content("Participant successfully #{action}.")
+    expect(page).to have_current_path "/admin/users"
+  end
   def check_department_admin_is_created
-   fail
+    admin= Decidim::User.find_by_email('my@email.net')
+    expect(admin.roles).to include('department_admin')
   end
 end
