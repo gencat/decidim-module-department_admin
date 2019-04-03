@@ -5,7 +5,6 @@
 #
 
 Decidim::InviteUser.class_eval do
-
   alias_method :original_update_user, :update_user
 
   def update_user
@@ -19,8 +18,8 @@ Decidim::InviteUser.class_eval do
       email: form.email.downcase,
       nickname: Decidim::UserBaseEntity.nicknamize(form.name, organization: form.organization),
       organization: form.organization,
-      admin: form.role == "admin",
-      roles: form.role == "admin" ? [] : [form.role].compact
+      admin: form.role == 'admin',
+      roles: form.role == 'admin' ? [] : [form.role].compact
     )
     add_selected_area_to(@user)
     @user.invite!(
@@ -30,11 +29,12 @@ Decidim::InviteUser.class_eval do
   end
 
   #---------------------------------------------------------
+
   private
+
   #---------------------------------------------------------
 
   def add_selected_area_to(user)
     user.areas << form.selected_area if form.selected_area.present?
   end
-
 end

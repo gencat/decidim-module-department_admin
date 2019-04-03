@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_dependency "decidim/components/namer"
+require_dependency 'decidim/components/namer'
 
 Decidim.register_component(:department_admin) do |component|
   component.engine = Decidim::DepartmentAdmin::Engine
   component.admin_engine = Decidim::DepartmentAdmin::AdminEngine
-  component.icon = "decidim/department_admin/icon.svg"
+  component.icon = 'decidim/department_admin/icon.svg'
 
   # component.on(:before_destroy) do |instance|
   #   # Code executed before removing the component
