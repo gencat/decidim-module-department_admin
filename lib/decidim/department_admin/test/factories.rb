@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "decidim/core/test/factories"
+require 'decidim/core/test/factories'
 
 FactoryBot.define do
   factory :department_admin_component, parent: :component do

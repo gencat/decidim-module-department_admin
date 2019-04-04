@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "rails"
-require "decidim/core"
+require 'rails'
+require 'decidim/core'
 
 module Decidim
   module DepartmentAdmin
@@ -20,17 +20,16 @@ module Decidim
         # root to: "department_admin#index"
       end
 
-      initializer "decidim_department_admin.assets" do |app|
+      initializer 'decidim_department_admin.assets' do |app|
         app.config.assets.precompile += %w[decidim_department_admin_manifest.js decidim_department_admin_manifest.css]
       end
 
       # make decorators available to applications that use this Engine
       config.to_prepare do
-        Dir.glob(Decidim::DepartmentAdmin::Engine.root + "app/decorators/**/*_decorator*.rb").each do |c|
+        Dir.glob(Decidim::DepartmentAdmin::Engine.root + 'app/decorators/**/*_decorator*.rb').each do |c|
           require_dependency(c)
         end
       end
-
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateDepartmentAdminAreas < ActiveRecord::Migration[5.2]
   def change
     create_table :department_admin_areas do |t|
