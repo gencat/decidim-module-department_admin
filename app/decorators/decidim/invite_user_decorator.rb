@@ -21,7 +21,7 @@ Decidim::InviteUser.class_eval do
       nickname: Decidim::UserBaseEntity.nicknamize(form.name, organization: form.organization),
       organization: form.organization,
       admin: form.role == 'admin',
-      roles: form.role == 'admin' ? [] : [form.role].compact
+      roles: admin_role? ? [] : [form.role].compact
     )
     add_selected_area_to(@user)
     @user.invite!(
@@ -38,4 +38,7 @@ Decidim::InviteUser.class_eval do
     user.areas << form.selected_area if form.selected_area.present?
   end
 
+  def admin_role?
+    form.role == 'admin'
+  end
 end
