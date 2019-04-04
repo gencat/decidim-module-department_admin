@@ -20,7 +20,7 @@ Decidim::InviteUser.class_eval do
       email: form.email.downcase,
       nickname: Decidim::UserBaseEntity.nicknamize(form.name, organization: form.organization),
       organization: form.organization,
-      admin: form.role == 'admin',
+      admin: admin_role?,
       roles: admin_role? ? [] : [form.role].compact
     )
     add_selected_area_to(@user)
