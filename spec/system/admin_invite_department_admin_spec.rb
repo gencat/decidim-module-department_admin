@@ -34,7 +34,7 @@ describe 'Admin invite user as department admin', type: :system do
 
   context 'when departments are reorganized' do
     let(:department_admin) do
-      user = create(:user, :confirmed, organization: organization)
+      user= create(:user, :confirmed, organization: organization)
       user.roles << 'department_admin'
       user.areas << area
       user.save!
@@ -53,7 +53,7 @@ describe 'Admin invite user as department admin', type: :system do
     end
   end
 
-  def fill_the_form(name, email, selected_area = area)
+  def fill_the_form(name, email, selected_area=area)
     within 'form.new_user' do
       fill_in :user_name, with: name
       fill_in :user_email, with: email
@@ -72,7 +72,7 @@ describe 'Admin invite user as department admin', type: :system do
   end
 
   def check_is_department_admin(email)
-    @user = Decidim::User.find_by_email(email)
+    @user= Decidim::User.find_by_email(email)
     expect(@user.roles).to include('department_admin')
   end
 
