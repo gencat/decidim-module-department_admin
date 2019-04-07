@@ -23,6 +23,11 @@ bundle exec rails decidim_department_admin:install:migrations
 bundle exec rails db:migrate
 ```
 
+## Overrides
+Beware that this module overrides many core features of Decidim. Thus, modified features may have required to override, change or extend source code from Decidim.
+
+
+
 ## Contributing
 
 See [Decidim](https://github.com/decidim/decidim).
