@@ -12,7 +12,7 @@ FactoryBot.define do
   # Add engine factories here
 
   factory :department_admin, parent: :user do
-    roles { ["user_manager"] }
+    roles { ["department_admin"] }
     transient do
       area { nil }
     end
