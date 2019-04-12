@@ -24,12 +24,80 @@ module Decidim
         app.config.assets.precompile += %w[decidim_department_admin_manifest.js decidim_department_admin_manifest.css]
       end
 
+      initializer "department_admin.permissions_registry" do
+
+        # **
+        # Modify decidim-admin permissions registry
+        # **
+        artifact= ::Decidim::Admin::ApplicationController
+        AdminApplicationControllerPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
+        register_new_permissions_for(artifact, AdminApplicationControllerPermissions)
+
+        # **
+        # Modify decidim-particypatory_processes permissions registry
+        # **
+
+        # force the concern to be included so that registry is initialized
+        # we choose some random class already including it
+        require 'decidim/participatory_processes/admin/categories_controller'
+        artifact= ::Decidim::ParticipatoryProcesses::Admin::Concerns::ParticipatoryProcessAdmin
+        AdminConcernPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
+        register_new_permissions_for(artifact, AdminConcernPermissions)
+
+        artifact= Decidim::ParticipatoryProcesses::Admin::ApplicationController
+        ParticipatoryProcessesAdminApplicationControllerPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
+        register_new_permissions_for(artifact, ParticipatoryProcessesAdminApplicationControllerPermissions)
+
+        # public views produce problems with Devise's current_user
+        # require 'decidim/participatory_processes/application_controller'
+        # artifact= 'Decidim::ParticipatoryProcesses::ApplicationController'
+        # chain= ::Decidim.permissions_registry.chain_for(artifact)
+        # chain << ::Decidim::DepartmentAdmin::Permissions
+
+        # **
+        # Modify decidim-assemblies permissions registry
+        # **
+        artifact= Decidim::Assemblies::Admin::ApplicationController
+        AssembliesAdminApplicationControllerPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
+        register_new_permissions_for(artifact, AssembliesAdminApplicationControllerPermissions)
+
+        artifact= Decidim::Assemblies::Admin::ApplicationController
+        AssembliesAdminApplicationControllerPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
+        register_new_permissions_for(artifact, AssembliesAdminApplicationControllerPermissions)
+      end
+
       # make decorators available to applications that use this Engine
       config.to_prepare do
+
         Dir.glob(Decidim::DepartmentAdmin::Engine.root + 'app/decorators/**/*_decorator*.rb').each do |c|
           require_dependency(c)
         end
       end
+
+      config.after_initialize do
+        puts "OVERRIDING register_participatory_space(:participatory_processes)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        require 'decidim/participatory_processes/participatory_space'
+        # override participatory_processes space manifest with DepartmentAdmin's one
+        manifest= Decidim.find_participatory_space_manifest(:participatory_processes)
+        manifest.permissions_class_name= "Decidim::DepartmentAdmin::Permissions"
+      end
+
+      #------------------------------------------------------
+      private
+      #------------------------------------------------------
+
+      # Modifies the permissions registry for the given +artifact+ with +new_permissions_class+.
+      # NOTE: Previous permissions are cleared and setted to the +new_permissions_class+ for delegation.
+      def register_new_permissions_for(artifact, new_permissions_class)
+        chain= ::Decidim.permissions_registry.chain_for(artifact)
+        # configure old chain, in case new permissions has to delegate
+        new_permissions_class.delegate_chain= chain.dup
+        # re-set the permissions classes to DepartmentAdmin::Permissions' subclass
+        chain.clear
+        chain << new_permissions_class
+        puts("Registered new permissions for #{artifact} to: #{::Decidim.permissions_registry.chain_for(artifact)}")
+      end
+
     end
   end
 end
