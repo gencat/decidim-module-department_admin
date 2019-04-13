@@ -74,7 +74,7 @@ module Decidim
       def is_action?(requested_action, scope, action, subject, expected_context={})
         is= requested_action.matches?(scope, action, subject)
         expected_context.each_pair do |key, expected_value|
-          is&&= (context&.fetch(key) == expected_value)
+          is&&= (context.try(:[], key) == expected_value)
         end
         is
       end
