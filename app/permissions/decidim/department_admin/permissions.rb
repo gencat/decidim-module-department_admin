@@ -72,9 +72,7 @@ module Decidim
 
       # Is current action requesting permissions for the specified scope/action/subject?
       def is_action?(requested_action, scope, action, subject, expected_context={})
-        is= (requested_action.action == action)
-        is&&= (requested_action.scope == scope)
-        is&&= (requested_action.subject == subject)
+        is= requested_action.matches?(scope, action, subject)
         expected_context.each_pair do |key, expected_value|
           is&&= (context&.fetch(key) == expected_value)
         end
