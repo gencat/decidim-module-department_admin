@@ -24,8 +24,7 @@ module Decidim
         app.config.assets.precompile += %w[decidim_department_admin_manifest.js decidim_department_admin_manifest.css]
       end
 
-      initializer "department_admin.permissions_registry" do
-
+      initializer 'department_admin.permissions_registry' do
         # **
         # Modify decidim-admin permissions registry
         # **
@@ -41,8 +40,8 @@ module Decidim
         # we choose some random class already including it
         require 'decidim/participatory_processes/admin/categories_controller'
         artifact= ::Decidim::ParticipatoryProcesses::Admin::Concerns::ParticipatoryProcessAdmin
-        AdminConcernPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
-        register_new_permissions_for(artifact, AdminConcernPermissions)
+        ParticipatoryProcessesAdminConcernPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
+        register_new_permissions_for(artifact, ParticipatoryProcessesAdminConcernPermissions)
 
         artifact= Decidim::ParticipatoryProcesses::Admin::ApplicationController
         ParticipatoryProcessesAdminApplicationControllerPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
@@ -57,9 +56,10 @@ module Decidim
         # **
         # Modify decidim-assemblies permissions registry
         # **
-        artifact= Decidim::Assemblies::Admin::ApplicationController
-        AssembliesAdminApplicationControllerPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
-        register_new_permissions_for(artifact, AssembliesAdminApplicationControllerPermissions)
+        require 'decidim/assemblies/admin/assembly_copies_controller'
+        artifact= ::Decidim::Assemblies::Admin::Concerns::AssemblyAdmin
+        AssembliesAdminConcernPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
+        register_new_permissions_for(artifact, AssembliesAdminConcernPermissions)
 
         artifact= Decidim::Assemblies::Admin::ApplicationController
         AssembliesAdminApplicationControllerPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
@@ -68,22 +68,23 @@ module Decidim
 
       # make decorators available to applications that use this Engine
       config.to_prepare do
-
         Dir.glob(Decidim::DepartmentAdmin::Engine.root + 'app/decorators/**/*_decorator*.rb').each do |c|
           require_dependency(c)
         end
       end
 
       config.after_initialize do
-        puts "OVERRIDING register_participatory_space(:participatory_processes)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+        puts 'OVERRIDING register_participatory_space(:participatory_processes)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         require 'decidim/participatory_processes/participatory_space'
         # override participatory_processes space manifest with DepartmentAdmin's one
         manifest= Decidim.find_participatory_space_manifest(:participatory_processes)
-        manifest.permissions_class_name= "Decidim::DepartmentAdmin::Permissions"
+        manifest.permissions_class_name= 'Decidim::ParticipatoryProcesses::ParticipatorySpacePermissions'
       end
 
       #------------------------------------------------------
+
       private
+
       #------------------------------------------------------
 
       # Modifies the permissions registry for the given +artifact+ with +new_permissions_class+.
@@ -97,7 +98,6 @@ module Decidim
         chain << new_permissions_class
         puts("Registered new permissions for #{artifact} to: #{::Decidim.permissions_registry.chain_for(artifact)}")
       end
-
     end
   end
 end
