@@ -51,9 +51,17 @@ describe 'Department admin should be able to access Admin Dashboard', type: :sys
     it "should NOT be able to access 'Pages'" do
       expect(page).to_not have_content("PAGES")
     end
-    it "should NOT be able to access 'Participants'"
-    it "should NOT be able to access 'Settings'"
-    it "should NOT be able to access 'Admin Activity Log'"
-    it "should NOT be able to access 'OAuth Applications'"
+    it "should NOT be able to access 'Participants'" do
+      expect(page).to_not have_content("PARTICIPANTS")
+    end
+    it "should NOT be able to access 'Settings'" do
+      expect(page).to_not have_content("SETTINGS")
+    end
+    it "should NOT be able to access 'Admin Activity Log'" do
+      expect(page).to_not have_content("ADMIN ACTIVITY LOG")
+    end
+    it "should NOT be able to access 'OAuth Applications'" do
+      expect(page).to_not have_content("OAUTH APPLICATIONS")
+    end
   end
 end
