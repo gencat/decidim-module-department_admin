@@ -46,28 +46,56 @@ module Decidim
 
       def has_permission?(requested_action)
         [
-          permission_for?(requested_action, :admin, :read, :admin_dashboard),
+          -> { permission_for?(requested_action, :admin, :read, :admin_dashboard) },
+
           # PARTICIPATORY PROCESSES
-          permission_for?(requested_action, :admin, :enter, :space_area, space_name: :processes),
-          permission_for?(requested_action, :admin, :read, :process_list),
+          -> {permission_for_current_space?(requested_action)},
+          -> {permission_for?(requested_action, :admin, :enter, :space_area, space_name: :processes)},
+          -> {permission_for?(requested_action, :admin, :read, :process_list)},
+          -> {permission_for?(requested_action, :admin, :create, :process)},
+          -> {same_area_permission_for?(requested_action, :admin, :update, :process, restricted_rsrc: context[:process])},
+          -> {same_area_permission_for?(requested_action, :admin, :destroy, :process, restricted_rsrc: context[:process])},
+          -> {permission_for?(requested_action, :admin, :read, :process_step)},
+          -> {permission_for?(requested_action, :admin, :create, :process_step)},
+          -> {same_area_permission_for?(requested_action, :admin, :update, :process_step, restricted_rsrc: context[:process_step]&.participatory_process)},
+          -> {same_area_permission_for?(requested_action, :admin, :destroy, :process_step, restricted_rsrc: context[:process_step]&.participatory_process)},
+          # copy
+          # enforce_permission_to :create, Decidim::ParticipatoryProcess
+
           # ASSEMBLIES
-          permission_for?(requested_action, :admin, :enter, :space_area, space_name: :assemblies),
-          permission_for?(requested_action, :admin, :read, :assembly_list),
-          permission_for?(requested_action, :admin, :create, :assembly),
-          # permission_for?(requested_action, :admin, :update, :assembly, assembly: current_assembly),
+          -> {permission_for?(requested_action, :admin, :enter, :space_area, space_name: :assemblies)},
+          -> {permission_for?(requested_action, :admin, :read, :assembly_list)},
+          -> {permission_for?(requested_action, :admin, :create, :assembly)},
+          -> {same_area_permission_for?(requested_action, :admin, :update, :assembly, restricted_rsrc: context[:assembly])},
+
           # NEWSLETTER
-          permission_for?(requested_action, :admin, :index, :newsletter),
-          permission_for?(requested_action, :admin, :read, :newsletter),
-          # permission_for?(requested_action, :admin, :read, :newsletter, newsletter: @newsletter),
-          permission_for?(requested_action, :admin, :create, :newsletter),
-          # permission_for?(requested_action, :admin, :update, :newsletter, newsletter: @newsletter),
-          # permission_for?(requested_action, :admin, :destroy, :newsletter, newsletter: @newsletter),
-        ].any?
+          -> {permission_for?(requested_action, :admin, :index, :newsletter)},
+          -> {permission_for?(requested_action, :admin, :read, :newsletter, restricted_rsrc: context[:newsletter])},
+          -> {permission_for?(requested_action, :admin, :create, :newsletter)},
+          -> {same_area_permission_for?(requested_action, :admin, :update, :newsletter, restricted_rsrc: context[:newsletter])},
+          -> {same_area_permission_for?(requested_action, :admin, :destroy, :newsletter, restricted_rsrc: context[:newsletter])},
+        ].any? {|block| block.call}
+      end
+
+      ALLOWED_SPACES= ['Decidim::ParticipatoryProcess']
+      def permission_for_current_space?(permission_action)
+        has= permission_for?(permission_action, :admin, :read, :participatory_space)
+        has&&= ALLOWED_SPACES.include?(context[:current_participatory_space].class.name)
+        has
       end
 
       # Does user have permission for the specified scope/action/subject?
       def permission_for?(requested_action, scope, action, subject, expected_context={})
         is_action?(requested_action, scope, action, subject, expected_context)
+      end
+
+      # Does user have permission for the specified scope/action/subject?
+      # Also check if the resource in the context for with the key defined by `area_restricted_rsrc`
+      # has the same area as current user.
+      def same_area_permission_for?(requested_action, scope, action, subject, restricted_rsrc:)
+        is= is_action?(requested_action, scope, action, subject)
+        is&&= in_same_area?(restricted_rsrc)
+        is
       end
 
       # Is current action requesting permissions for the specified scope/action/subject?
@@ -77,6 +105,10 @@ module Decidim
           is&&= (context.try(:[], key) == expected_value)
         end
         is
+      end
+
+      def in_same_area?(resource)
+        user.areas.include? resource.area
       end
     end
   end
