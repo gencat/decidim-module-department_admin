@@ -20,7 +20,7 @@ require 'spec_helper'
 # end
 describe "Admin manages participatory processes", versioning: true, type: :system do
   let(:organization) { create(:organization) }
-  let(:area) { create(:area) }
+  let(:area) { create(:area, organization: organization) }
   let(:department_admin) { create(:department_admin, :confirmed, organization: organization, area: area) }
 
   let!(:participatory_process_groups) do
@@ -109,8 +109,6 @@ describe "Admin manages participatory processes", versioning: true, type: :syste
     it "update a participatory process without images does not delete them" do
       click_link translated(participatory_process3.title)
       click_submenu_link "Info"
-      expect(page).to have_content(participatory_process3.slug)
-      expect(participatory_process3.area).to eq(area)
       click_button "Update"
 
       expect(participatory_process3.reload.area).to eq(area)
