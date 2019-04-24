@@ -2,22 +2,6 @@
 
 require 'spec_helper'
 
-# describe 'Department admin should be able to manage processes', type: :system do
-
-#   let!(:process) { create(:participatory_process, :published, organization: organization, area: area) }
-
-#   before do
-#     switch_to_host(organization.host)
-#     login_as department_admin, scope: :user
-#     # visit decidim_admin.root_path
-#     visit decidim_participatory_processes.root_path
-#   end
-
-#   it "should be able to edit a process" do
-#     expect(page).to have_content("DASHBOARD")
-#     expect(page).to have_content("Welcome to the Decidim Admin Panel.")
-#   end
-# end
 describe "Admin manages participatory processes", versioning: true, type: :system do
   let(:organization) { create(:organization) }
   let(:area) { create(:area, organization: organization) }
