@@ -7,8 +7,6 @@
 Decidim::InviteUser.class_eval do
   alias_method :original_update_user, :update_user
 
-  alias_method :original_update_user, :update_user
-
   def update_user
     add_selected_area_to(user)
     original_update_user
