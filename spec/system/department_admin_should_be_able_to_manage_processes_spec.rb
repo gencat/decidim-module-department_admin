@@ -47,7 +47,7 @@ describe "Admin manages participatory processes", versioning: true, type: :syste
       click_link "New process"
     end
 
-    it "creates a new participatory process" do
+    it "creates a new participatory process with department admin's area" do
       within ".new_participatory_process" do
         fill_in_i18n(
           :participatory_process_title,
@@ -90,6 +90,7 @@ describe "Admin manages participatory processes", versioning: true, type: :syste
       end
 
       expect(page).to have_admin_callout("successfully")
+      expect(Decidim::ParticipatoryProcess.last.area).to eq(area)
 
       within ".container" do
         expect(page).to have_current_path decidim_admin_participatory_processes.participatory_process_steps_path(Decidim::ParticipatoryProcess.last)
