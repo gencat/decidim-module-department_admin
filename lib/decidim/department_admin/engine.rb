@@ -76,7 +76,7 @@ module Decidim
       config.after_initialize do
         puts 'OVERRIDING register_participatory_space(:participatory_processes)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         require 'decidim/participatory_processes/participatory_space'
-        # override participatory_processes space manifest with DepartmentAdmin's one
+        # override participatory_processes space manifest permissions with DepartmentAdmin's one
         manifest= Decidim.find_participatory_space_manifest(:participatory_processes)
         manifest.permissions_class_name= 'Decidim::ParticipatoryProcesses::ParticipatorySpacePermissions'
       end
