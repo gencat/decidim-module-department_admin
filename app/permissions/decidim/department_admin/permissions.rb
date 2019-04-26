@@ -57,7 +57,6 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :create, :process) },
           -> { same_area_permission_for?(requested_action, :admin, :preview, :process, restricted_rsrc: context[:process]) },
           -> { same_area_permission_for?(requested_action, :admin, :update, :process, restricted_rsrc: context[:process]) },
-          -> { same_area_permission_for?(requested_action, :admin, :destroy, :process, restricted_rsrc: context[:process]) },
           -> { same_area_permission_for?(requested_action, :admin, :publish, :process, restricted_rsrc: context[:process]) },
           -> { same_area_permission_for?(requested_action, :admin, :unpublish, :process, restricted_rsrc: context[:process]) },
           # STEPS
@@ -107,7 +106,11 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :read, :assembly_list) },
           -> { permission_for?(requested_action, :admin, :create, :assembly) },
           -> { same_area_permission_for?(requested_action, :admin, :update, :assembly, restricted_rsrc: context[:assembly]) },
-          # PENDING: CHILD ASSEMBLIES, MEMBERS, PUBLISH AND UNPUBLISH
+          -> { same_area_permission_for?(requested_action, :admin, :publish, :assembly, restricted_rsrc: context[:assembly]) },
+          -> { same_area_permission_for?(requested_action, :admin, :unpublish, :assembly, restricted_rsrc: context[:assembly]) },
+          # Assembly Members
+          -> { same_area_permission_for?(requested_action, :admin, :read, :assembly_member, restricted_rsrc: context[:assembly]) },
+          # other assembly_member permissions are setted via Decidim::Assemblies::AssembliesWithUserRole decorator
 
           # NEWSLETTER
           -> { permission_for?(requested_action, :admin, :index, :newsletter) },

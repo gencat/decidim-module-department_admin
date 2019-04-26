@@ -79,6 +79,9 @@ module Decidim
         # override participatory_processes space manifest permissions with DepartmentAdmin's one
         manifest= Decidim.find_participatory_space_manifest(:participatory_processes)
         manifest.permissions_class_name= 'Decidim::ParticipatoryProcesses::ParticipatorySpacePermissions'
+        # override assemblies space manifest permissions with DepartmentAdmin's one
+        manifest= Decidim.find_participatory_space_manifest(:assemblies)
+        manifest.permissions_class_name= 'Decidim::ParticipatoryProcesses::ParticipatorySpacePermissions'
       end
 
       #------------------------------------------------------
