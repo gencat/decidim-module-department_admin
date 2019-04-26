@@ -18,7 +18,7 @@ module Decidim
         puts "EXECUTING PERMISSIONS FOR #{permission_action.inspect} WITH CONTEXT [#{context}] IN #{self}"
         puts "USER: #{user} > #{user&.roles}"
 
-        current_permission_action= if user && user.role?("department_admin")
+        current_permission_action= if user&.department_admin?
           puts "APLYING DepartmentAdmin permissions"
           # avoid having PermissionCannotBeDisallowedError if permission was already disallowed in the chain
           new_permission_action= permission_action.dup
