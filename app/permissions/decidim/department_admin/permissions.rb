@@ -121,6 +121,7 @@ module Decidim
       ALLOWED_SPACES= ['Decidim::ParticipatoryProcess', 'Decidim::Assembly'].freeze
       def permission_for_current_space?(permission_action)
         has= permission_for?(permission_action, :admin, :read, :participatory_space)
+        has||= permission_for?(permission_action, :public, :read, :participatory_space)
         has&&= ALLOWED_SPACES.include?(context[:current_participatory_space].class.name)
         has
       end
