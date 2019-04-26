@@ -7,7 +7,7 @@ Decidim::Assemblies::Admin::UpdateAssembly.class_eval do
 
   def call
     author= form.current_user
-    form.area_id= author.areas.first.id if author.role? 'department_admin'
+    form.area_id= author.areas.first.id if author.department_admin?
     original_call
   end
 end
