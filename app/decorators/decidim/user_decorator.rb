@@ -17,6 +17,6 @@ Decidim::User.class_eval do
                           validate: false
 
   def department_admin?
-    role?("department_admin")
+    role?('department_admin')
   end
 end

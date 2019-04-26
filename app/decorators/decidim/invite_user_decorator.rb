@@ -28,9 +28,7 @@ Decidim::InviteUser.class_eval do
     )
   end
 
-  #---------------------------------------------------------
-  private
-  #---------------------------------------------------------
+  private #---------------------------------------------------------
 
   def add_selected_area_to(user)
     user.areas << form.selected_area if form.selected_area.present?

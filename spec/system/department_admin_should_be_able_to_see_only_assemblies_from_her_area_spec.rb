@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe "Admin manages assemblies", versioning: true, type: :system do
+describe 'Admin manages assemblies', versioning: true, type: :system do
   let(:organization) { create(:organization) }
   let(:area) { create(:area) }
   let(:department_admin) { create(:department_admin, :confirmed, organization: organization, area: area) }
@@ -16,7 +16,7 @@ describe "Admin manages assemblies", versioning: true, type: :system do
     visit decidim_admin_assemblies.assemblies_path
   end
 
-  it "should see only processes in the same area" do
+  it 'should see only processes in the same area' do
     expect(page).to have_content(assembly_w_area.title['en'])
     expect(page).to_not have_content(assembly_wo_area.title['en'])
   end

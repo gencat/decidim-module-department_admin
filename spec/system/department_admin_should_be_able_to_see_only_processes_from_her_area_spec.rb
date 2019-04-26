@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe "Admin manages participatory processes", versioning: true, type: :system do
+describe 'Admin manages participatory processes', versioning: true, type: :system do
   let(:organization) { create(:organization) }
   let(:area) { create(:area) }
   let(:department_admin) { create(:department_admin, :confirmed, organization: organization, area: area) }
@@ -20,7 +20,7 @@ describe "Admin manages participatory processes", versioning: true, type: :syste
     visit decidim_admin_participatory_processes.participatory_processes_path
   end
 
-  it "should see only processes in the same area" do
+  it 'should see only processes in the same area' do
     expect(page).to have_content(participatory_process_w_area.title['en'])
     expect(page).to_not have_content(participatory_process_wo_area.title['en'])
   end
