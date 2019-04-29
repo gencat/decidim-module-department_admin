@@ -4,7 +4,7 @@ module Decidim
   module Assemblies
     class ParticipatorySpacePermissions < Decidim::DepartmentAdmin::Permissions
       def initialize(*)
-        self.class.delegate_chain= [Decidim::Assemblies::Permissions, Decidim::Admin::Permissions]
+        self.class.delegate_chain= [Decidim::Assemblies::Permissions]
         super
       end
     end
