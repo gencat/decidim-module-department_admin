@@ -57,6 +57,7 @@ module Decidim
         # Modify decidim-assemblies permissions registry
         # **
         require 'decidim/assemblies/admin/assembly_copies_controller'
+        require 'decidim/assemblies/admin/components_controller'
         artifact= ::Decidim::Assemblies::Admin::Concerns::AssemblyAdmin
         AssembliesAdminConcernPermissions= Class.new(::Decidim::DepartmentAdmin::Permissions)
         register_new_permissions_for(artifact, AssembliesAdminConcernPermissions)
@@ -81,7 +82,7 @@ module Decidim
         manifest.permissions_class_name= 'Decidim::ParticipatoryProcesses::ParticipatorySpacePermissions'
         # override assemblies space manifest permissions with DepartmentAdmin's one
         manifest= Decidim.find_participatory_space_manifest(:assemblies)
-        manifest.permissions_class_name= 'Decidim::ParticipatoryProcesses::ParticipatorySpacePermissions'
+        manifest.permissions_class_name= 'Decidim::Assemblies::ParticipatorySpacePermissions'
       end
 
       #------------------------------------------------------
