@@ -16,33 +16,38 @@ module Decidim
       end
 
       def permissions
-        puts "EXECUTING PERMISSIONS FOR #{permission_action.inspect} WITH CONTEXT [#{context}] IN #{self}"
+        puts "#{self}::EXECUTING PERMISSIONS FOR #{permission_action.inspect} WITH CONTEXT [#{context}]"
         puts "USER: #{user} > #{user&.roles}"
 
-        current_permission_action= if user&.department_admin?
-                                     puts 'APLYING DepartmentAdmin permissions'
-                                     # avoid having PermissionCannotBeDisallowedError if permission was already disallowed in the chain
-                                     new_permission_action= permission_action.dup
-                                     if has_permission?(new_permission_action)
-                                       puts "ALLOWING: #{new_permission_action}"
-                                       new_permission_action.allow!
-                                       new_permission_action
-                                     else
-                                       permission_action
-                                     end
-                                   elsif delegate_chain.present?
-                                     puts 'APLYING delegate chain permissions'
-                                     delegate_chain.inject(permission_action) do |injected_permission_action, permission_class|
-                                       puts "Delegating to: #{permission_class}"
-                                       permission_class.new(user, injected_permission_action, context).permissions
-                                     end.allowed?
-                                     permission_action
-                                   else
-                                     puts 'APLYING default permissions'
-                                     super
+        current_permission_action= permission_action
+        if permission_action.scope == :admin && user&.department_admin?
+          current_permission_action= apply_department_admin_permissions!
+        elsif delegate_chain.present?
+          puts 'APLYING delegate chain permissions'
+          delegate_chain.inject(permission_action) do |injected_permission_action, permission_class|
+            puts "Delegating to: #{permission_class}"
+            permission_class.new(user, injected_permission_action, context).permissions
+          end
+        else
+          puts 'APLYING default permissions'
+          super
         end
-        puts 'returning....'
+
+        puts "returning.... #{permission_action.to_s}"
         current_permission_action
+      end
+
+      def apply_department_admin_permissions!
+        puts 'APLYING DepartmentAdmin permissions'
+        # avoid having PermissionCannotBeDisallowedError if permission was already disallowed in the chain
+        new_permission_action= permission_action.dup
+        if has_permission?(new_permission_action)
+         puts "ALLOWING: #{new_permission_action}"
+         new_permission_action.allow!
+         new_permission_action
+        else
+         permission_action
+        end
       end
 
       def has_permission?(requested_action)
