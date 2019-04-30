@@ -62,7 +62,6 @@ module Decidim
               it 'should allow accepted actions with expected context' do
                 should_allow_action_with_ctx(:admin, :read, :participatory_space, current_participatory_space: process)
                 should_allow_action_with_ctx(:admin, :update, :process, process: process)
-                should_allow_action_with_ctx(:admin, :destroy, :process, process: process)
                 pps= ParticipatoryProcessStep.new(participatory_process: process)
                 should_allow_action_with_ctx(:admin, :update, :process_step, process_step: pps)
                 should_allow_action_with_ctx(:admin, :destroy, :process_step, process_step: pps)
