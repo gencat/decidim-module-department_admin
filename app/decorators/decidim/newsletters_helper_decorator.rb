@@ -7,10 +7,10 @@ Decidim::Admin::NewslettersHelper.class_eval do
     author= current_user
 
     if author&.department_admin?
-      return spaces_department_admin_can_admin
+      spaces_department_admin_can_admin
+    else
+      original_spaces_user_can_admin
     end
-
-    original_spaces_user_can_admin
   end
 
   def spaces_department_admin_can_admin
