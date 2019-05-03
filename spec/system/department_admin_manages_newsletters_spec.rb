@@ -13,7 +13,7 @@ describe 'Admin manages newsletters', type: :system do
     login_as department_admin, scope: :user
   end
 
-  describe 'creates and previews a newsletter' do
+  context 'creates and previews a newsletter' do
     it 'allows a newsletter to be created' do
       visit decidim_admin.newsletters_path
 
@@ -46,7 +46,7 @@ describe 'Admin manages newsletters', type: :system do
     end
   end
 
-  describe 'previews a newsletter' do
+  context "with existing newsletter" do
     let!(:newsletter) do
       create(:newsletter,
              organization: organization,
@@ -74,7 +74,7 @@ describe 'Admin manages newsletters', type: :system do
     end
   end
 
-  describe 'update newsletter' do
+  context 'update newsletter' do
     let!(:newsletter) { create(:newsletter, organization: organization, author: department_admin) }
 
     it 'allows a newsletter to be updated' do
@@ -108,7 +108,7 @@ describe 'Admin manages newsletters', type: :system do
     end
   end
 
-  describe 'select newsletter recipients' do
+  context 'select newsletter recipients' do
     let!(:newsletter) { create(:newsletter, organization: organization, author: department_admin) }
 
     context 'when followers are selected' do
@@ -221,7 +221,7 @@ describe 'Admin manages newsletters', type: :system do
     end
   end
 
-  describe 'deleting a newsletter' do
+  context 'deleting a newsletter' do
     let!(:newsletter) { create(:newsletter, organization: organization, author: department_admin) }
 
     it 'deletes a newsletter' do
