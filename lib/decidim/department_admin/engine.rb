@@ -75,7 +75,6 @@ module Decidim
       end
 
       config.after_initialize do
-        puts 'OVERRIDING register_participatory_space(:participatory_processes)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
         require 'decidim/participatory_processes/participatory_space'
         # override participatory_processes space manifest permissions with DepartmentAdmin's one
         manifest= Decidim.find_participatory_space_manifest(:participatory_processes)
@@ -100,7 +99,7 @@ module Decidim
         # re-set the permissions classes to DepartmentAdmin::Permissions' subclass
         chain.clear
         chain << new_permissions_class
-        puts("Registered new permissions for #{artifact} to: #{::Decidim.permissions_registry.chain_for(artifact)}")
+        Rails.logger.info("Registered new permissions for #{artifact} to: #{::Decidim.permissions_registry.chain_for(artifact)}")
       end
     end
   end
