@@ -110,7 +110,7 @@ module Decidim
 
           # NEWSLETTER
           -> { permission_for?(requested_action, :admin, :index, :newsletter) },
-          -> { permission_for?(requested_action, :admin, :read, :newsletter, restricted_rsrc: context[:newsletter]) },
+          -> { permission_for?(requested_action, :admin, :read, :newsletter) },
           -> { permission_for?(requested_action, :admin, :create, :newsletter) },
           -> { same_area_permission_for?(requested_action, :admin, :update, :newsletter, restricted_rsrc: context[:newsletter]) },
           -> { same_area_permission_for?(requested_action, :admin, :destroy, :newsletter, restricted_rsrc: context[:newsletter]) }
