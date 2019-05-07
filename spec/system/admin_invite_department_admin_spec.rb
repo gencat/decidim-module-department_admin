@@ -53,7 +53,7 @@ describe 'Admin invite user as department admin', type: :system do
     end
   end
 
-  def fill_the_form(name, email, selected_area=area)
+  def fill_the_form(name, email, selected_area = area)
     within 'form.new_user' do
       fill_in :user_name, with: name
       fill_in :user_email, with: email
