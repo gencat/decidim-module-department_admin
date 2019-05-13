@@ -85,6 +85,11 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :create, :attachment) },
           -> { same_area_permission_for?(requested_action, :admin, :update, :attachment, restricted_rsrc: context[:attachment]&.attached_to) },
           -> { same_area_permission_for?(requested_action, :admin, :destroy, :attachment, restricted_rsrc: context[:attachment]&.attached_to) },
+          # INVITE PROCESS ADMIN: USER ROLES
+          -> { permission_for?(requested_action, :admin, :read, :process_user_role) },
+          -> { permission_for?(requested_action, :admin, :create, :process_user_role) },
+          -> { permission_for?(requested_action, :admin, :update, :process_user_role) },
+          -> { permission_for?(requested_action, :admin, :destroy, :process_user_role) },
           # SPACE PRIVATE USERS
           -> { permission_for?(requested_action, :admin, :read, :space_private_user) },
           -> { permission_for?(requested_action, :admin, :create, :space_private_user) },
