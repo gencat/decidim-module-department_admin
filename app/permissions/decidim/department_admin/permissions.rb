@@ -111,6 +111,10 @@ module Decidim
           -> { same_area_permission_for?(requested_action, :admin, :unpublish, :assembly, restricted_rsrc: context[:assembly]) },
           # Assembly Members
           -> { same_area_permission_for?(requested_action, :admin, :read, :assembly_member, restricted_rsrc: context[:assembly]) },
+          -> { permission_for?(requested_action, :admin, :index, :assembly_member) },
+          -> { permission_for?(requested_action, :admin, :create, :assembly_member) },
+          -> { permission_for?(requested_action, :admin, :update, :assembly_member) },
+          -> { permission_for?(requested_action, :admin, :destroy, :assembly_member) },
           # other assembly_member permissions are setted via Decidim::Assemblies::AssembliesWithUserRole decorator
 
           # NEWSLETTER
