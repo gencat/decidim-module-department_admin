@@ -34,10 +34,10 @@ module Decidim
         # avoid having PermissionCannotBeDisallowedError if permission was already disallowed in the chain
         new_permission_action= permission_action.dup
         if has_permission?(new_permission_action)
-         new_permission_action.allow!
-         new_permission_action
+          new_permission_action.allow!
+          new_permission_action
         else
-         permission_action
+          permission_action
         end
       end
 

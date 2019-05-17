@@ -46,7 +46,7 @@ describe 'Admin manages newsletters', type: :system do
     end
   end
 
-  context "with existing newsletter" do
+  context 'with existing newsletter' do
     let!(:newsletter) do
       create(:newsletter,
              organization: organization,
