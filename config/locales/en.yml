@@ -5,6 +5,7 @@ en:
       models:
         user:
           fields:
+            department: Department/Area
             roles:
               department_admin: Department Administrator
       users:

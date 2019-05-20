@@ -5,6 +5,7 @@ ca:
       models:
         user:
           fields:
+            department: Departament/Àrea
             roles:
               department_admin: Administrador de departament
       users:
