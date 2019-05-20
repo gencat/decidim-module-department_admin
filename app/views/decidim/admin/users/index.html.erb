@@ -24,7 +24,6 @@
           </tr>
         </thead>
         <tbody>
-          <%# @users.sort {|u1, u2| "#{u1.active_role}||#{u1.areas.first}" <=> "#{u2.active_role}||#{u2.areas.first}" }.each do |user| %>
           <% @users.each do |user| %>
             <tr data-user-id="<%= user.id %>">
               <td><%= t("models.user.fields.roles.#{user.active_role}", scope: "decidim.admin") %></td>
