@@ -11,6 +11,11 @@ es:
       users:
         form:
           area: Area
+        index:
+          filter:
+            all: Todas
+          filter_by: Filtrado por
+          search: Buscar
     components:
       department_admin:
         name: Admin de Departamento

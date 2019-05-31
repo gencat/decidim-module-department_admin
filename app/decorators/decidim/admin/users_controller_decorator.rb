@@ -6,9 +6,24 @@ require_dependency 'decidim/admin/users_controller'
 ::Decidim::Admin::UsersController.class_eval do
   alias_method :original_collection, :collection
 
-  def collection
-    users= original_collection
-    @collection||= users.select('*', 'array_to_string(roles) AS sorted_roles').order('sorted_roles')
-    Kaminari.paginate_array(@collection.sort { |u1, u2| "#{u1.active_role}||#{u1.areas.first}" <=> "#{u2.active_role}||#{u2.areas.first}" })
+  def index
+    enforce_permission_to :read, :admin_user
+    @query = params[:q]
+    @role = params[:role]
+
+    @users = Decidim::Admin::UserAdminFilter.for(
+              current_organization.admins.or(current_organization.users_with_any_role),
+              @query,
+              @role
+            ).page(params[:page]).per(15)
+  end
+
+  private
+
+  def user
+    @user ||= Decidim::User.find_by(
+      id: params[:user_id],
+      organization: current_organization
+    )
   end
 end
