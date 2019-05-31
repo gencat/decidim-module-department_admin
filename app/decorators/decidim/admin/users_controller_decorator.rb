@@ -6,9 +6,21 @@ require_dependency 'decidim/admin/users_controller'
 ::Decidim::Admin::UsersController.class_eval do
   alias_method :original_collection, :collection
 
+  before_action :set_global_params
+
   def collection
     users= original_collection
-    @collection||= users.select('*', 'array_to_string(roles) AS sorted_roles').order('sorted_roles')
-    Kaminari.paginate_array(@collection.sort { |u1, u2| "#{u1.active_role}||#{u1.areas.first}" <=> "#{u2.active_role}||#{u2.areas.first}" })
+    Decidim::Admin::UserAdminFilter.for(users,@query,@role)
+  end
+
+  # It is necessary to overwrite this method to correctly locate the user.
+  # because we overwrite the collection method
+  def user
+    @user ||= original_collection.find(params[:id])
+  end
+
+  def set_global_params
+    @query = params[:q]
+    @role = params[:role]
   end
 end
