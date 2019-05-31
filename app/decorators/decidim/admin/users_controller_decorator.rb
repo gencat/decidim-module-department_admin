@@ -6,24 +6,21 @@ require_dependency 'decidim/admin/users_controller'
 ::Decidim::Admin::UsersController.class_eval do
   alias_method :original_collection, :collection
 
-  def index
-    enforce_permission_to :read, :admin_user
-    @query = params[:q]
-    @role = params[:role]
+  before_action :set_global_params
 
-    @users = Decidim::Admin::UserAdminFilter.for(
-              current_organization.admins.or(current_organization.users_with_any_role),
-              @query,
-              @role
-            ).page(params[:page]).per(15)
+  def collection
+    users= original_collection
+    Decidim::Admin::UserAdminFilter.for(users,@query,@role)
   end
 
-  private
-
+  # It is necessary to overwrite this method to correctly locate the user.
+  # because we overwrite the collection method
   def user
-    @user ||= Decidim::User.find_by(
-      id: params[:user_id],
-      organization: current_organization
-    )
+    @user ||= original_collection.find(params[:id])
+  end
+
+  def set_global_params
+    @query = params[:q]
+    @role = params[:role]
   end
 end

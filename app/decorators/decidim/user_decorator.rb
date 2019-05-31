@@ -12,9 +12,9 @@ Decidim::User.class_eval do
                           association_foreign_key: :decidim_area_id,
                           validate: false
 
-  scope :admin, -> { where(admin: true) }
-  scope :user_manager, -> { where(roles: ["user_manager"]) }
-  scope :department_admin, -> { where(roles: ["department_admin"]) }
+  scope :admins, -> { where(admin: true) }
+  scope :user_managers, -> { where(roles: ["user_manager"]) }
+  scope :department_admins, -> { where(roles: ["department_admin"]) }
 
   def department_admin?
     role?('department_admin')
