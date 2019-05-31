@@ -37,7 +37,7 @@ module Decidim
 
       def filter_by_search(users)
         return users if name_query.blank?
-        users.where("LOWER(name) LIKE LOWER(?)", "%#{name_query}%")
+        users.where("LOWER(name) LIKE LOWER(?) or LOWER(email) like LOWER(?)", "%#{name_query}%" , "%#{name_query}%")
       end
 
       def filter_by_role(users)
