@@ -4,6 +4,9 @@ This project is in BETA, but going to be tested in production.
 
 ## next version:
 
+## Version 0.0.5 (PATCH)
+- [REFACTOR] Use new `Decidim.user_roles` config_accessor for `Decidim::User` roles.
+
 ## Version 0.0.4 (MINOR)
 - Add an area/department column in admins index.
 
