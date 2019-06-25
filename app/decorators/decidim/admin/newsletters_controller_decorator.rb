@@ -19,8 +19,6 @@ require_dependency 'decidim/admin/newsletters_controller'
 
   def current_user_areas
     return unless current_user.department_admin?
-    return unless current_user.areas.any?  
-    return current_user.areas if current_user&.department_admin?
+    current_user.areas
   end
-
 end
