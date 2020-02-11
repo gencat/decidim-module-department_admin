@@ -69,6 +69,7 @@ module Decidim
           -> { same_area_permission_for?(requested_action, :admin, :destroy, :component, restricted_rsrc: context[:component]&.participatory_space) },
           -> { same_area_permission_for?(requested_action, :admin, :publish, :component, restricted_rsrc: context[:component]&.participatory_space) },
           -> { same_area_permission_for?(requested_action, :admin, :unpublish, :component, restricted_rsrc: context[:component]&.participatory_space) },
+          -> { same_area_permission_for?(requested_action, :admin, :export, :component_data, restricted_rsrc: context[:component]&.participatory_space) },
           # CATEGORIES
           -> { permission_for?(requested_action, :admin, :read, :category) },
           -> { permission_for?(requested_action, :admin, :create, :category) },

@@ -4,6 +4,9 @@ This project is in BETA, but going to be tested in production.
 
 ## next version:
 
+## Version 0.0.8 (MINOR)
+- Add permission for department_admins to export components. 
+
 ## Version 0.0.7 (MINOR)
 - Fix Newsletters query. In admin newsletter list, filter newsletters only with same area/department than current user. 
 
