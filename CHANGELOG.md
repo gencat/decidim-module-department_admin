@@ -4,6 +4,9 @@ This project is in BETA, but going to be tested in production.
 
 ## next version:
 
+## Version 0.0.9 (PATCH)
+- Add permission for department_admins to add assembly administrators (assembly_user_role). 
+
 ## Version 0.0.8 (MINOR)
 - Add permission for department_admins to export components. 
 
