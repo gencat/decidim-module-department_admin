@@ -56,10 +56,6 @@ Inside `app/decorators` there are all the tricks done in order for department_ad
 
 All decorator artifacts are extensions or modifications to the standard Decidim behavior.
 
-## Contributing
-
-See [Decidim](https://github.com/decidim/decidim).
-
 ### Run tests
 
 Create a dummy app in your application (if not present):
@@ -89,6 +85,10 @@ And run tests:
 ```bash
 bundle exec rspec spec
 ```
+
+## Contributing
+
+See [Decidim](https://github.com/decidim/decidim).
 
 ## License
 

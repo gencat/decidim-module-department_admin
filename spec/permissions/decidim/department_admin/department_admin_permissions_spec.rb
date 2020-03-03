@@ -31,6 +31,7 @@ module Decidim
             should_allow_action(:admin, :read, :process_step)
             should_allow_action(:admin, :create, :process_step)
             should_allow_action(:admin, :read, :assembly_list)
+            should_allow_action(:admin, :read, :assembly_user_role)
             should_allow_action(:admin, :create, :assembly)
             should_allow_action(:admin, :index, :newsletter)
             should_allow_action(:admin, :create, :newsletter)
@@ -77,6 +78,19 @@ module Decidim
                 permissions= DepartmentAdmin::Permissions.new(user, action, process: process)
                 expect { permissions.permissions.allowed? }.to raise_error(Decidim::PermissionAction::PermissionNotSetError)
               end
+            end
+          end
+          context 'when acction is allowed and context is component' do
+            context 'when component has same area as department_admin' do
+              # TODO complete the test implementation
+              # let(:process) { create(:participatory_process, organization: area.organization, area: area) }
+              # let(:component) { create(:survey, participatory_space: process) }
+
+              # it 'should allow accepted actions' do
+              #   should_allow_action(:admin, :read, :component)
+              #   should_allow_action(:admin, :create, :component)
+              #   should_allow_action_with_ctx(:admin, :export, :component_data, current_participatory_space: process)
+              # end
             end
           end
         end
