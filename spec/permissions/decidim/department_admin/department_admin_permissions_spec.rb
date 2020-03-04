@@ -35,6 +35,7 @@ module Decidim
             should_allow_action(:admin, :create, :assembly)
             should_allow_action(:admin, :index, :newsletter)
             should_allow_action(:admin, :create, :newsletter)
+            should_allow_action(:admin, :create, :attachment_collection)
           end
           it 'should NOT allow non accepted actions' do
             action= PermissionAction.new(scope: :admin, action: :write, subject: :admin_dashboard)
@@ -69,7 +70,15 @@ module Decidim
                 should_allow_action_with_ctx(:admin, :update, :assembly, assembly: assembly)
                 # -> {permission_for?(requested_action, :admin, :read, :newsletter, restricted_rsrc: context[:newsletter])},
               end
+              context 'when meeting has same area as department_admin' do
+                let(:meeting) { create(:meeing, participatory_space: process, area: area) }
+
+                it 'should allow accepted actions with expected context' do
+                  should_allow_action(:admin, :create, :attachment)
+                end
+              end
             end
+
             context 'when process has different area as department_admin' do
               let(:process) { create(:participatory_process, organization: area.organization) }
 

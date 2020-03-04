@@ -151,9 +151,15 @@ module Decidim
       # Also check if the resource in the context for with the key defined by `area_restricted_rsrc`
       # has the same area as current user.
       def same_area_permission_for?(requested_action, scope, action, subject, restricted_rsrc:)
-        is= is_action?(requested_action, scope, action, subject)
-        is&&= in_same_area?(restricted_rsrc)
-        is
+        if restricted_rsrc.respond_to?(:area) || restricted_rsrc.nil?
+          is= is_action?(requested_action, scope, action, subject)
+          is&&= in_same_area?(restricted_rsrc)
+          is
+        elsif restricted_rsrc.try(:participatory_space).try(:area).present?
+          same_area_permission_for?(requested_action, scope, action, subject, restricted_rsrc:restricted_rsrc.try(:participatory_space))
+        else
+          permission_for?(requested_action, scope, action, subject)
+        end
       end
 
       # Is current action requesting permissions for the specified scope/action/subject?
@@ -166,7 +172,7 @@ module Decidim
       end
 
       def in_same_area?(resource)
-        user.areas.include? resource.area
+        user.areas.include? resource&.area
       end
     end
   end
