@@ -111,6 +111,7 @@ module Decidim
           -> { same_area_permission_for?(requested_action, :admin, :publish, :assembly, restricted_rsrc: context[:assembly]) },
           -> { same_area_permission_for?(requested_action, :admin, :unpublish, :assembly, restricted_rsrc: context[:assembly]) },
           # Assemly Admin: USER ROLES
+          -> { permission_for?(requested_action, :admin, :index, :assembly_user_role) },
           -> { permission_for?(requested_action, :admin, :read, :assembly_user_role) },
           -> { permission_for?(requested_action, :admin, :create, :assembly_user_role) },
           -> { permission_for?(requested_action, :admin, :update, :assembly_user_role) },
