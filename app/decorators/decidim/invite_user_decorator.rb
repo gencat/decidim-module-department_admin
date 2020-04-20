@@ -7,8 +7,6 @@
 Decidim::InviteUser.class_eval do
   alias_method :original_update_user, :update_user
 
-  alias_method :original_update_user, :update_user
-
   def update_user
     add_selected_area_to(user)
     original_update_user
@@ -30,9 +28,7 @@ Decidim::InviteUser.class_eval do
     )
   end
 
-  #---------------------------------------------------------
-  private
-  #---------------------------------------------------------
+  private #---------------------------------------------------------
 
   def add_selected_area_to(user)
     user.areas << form.selected_area if form.selected_area.present?

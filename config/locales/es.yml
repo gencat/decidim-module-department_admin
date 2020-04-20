@@ -5,11 +5,17 @@ es:
       models:
         user:
           fields:
+            department: Departamento/Area
             roles:
               department_admin: Administrador de departamento
       users:
         form:
           area: Area
+        index:
+          filter:
+            all: Todas
+          filter_by: Filtrado por
+          search: Buscar
     components:
       department_admin:
         name: Admin de Departamento

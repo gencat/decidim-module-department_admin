@@ -5,11 +5,17 @@ ca:
       models:
         user:
           fields:
+            department: Departament/Àrea
             roles:
               department_admin: Administrador de departament
       users:
         form:
           area: Àrea
+        index:
+          filter:
+            all: Totes
+          filter_by: Filtra per
+          search: Cerca
     components:
       department_admin:
         name: Admin de Departament

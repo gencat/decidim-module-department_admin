@@ -5,6 +5,12 @@ require_dependency 'decidim/area'
 Decidim::Area.class_eval do
   before_destroy :abort_if_department_admins
 
+  has_and_belongs_to_many :users,
+                          join_table: :department_admin_areas,
+                          foreign_key: :decidim_area_id,
+                          association_foreign_key: :decidim_user_id,
+                          validate: false
+
   def has_department_admins?
     Decidim::User.where(organization: organization).any? do |u|
       u.areas.exists?(id)

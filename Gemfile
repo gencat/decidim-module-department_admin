@@ -16,7 +16,7 @@ gemspec
 
 group :development, :test do
   gem 'bootsnap'
-  gem 'byebug', '~> 10.0', platform: :mri
+  gem 'byebug', platform: :mri
   gem 'faker', '~> 1.9'
   gem 'social-share-button'
   gem 'decidim'
