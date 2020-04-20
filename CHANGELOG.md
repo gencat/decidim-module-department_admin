@@ -4,6 +4,9 @@ This project is in BETA, but going to be tested in production.
 
 ## next version:
 
+## Version 0.0.12 (PATCH)
+- FIX: Change method name: `organization_assemblies` to `collection`.
+
 ## Version 0.0.11 (PATCH)
 - Add :index permission for department_admins to add assembly administrators (assembly_user_role).
 
