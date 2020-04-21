@@ -17,7 +17,6 @@ gemspec
 group :development, :test do
   gem 'bootsnap'
   gem 'byebug', platform: :mri
-  gem 'decidim', git: 'https://github.com/decidim/decidim.git', branch: '0.18-stable'
   gem 'faker', '~> 1.9'
   gem 'social-share-button'
   # gem 'decidim'
