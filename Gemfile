@@ -19,7 +19,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'faker', '~> 1.9'
   gem 'social-share-button'
-  # gem 'decidim'
+  gem 'decidim'
   gem 'rubocop-rspec'
 end
 
