@@ -4,6 +4,10 @@ This project is in BETA, but going to be tested in production.
 
 ## next version:
 
+## Version 0.0.12 (PATCH)
+- FIX: Change method name: `organization_assemblies` to `collection`.
+- Make gem compatible with Decidim v0.21.0.
+
 ## Version 0.0.11 (PATCH)
 - Add :index permission for department_admins to add assembly administrators (assembly_user_role).
 
