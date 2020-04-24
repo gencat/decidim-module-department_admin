@@ -8,6 +8,8 @@ ca:
             department: Departament/Àrea
             roles:
               department_admin: Administrador de departament
+              process_admin: Administrador de processos
+              assembly_admin: Administrador de consells
       users:
         form:
           area: Àrea

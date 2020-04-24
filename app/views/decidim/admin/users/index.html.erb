@@ -63,37 +63,44 @@
         </thead>
         <tbody>
           <% @users.each do |user| %>
-            <tr data-user-id="<%= user.id %>">
-              <td><%= t("models.user.fields.roles.#{user.active_role}", scope: "decidim.admin") %></td>
-              <td><%= user.name %></td>
-              <td><%= user.email %></td>
-              <td><%= translated_attribute(user.areas.first&.name) %></td>
-              <td>
-                <% if user.invitation_sent_at %>
-                  <%= l user.invitation_sent_at, format: :short %>
-                <% end %>
-              </td>
-              <td>
-                <% if user.invitation_accepted_at %>
-                  <%= l user.invitation_accepted_at, format: :short %>
-                <% end %>
-              </td>
-              <td>
-                <% if user.last_sign_in_at %>
-                  <%= l user.last_sign_in_at, format: :short %>
-                <% end %>
-              </td>
-              <td><%= l user.created_at, format: :short %></td>
-              <td class="table-list__actions">
-                <% if allowed_to?(:invite, :admin_user, user: user) && user.invited_to_sign_up? %>
-                  <%= icon_link_to "reload", ["resend_invitation", user], t("actions.resend_invitation", scope: "decidim.admin"), class: "resend-invitation", method: :post %>
-                <% end %>
+            <% $i = 0 %>
+            <% $length = user.roles.size %>
+            <% begin %>
+              <% if !@role.present? || @role == user.roles[$i] %>
+                <tr data-user-id="<%= user.id %>">
+                  <td><%= t("models.user.fields.roles.#{user.roles[$i] || user.active_role}", scope: "decidim.admin") %></td>
+                  <td><%= user.name %></td>
+                  <td><%= user.email %></td>
+                  <td><%= translated_attribute(user.areas.first&.name) %></td>
+                  <td>
+                    <% if user.invitation_sent_at %>
+                      <%= l user.invitation_sent_at, format: :short %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if user.invitation_accepted_at %>
+                      <%= l user.invitation_accepted_at, format: :short %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% if user.last_sign_in_at %>
+                      <%= l user.last_sign_in_at, format: :short %>
+                    <% end %>
+                  </td>
+                  <td><%= l user.created_at, format: :short %></td>
+                  <td class="table-list__actions">
+                    <% if allowed_to?(:invite, :admin_user, user: user) && user.invited_to_sign_up? %>
+                      <%= icon_link_to "reload", ["resend_invitation", user], t("actions.resend_invitation", scope: "decidim.admin"), class: "resend-invitation", method: :post %>
+                    <% end %>
 
-                <% if allowed_to? :destroy, :admin_user, user: user %>
-                  <%= icon_link_to "circle-x", user, t("actions.destroy", scope: "decidim.admin"), class: "action-icon--remove", method: :delete, data: { confirm: t("actions.confirm_destroy", scope: "decidim.admin") } %>
-                <% end %>
-              </td>
-            </tr>
+                    <% if allowed_to? :destroy, :admin_user, user: user %>
+                      <%= icon_link_to "circle-x", user, t("actions.destroy", scope: "decidim.admin"), class: "action-icon--remove", method: :delete, data: { confirm: t("actions.confirm_destroy", scope: "decidim.admin") } %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+              <% $i += 1 %>
+            <% end while $i < $length %>
           <% end %>
         </tbody>
       </table>

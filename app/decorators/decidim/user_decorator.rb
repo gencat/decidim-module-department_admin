@@ -15,8 +15,18 @@ Decidim::User.class_eval do
   scope :admins, -> { where(admin: true) }
   scope :user_managers, -> { where(roles: ["user_manager"]) }
   scope :department_admins, -> { where(roles: ["department_admin"]) }
+  scope :process_admins, -> { where(roles: ["process_admin"]) }
+  scope :assembly_admins, -> { where(roles: ["assembly_admin"]) }
 
   def department_admin?
     role?('department_admin')
+  end
+
+  def process_admin?
+    role?('process_admin')
+  end
+
+  def assembly_admin?
+    role?('assembly_admin')
   end
 end

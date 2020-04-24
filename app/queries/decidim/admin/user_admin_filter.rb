@@ -42,7 +42,7 @@ module Decidim
 
       def filter_by_role(users)
         return users unless Decidim::User::Roles.all.include?(role)
-        users.public_send(role.pluralize)
+        users.where("? = any(roles)", role)
       end
     end
   end

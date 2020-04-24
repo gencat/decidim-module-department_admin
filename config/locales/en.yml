@@ -8,6 +8,8 @@ en:
             department: Department/Area
             roles:
               department_admin: Department Administrator
+              process_admin: Process Administrator
+              assembly_admin: Assembly Administrator
       users:
         form:
           area: Area
