@@ -8,6 +8,16 @@ en:
             department: Department/Area
             roles:
               department_admin: Department Administrator
+        participatory_process:
+          fields:
+            department: Department/Area
+            department_role: Department role
+            process_role: Process role
+        assembly:
+          fields:
+            department: Department/Area
+            department_role: Department role
+            assembly_role: Assembly role
       users:
         form:
           area: Area

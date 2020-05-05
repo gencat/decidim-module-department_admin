@@ -8,6 +8,16 @@ ca:
             department: Departament/Àrea
             roles:
               department_admin: Administrador de departament
+        participatory_process:
+          fields:
+            department: Departament/Àrea
+            department_role: Rol departament
+            process_role: Rol procés
+        assembly:
+          fields:
+            department: Departament/Àrea
+            department_role: Rol departament
+            assembly_role: Rol consell
       users:
         form:
           area: Àrea
