@@ -7,10 +7,10 @@ es:
           fields:
             department: Departamento/Area
             roles:
-              department_admin: Administrador de 
-              space_admin: Administrador de espacios
-              process_admin: Administrador de procesos
-              assembly_admin: Administrador de consejos
+              department_admin: Administradora de departamento
+              space_admin: Administradora de espacio
+              process_admin: Administradora de proceso
+              assembly_admin: Administradora de consejo
       users:
         form:
           area: Area
