@@ -49,6 +49,15 @@
               <%= sort_link(query, :title, t("models.participatory_process.fields.title", scope: "decidim.admin")) %>
             </th>
             <th>
+              <%= sort_link(query, :area_name, t("models.participatory_process.fields.department", scope: "decidim.admin")) %>
+            </th>
+            <th>
+              <%= t("models.participatory_process.fields.department_role", scope: "decidim.admin") %>
+            </th>
+            <th>
+              <%= t("models.participatory_process.fields.process_role", scope: "decidim.admin") %>
+            </th>
+            <th>
               <%= sort_link(query, :created_at, t("models.participatory_process.fields.created_at", scope: "decidim.admin"), default_order: :desc) %>
             </th>
             <th>
@@ -80,6 +89,19 @@
                 <% else %>
                   <%= translated_attribute(process.title) %>
                 <% end %>
+              </td>
+              <td>
+                <% if(process.area != nil) %>
+                  <%= translated_attribute(process.area.name)%>
+                <% end %>
+              </td>
+              <td>
+                <% if(process.area != nil) %>
+                  <%= process.area.users.map(&:name).join(", ") %>
+                <% end %>
+              </td>
+              <td>
+                <%= process.users.map(&:name).join(", ") %>
               </td>
               <td>
                 <%= l process.created_at, format: :short %>

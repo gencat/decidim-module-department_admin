@@ -11,6 +11,16 @@ en:
               space_admin: Space Administrator
               process_admin: Process Administrator
               assembly_admin: Assembly Administrator
+        participatory_process:
+          fields:
+            department: Department/Area
+            department_role: Department role
+            process_role: Process role
+        assembly:
+          fields:
+            department: Department/Area
+            department_role: Department role
+            assembly_role: Assembly role
       users:
         form:
           area: Area
