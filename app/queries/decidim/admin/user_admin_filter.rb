@@ -42,7 +42,12 @@ module Decidim
 
       def filter_by_role(users)
         return users unless Decidim::User::Roles.all.include?(role)
-        users.where("? = any(roles)", role)
+        if 'space_admin' == role then
+          users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' +
+               ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")')
+        else
+          users.where("? = any(roles)", role)
+        end
       end
     end
   end

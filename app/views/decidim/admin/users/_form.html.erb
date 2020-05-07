@@ -6,8 +6,10 @@
   <%= form.email_field :email, label: t(".email") %>
 </div>
 
+<% @roles_for_sale = @form.available_roles_for_select.reject{ |el| el[1] == 'space_admin' } %>
+
 <div class="row column">
-  <%= form.select :role, @form.available_roles_for_select, label: t(".role") %>
+  <%= form.select :role, @roles_for_sale, label: t(".role") %>
 </div>
 
 <div id="area-block" class="row column" <%= if form.object.role != 'department_admin' then %Q(style="display: none").html_safe end %>>

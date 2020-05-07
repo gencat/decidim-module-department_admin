@@ -8,6 +8,7 @@ en:
             department: Department/Area
             roles:
               department_admin: Department Administrator
+              space_admin: Space Administrator
               process_admin: Process Administrator
               assembly_admin: Assembly Administrator
       users:

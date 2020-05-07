@@ -22,7 +22,6 @@ describe 'Admin explores processes', type: :system do
       user.save!
       user
     end
-    let!(:process_admin) { create(:user, :user_manager, :confirmed, organization: organization) }
 
     context "when visiting the list of participatory processes" do
       before do

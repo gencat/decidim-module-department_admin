@@ -7,7 +7,8 @@ es:
           fields:
             department: Departamento/Area
             roles:
-              department_admin: Administrador de departamento
+              department_admin: Administrador de 
+              space_admin: Administrador de espacios
               process_admin: Administrador de procesos
               assembly_admin: Administrador de consejos
       users:

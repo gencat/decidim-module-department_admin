@@ -12,13 +12,13 @@ Decidim::User.class_eval do
                           association_foreign_key: :decidim_area_id,
                           validate: false
 
-  has_and_belongs_to_many :participatory_process,
+  has_and_belongs_to_many :participatory_processes,
                           join_table: :decidim_participatory_process_user_roles,
                           foreign_key: :decidim_user_id,
                           association_foreign_key: :decidim_participatory_process_id,
                           validate: false
 
-  has_and_belongs_to_many :assembly,
+  has_and_belongs_to_many :assemblies,
                           join_table: :decidim_assembly_user_roles,
                           foreign_key: :decidim_user_id,
                           association_foreign_key: :decidim_assembly_id,
@@ -27,18 +27,13 @@ Decidim::User.class_eval do
   scope :admins, -> { where(admin: true) }
   scope :user_managers, -> { where(roles: ["user_manager"]) }
   scope :department_admins, -> { where(roles: ["department_admin"]) }
-  scope :process_admins, -> { where(roles: ["process_admin"]) }
-  scope :assembly_admins, -> { where(roles: ["assembly_admin"]) }
+  scope :space_administrator, -> { where(roles: ["department_admin"]) }
 
   def department_admin?
     role?('department_admin')
   end
 
-  def process_admin?
-    role?('process_admin')
-  end
-
-  def assembly_admin?
-    role?('assembly_admin')
+  def space_administrator?
+    role?('space_administrator')
   end
 end
