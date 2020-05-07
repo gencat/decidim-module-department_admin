@@ -7,10 +7,10 @@ ca:
           fields:
             department: Departament/Àrea
             roles:
-              department_admin: Administrador de departament
-              space_admin: Administrador d'espais
-              process_admin: Administrador de processos
-              assembly_admin: Administrador de consells
+              department_admin: Administradora de departament
+              space_admin: Administradora d'espai
+              process_admin: Administradora de procés
+              assembly_admin: Administradora de consell
         participatory_process:
           fields:
             department: Departament/Àrea
