@@ -75,6 +75,7 @@
             <% $i = 0 %>
             <% $length = $roles.size %>
             <% begin %>
+              <% if !@role || @role == $roles[$i] || @role == 'space_admin' && ($roles[$i] == 'process_admin' || $roles[$i] == 'assembly_admin') %>
               <tr data-user-id="<%= user.id %>">
                 <td><%= t("models.user.fields.roles.#{ $roles[$i] || user.active_role}", scope: "decidim.admin") %></td>
                 <td><%= user.name %></td>
@@ -106,6 +107,7 @@
                   <% end %>
                 </td>
               </tr>
+              <% end %>
               <% $i += 1 %>
             <% end while $i < $length %>
           <% end %>
