@@ -5,7 +5,14 @@ es:
       models:
         user:
           fields:
-            department: Departamento/Area
+            title: Título
+            type: Tipo
+            created_at: Data de creación
+            private: Privado
+            published: Publicado
+            department: Departamento/Área
+            process_type: Proceso
+            assembly_type: Consejo
             roles:
               department_admin: Administradora de departamento
               space_admin: Administradora de espacio

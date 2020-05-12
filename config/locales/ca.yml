@@ -5,7 +5,14 @@ ca:
       models:
         user:
           fields:
+            title: Titol
+            type: Tipus
+            created_at: Data de creació
+            private: Privat
+            published: Publicat
             department: Departament/Àrea
+            process_type: Procés
+            assembly_type: Consell
             roles:
               department_admin: Administradora de departament
               space_admin: Administradora d'espai

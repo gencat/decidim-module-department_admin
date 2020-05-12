@@ -5,7 +5,14 @@ en:
       models:
         user:
           fields:
+            title: Title
+            type: Type
+            created_at: Created at
+            private: Private
+            published: Published
             department: Department/Area
+            process_type: Process
+            assembly_type: Assemby
             roles:
               department_admin: Department Administrator
               space_admin: Space Administrator
