@@ -11,6 +11,7 @@ ca:
             private: Privat
             published: Publicat
             department: Departament/Àrea
+            spaces: Procés / Normativa / Consell
             process_type: Procés
             assembly_type: Consell
             search_question: Què estàs cercant?

@@ -1,7 +1,21 @@
 <% @user = Decidim::User.find_by_id(params[:id]) %>
 
+<div class="secondary-nav secondary-nav--subnav">
+  <ul>
+    <% if allowed_to?(:enter, :space_area, space_name: :user) %>
+      <li <% if is_active_link?(decidim_admin_participatory_processes.participatory_processes_path) %> class="is-active" <% end %>>
+        <%= aria_selected_link_to I18n.t("menu.participatory_processes", scope: "decidim.admin"),
+        '' %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
 <div class="card">
   <div class="card-divider">
+    <h2 class="card-title">
+      test
+    </h2>
     <h2 class="card-title">
       <%= @user.name + '(' + @user.email + ')' %>
     </h2>

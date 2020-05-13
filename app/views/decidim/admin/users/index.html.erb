@@ -48,7 +48,7 @@ function changeFilter(el) {
         </li>
       </ul>
       <%= t("models.user.fields.search_question", scope: "decidim.admin") %>
-      <input type="radio" id="process_name_filter" name="filter_search" value="process_name" onchange="changeFilter(this)">
+      <input type="radio" id="process_name_filter" name="filter_search" value="process_name" onchange="changeFilter(this)" style="margin-left: 20px">
       <label for="process_name_filter"><%= t("models.user.fields.search_field_processes", scope: "decidim.admin") %></label>
       <input type="radio" id="query_filter" name="filter_search" value="query" checked onchange="changeFilter(this)">
       <label for="query_filter"><%= t("models.user.fields.search_field_admins", scope: "decidim.admin") %></label>
@@ -57,8 +57,8 @@ function changeFilter(el) {
     <%= form_tag "", method: :get do %>
       <div class="filters__search">
         <div class="input-group">
-          <%= search_field_tag :q, @query,label: false, class: "input-group-field", placeholder: t(".search"), style: "display: none" %>
-          <%= search_field_tag :process_name, @process_name,label: false, class: "input-group-field", placeholder: t(".search") %>
+          <%= search_field_tag :q, @query,label: false, class: "input-group-field", placeholder: t(".search") %>
+          <%= search_field_tag :process_name, @process_name,label: false, class: "input-group-field", placeholder: t(".search"), style: "display: none" %>
           <%= hidden_field_tag :role, @role %>
           <div class="input-group-button">
             <button type="submit" class="button button--muted">
@@ -89,6 +89,7 @@ function changeFilter(el) {
             <th><%= t("models.user.fields.name", scope: "decidim.admin") %></th>
             <th><%= t("models.user.fields.email", scope: "decidim.admin") %></th>
             <th><%= t("models.user.fields.department", scope: "decidim.admin") %></th>
+            <th><%= t("models.user.fields.spaces", scope: "decidim.admin") %></th>
             <th><%= t("models.user.fields.invitation_sent_at", scope: "decidim.admin") %></th>
             <th><%= t("models.user.fields.invitation_accepted_at", scope: "decidim.admin") %></th>
             <th><%= t("models.user.fields.last_sign_in_at", scope: "decidim.admin") %></th>
@@ -99,23 +100,32 @@ function changeFilter(el) {
         <tbody>
           <% @users.each do |user| %>
             <% $roles = user.roles %>
+            <% $rolesWithTitle = [] %>
+            <% $roles.each do |role| %>
+              <% $rolesWithTitle.push Hash["role", role, "title", '' ] %>
+            <% end %>
             <%# if user had particiatory processes then add role of process admin %>
             <% if user.participatory_processes.size > 0 %>
-              <% $roles.push 'process_admin' %>
+              <% user.participatory_processes.each do |participatory_process| %>
+                <% $rolesWithTitle.push Hash["role", 'process_admin', "title", translated_attribute(participatory_process.title)] %>
+              <% end %>
             <% end %>
             <%# if user had assemblies then add role of assembly admin %>
             <% if user.assemblies.size > 0 %>
-              <% $roles.push 'assembly_admin' %>
+              <% user.assemblies.each do |assembly| %>
+                <% $rolesWithTitle.push Hash["role", 'assembly_admin', "title", translated_attribute(assembly.title)] %>
+              <% end %>
             <% end %>
             <% $i = 0 %>
-            <% $length = $roles.size %>
+            <% $length = $rolesWithTitle.size %>
             <% begin %>
-              <% if !@role || @role.blank? || @role == $roles[$i] || @role == 'space_admin' && ($roles[$i] == 'process_admin' || $roles[$i] == 'assembly_admin') %>
+              <% if !@role || @role.blank? || @role == $rolesWithTitle[$i]["role"] || @role == 'space_admin' && ($rolesWithTitle[$i]["role"] == 'process_admin' || $rolesWithTitle[$i]["role"] == 'assembly_admin') %>              
               <tr data-user-id="<%= user.id %>">
-                <td><%= t("models.user.fields.roles.#{ $roles[$i] || user.active_role}", scope: "decidim.admin") %></td>
+                <td><%= t("models.user.fields.roles.#{ $rolesWithTitle[$i]["role"] || user.active_role}", scope: "decidim.admin") %></td>
                 <td><%= user.name %></td>
                 <td><%= user.email %></td>
                 <td><%= translated_attribute(user.areas.first&.name) %></td>
+                <td><%= $rolesWithTitle[$i]["title"] %></td>
                 <td>
                   <% if user.invitation_sent_at %>
                     <%= l user.invitation_sent_at, format: :short %>
@@ -133,6 +143,11 @@ function changeFilter(el) {
                 </td>
                 <td><%= l user.created_at, format: :short %></td>
                 <td class="table-list__actions">
+
+                  <% if allowed_to? :preview, :user, user: user %>
+                    <%= icon_link_to "eye", user_path(user.id), t("actions.preview", scope: "decidim.admin"), class: "action-icon--preview" %>
+                  <% end %>
+
                   <% if allowed_to?(:invite, :admin_user, user: user) && user.invited_to_sign_up? %>
                     <%= icon_link_to "reload", ["resend_invitation", user], t("actions.resend_invitation", scope: "decidim.admin"), class: "resend-invitation", method: :post %>
                   <% end %>

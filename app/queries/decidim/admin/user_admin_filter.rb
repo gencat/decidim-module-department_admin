@@ -44,9 +44,16 @@ module Decidim
 
       def filter_by_process_name(users)
         return users if process_name.blank?
-        users.where('id in (select decidim_user_id from decidim_participatory_process_user_roles where decidim_participatory_process_id in (select id' +
+        users.where('(id in (select decidim_user_id ' + 
+                        ' from decidim_participatory_process_user_roles ' +
+                        ' where decidim_participatory_process_id in (select id' +
                          ' from decidim_participatory_processes' +
-                         ' where lower(title::text) like lower(?)))', "%#{process_name}%")
+                         ' where lower(title::text) like lower(?)))' +
+                      ' or id in  ( select decidim_user_id' +
+                      ' from decidim_assembly_user_roles' +
+                      ' where decidim_assembly_id in (select id' +
+                        ' from decidim_assemblies' +
+                        ' where lower(title::text) like lower(?))))', "%#{process_name}%", "%#{process_name}%")
       end
 
       def filter_by_role(users)

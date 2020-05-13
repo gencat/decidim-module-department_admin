@@ -11,6 +11,7 @@ es:
             private: Privado
             published: Publicado
             department: Departamento/Área
+            spaces: Procesos / Normativas / Consejo
             process_type: Proceso
             assembly_type: 
             search_question: Que estás buscando?
