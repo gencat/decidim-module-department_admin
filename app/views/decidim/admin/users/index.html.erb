@@ -1,3 +1,32 @@
+<script type="text/javascript">
+
+const urlParams = new URLSearchParams(window.location.search);
+window.onload = function () {
+  if (!!urlParams.get("q")) {
+    el = document.getElementById("query_filter") 
+    el.checked = true;
+    changeFilter(el);
+  } else if (!!urlParams.get("process_name")) {
+    el = document.getElementById("process_name_filter");
+    el.checked = true;
+    changeFilter(el);
+  }
+}
+
+function changeFilter(el) {
+  if (el.value === "query") {
+    document.getElementById("process_name").style.display = 'none';
+    document.getElementById("process_name").value = '';
+    document.getElementById("q").style.display = 'block';
+  } else {
+    document.getElementById("q").style.display = 'none';
+    document.getElementById("q").value = '';
+    document.getElementById("process_name").style.display = 'block';
+  }
+}
+
+
+</script>
 <div class="filters row">
   <div class="column medium-3">
     <span class="dropdown-menu-inverted_label"><%= t(".filter_by") %> :</span>
@@ -18,12 +47,18 @@
           </ul>
         </li>
       </ul>
+      <%= t("models.user.fields.search_question", scope: "decidim.admin") %>
+      <input type="radio" id="process_name_filter" name="filter_search" value="process_name" onchange="changeFilter(this)">
+      <label for="process_name_filter"><%= t("models.user.fields.search_field_processes", scope: "decidim.admin") %></label>
+      <input type="radio" id="query_filter" name="filter_search" value="query" checked onchange="changeFilter(this)">
+      <label for="query_filter"><%= t("models.user.fields.search_field_admins", scope: "decidim.admin") %></label>
   </div>
   <div class="column medium-4">
     <%= form_tag "", method: :get do %>
       <div class="filters__search">
         <div class="input-group">
-          <%= search_field_tag :q, @query,label: false, class: "input-group-field", placeholder: t(".search") %>
+          <%= search_field_tag :q, @query,label: false, class: "input-group-field", placeholder: t(".search"), style: "display: none" %>
+          <%= search_field_tag :process_name, @process_name,label: false, class: "input-group-field", placeholder: t(".search") %>
           <%= hidden_field_tag :role, @role %>
           <div class="input-group-button">
             <button type="submit" class="button button--muted">
@@ -75,7 +110,7 @@
             <% $i = 0 %>
             <% $length = $roles.size %>
             <% begin %>
-              <% if !@role || @role == $roles[$i] || @role == 'space_admin' && ($roles[$i] == 'process_admin' || $roles[$i] == 'assembly_admin') %>
+              <% if !@role || @role.blank? || @role == $roles[$i] || @role == 'space_admin' && ($roles[$i] == 'process_admin' || $roles[$i] == 'assembly_admin') %>
               <tr data-user-id="<%= user.id %>">
                 <td><%= t("models.user.fields.roles.#{ $roles[$i] || user.active_role}", scope: "decidim.admin") %></td>
                 <td><%= user.name %></td>

@@ -12,7 +12,10 @@ es:
             published: Publicado
             department: Departamento/Área
             process_type: Proceso
-            assembly_type: Consejo
+            assembly_type: 
+            search_question: Que estás buscando?
+            search_field_processes: Procesos
+            search_field_admins: Administradoras
             roles:
               department_admin: Administradora de departamento
               space_admin: Administradora de espacio

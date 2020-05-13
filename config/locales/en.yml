@@ -13,6 +13,9 @@ en:
             department: Department/Area
             process_type: Process
             assembly_type: Assemby
+            search_question: What are you looking for?
+            search_field_processes: Processes
+            search_field_admins: Administrators
             roles:
               department_admin: Department Administrator
               space_admin: Space Administrator

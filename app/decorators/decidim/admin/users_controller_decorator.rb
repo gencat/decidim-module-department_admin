@@ -10,7 +10,7 @@ require_dependency 'decidim/admin/users_controller'
 
   def collection
     users= original_collection
-    Decidim::Admin::UserAdminFilter.for(users,@query,@role)
+    Decidim::Admin::UserAdminFilter.for(users,@query, @process_name,@role)
   end
 
   # It is necessary to overwrite this method to correctly locate the user.
@@ -21,6 +21,7 @@ require_dependency 'decidim/admin/users_controller'
 
   def set_global_params
     @query = params[:q]
+    @process_name = params[:process_name]
     @role = params[:role]
   end
 end

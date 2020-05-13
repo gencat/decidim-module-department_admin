@@ -13,6 +13,9 @@ ca:
             department: Departament/Àrea
             process_type: Procés
             assembly_type: Consell
+            search_question: Què estàs cercant?
+            search_field_processes: Processos
+            search_field_admins: Administradores
             roles:
               department_admin: Administradora de departament
               space_admin: Administradora d'espai
