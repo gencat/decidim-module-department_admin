@@ -21,16 +21,27 @@ require_dependency 'decidim/admin/users_controller'
   end
 
   def show
-    locale = "ca"
+    locale = params[:locale] || "ca"
     @user ||= original_collection.find(params[:id])
     @spaces = []
     @user.participatory_processes.each do |process|
+
       if process.participatory_process_group then
-        type = process.participatory_process_group&.name[locale]
+        if process.participatory_process_group&.name[locale] != '' then
+          type = process.participatory_process_group&.name[locale]
+        else 
+          type = process.participatory_process_group&.name["ca"]
+        end
       else 
         type = t("models.user.fields.process_type", scope: "decidim.admin")
       end
-      @spaces.push({"title" => process.title[locale], 
+
+      process_title = process.title[locale]
+      if process_title == '' then
+        process_title = process.title["ca"]
+      end
+
+      @spaces.push({"title" => process_title,
                     "type" => type,
                     "area" => process.area&.name[locale],
                     "created_at" => process.created_at,
@@ -39,12 +50,19 @@ require_dependency 'decidim/admin/users_controller'
     end
 
     @user.assemblies.each do |assembly|
+      
       if assembly.area && assembly.area.name then
         area_name = assembly.area.name[locale]
       else
         area_name = ""
       end
-      @spaces.push({"title" => assembly.title[locale], 
+
+      assembly_title = assembly.title[locale]
+      if assembly_title == '' then
+        assembly_title = assembly.title["ca"]
+      end
+
+      @spaces.push({"title" => assembly_title, 
                     "type" => t("models.user.fields.assembly_type", scope: "decidim.admin"),
                     "area" => area_name,
                     "created_at" => assembly.created_at,

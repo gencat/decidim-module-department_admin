@@ -13,7 +13,7 @@ es:
             department: Departamento/Área
             spaces: Procesos / Normativas / Consejo
             process_type: Proceso
-            assembly_type: 
+            assembly_type: Consejo
             search_question: Que estás buscando?
             search_field_processes: Procesos
             search_field_admins: Administradoras
