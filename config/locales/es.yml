@@ -17,6 +17,7 @@ es:
             search_question: Que estás buscando?
             search_field_processes: Procesos
             search_field_admins: Administradoras
+            administrated_spaces: Espacios administrados
             roles:
               department_admin: Administradora de departamento
               space_admin: Administradora de espacio

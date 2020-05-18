@@ -102,30 +102,41 @@ function changeFilter(el) {
             <% $roles = user.roles %>
             <% $rolesWithTitle = [] %>
             <% $roles.each do |role| %>
-              <% $rolesWithTitle.push Hash["role", role, "title", '' ] %>
+              <% $rolesWithTitle.push [role, '' ] %>
             <% end %>
             <%# if user had particiatory processes then add role of process admin %>
             <% if user.participatory_processes.size > 0 %>
               <% user.participatory_processes.each do |participatory_process| %>
-                <% $rolesWithTitle.push Hash["role", 'process_admin', "title", translated_attribute(participatory_process.title)] %>
+                <% $rolesWithTitle.push ['process_admin', translated_attribute(participatory_process.title)] %>
               <% end %>
             <% end %>
             <%# if user had assemblies then add role of assembly admin %>
             <% if user.assemblies.size > 0 %>
               <% user.assemblies.each do |assembly| %>
-                <% $rolesWithTitle.push Hash["role", 'assembly_admin', "title", translated_attribute(assembly.title)] %>
+                <% $rolesWithTitle.push ['assembly_admin', translated_attribute(assembly.title)] %>
               <% end %>
             <% end %>
             <% $i = 0 %>
+            <% puts $rolesWithTitle %>
             <% $length = $rolesWithTitle.size %>
             <% begin %>
-              <% if !@role || @role.blank? || @role == $rolesWithTitle[$i]["role"] || @role == 'space_admin' && ($rolesWithTitle[$i]["role"] == 'process_admin' || $rolesWithTitle[$i]["role"] == 'assembly_admin') %>              
+              <% if !@role || @role.blank? || !$rolesWithTitle[$i].nil? && (@role == $rolesWithTitle[$i][0] || @role == 'space_admin' && ($rolesWithTitle[$i][0] == 'process_admin' || $rolesWithTitle[$i][0] == 'assembly_admin')) %>              
               <tr data-user-id="<%= user.id %>">
-                <td><%= t("models.user.fields.roles.#{ $rolesWithTitle[$i]["role"] || user.active_role}", scope: "decidim.admin") %></td>
+                <td>
+                  <% if $rolesWithTitle[$i].nil? || $rolesWithTitle[$i][0].empty? %>
+                    <%= t("models.user.fields.roles.#{ user.active_role}", scope: "decidim.admin") %>
+                  <% else %>
+                    <%= t("models.user.fields.roles.#{ $rolesWithTitle[$i][0] }", scope: "decidim.admin") %>
+                  <% end %>
+                </td>
                 <td><%= user.name %></td>
                 <td><%= user.email %></td>
                 <td><%= translated_attribute(user.areas.first&.name) %></td>
-                <td><%= $rolesWithTitle[$i]["title"] %></td>
+                <td>
+                  <% if !$rolesWithTitle[$i].nil? && !$rolesWithTitle[$i][1].empty? %>
+                    <%= $rolesWithTitle[$i][1] %>
+                  <% end %>
+                </td>
                 <td>
                   <% if user.invitation_sent_at %>
                     <%= l user.invitation_sent_at, format: :short %>
@@ -143,9 +154,10 @@ function changeFilter(el) {
                 </td>
                 <td><%= l user.created_at, format: :short %></td>
                 <td class="table-list__actions">
-
-                  <% if allowed_to? :preview, :user, user: user %>
-                    <%= icon_link_to "eye", user_path(user.id), t("actions.preview", scope: "decidim.admin"), class: "action-icon--preview" %>
+                  <% if user.participatory_processes.size > 0 || user.assemblies.size > 0 %>
+                    <% if allowed_to? :preview, :user, user: user %>
+                      <%= icon_link_to "eye", user_path(user.id), t("actions.preview", scope: "decidim.admin"), class: "action-icon--preview" %>
+                    <% end %>
                   <% end %>
 
                   <% if allowed_to?(:invite, :admin_user, user: user) && user.invited_to_sign_up? %>

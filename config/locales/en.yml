@@ -17,6 +17,7 @@ en:
             search_question: What are you looking for?
             search_field_processes: Processes
             search_field_admins: Administrators
+            administrated_spaces: Administrated spaces
             roles:
               department_admin: Department Administrator
               space_admin: Space Administrator
