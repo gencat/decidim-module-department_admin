@@ -10,25 +10,25 @@ describe 'Admin manages assemblies', versioning: true, type: :system do
   let!(:assembly_w_area) { create(:assembly, organization: organization, area: area) }
   let!(:assembly_wo_area) { create(:assembly, organization: organization) }
 
-  def visit_assemblies
+  def visit_admin_assemblies_list
     switch_to_host(organization.host)
     login_as department_admin, scope: :user
     visit decidim_admin_assemblies.assemblies_path
   end
 
   it 'should see only processes in the same area' do
-    visit_assemblies
+    visit_admin_assemblies_list
     expect(page).to have_content(assembly_w_area.title['en'])
     expect(page).to_not have_content(assembly_wo_area.title['en'])
   end
 
   context "when department_admin has a user_role in an assembly_wo_area" do
     let!(:assembly_user_role) do
-      create(:assembly_user_role, user: department_admin, assembly: assembly_wo_area, role: 'admin')
+      create(:assembly_user_role, user: department_admin, assembly: assembly_wo_area)
     end
 
     it "should see both assemblies" do
-      visit_assemblies
+      visit_admin_assemblies_list
       expect(page).to have_content(assembly_w_area.title['en'])
       expect(page).to have_content(assembly_wo_area.title['en'])
     end
