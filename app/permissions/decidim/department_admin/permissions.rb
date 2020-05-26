@@ -20,6 +20,7 @@ module Decidim
         if permission_action.scope == :admin && user&.department_admin?
           current_permission_action= apply_department_admin_permissions!
         elsif delegate_chain.present?
+          # not admin or not a department_admin, use the standard permissions
           delegate_chain.inject(permission_action) do |injected_permission_action, permission_class|
             permission_class.new(user, injected_permission_action, context).permissions
           end
@@ -36,6 +37,11 @@ module Decidim
         if has_permission?(new_permission_action)
           new_permission_action.allow!
           new_permission_action
+        elsif delegate_chain.present?
+          # if department_admin has no permissions let's apply the default permissions
+          delegate_chain.inject(permission_action) do |injected_permission_action, permission_class|
+            permission_class.new(user, injected_permission_action, context).permissions
+          end
         else
           permission_action
         end
