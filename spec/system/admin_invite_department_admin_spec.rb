@@ -58,6 +58,7 @@ describe 'Admin invite user as department admin', type: :system do
       fill_in :user_name, with: name
       fill_in :user_email, with: email
       find('#user_role').find("option[value='department_admin']").select_option
+      expect(page).to have_css('#user_area_id')
       find('#user_area_id').find("option[value='#{selected_area.id}']").select_option
     end
   end
