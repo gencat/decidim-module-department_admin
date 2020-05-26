@@ -10,11 +10,12 @@ Decidim::ParticipatoryProcessesWithUserRole.class_eval do
   alias_method :process_ids_by_process_user_table, :process_ids
 
   def process_ids
+    ids= [process_ids_by_process_user_table]
     if user&.department_admin?
-      Decidim::ParticipatoryProcess
+      ids << ::Decidim::ParticipatoryProcess
         .where('decidim_area_id' => user.areas.pluck(:id))
-    else
-      process_ids_by_process_user_table
     end
+
+    ::Decidim::ParticipatoryProcess.where(id: ids.flatten.uniq)
   end
 end
