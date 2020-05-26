@@ -10,8 +10,10 @@ Decidim::Assemblies::Admin::AssembliesController.class_eval do
   alias_method :original_organization_assemblies, :organization_assemblies
 
   def organization_assemblies
-    query= original_organization_assemblies
-    query= query.where('decidim_area_id' => current_user.areas.pluck(:id)) if current_user&.department_admin?
-    query
+    if current_user.admin?
+      query = original_organization_assemblies
+    else
+      query= ::Decidim::Assemblies::AssembliesWithUserRole.for(current_user)
+    end
   end
 end
