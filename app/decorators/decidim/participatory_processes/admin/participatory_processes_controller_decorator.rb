@@ -13,7 +13,7 @@ Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessesController.class_e
     if current_user.admin?
       query = original_organization_processes
     else
-      query= ::Decidim::ParticipatoryProcessesWithUserRole.for(current_user)
+      query= paginate(::Decidim::ParticipatoryProcessesWithUserRole.for(current_user))
     end
   end
 end
