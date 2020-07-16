@@ -13,6 +13,10 @@ describe 'Admin manages newsletters', type: :system do
     login_as department_admin, scope: :user
   end
 
+  def wait_redirect
+    sleep(0.5)
+  end
+
   context 'creates and previews a newsletter' do
     it 'allows a newsletter to be created' do
       visit decidim_admin.newsletters_path
@@ -134,6 +138,7 @@ describe 'Admin manages newsletters', type: :system do
             accept_confirm { find('*', text: 'Deliver').click }
           end
 
+          wait_redirect
           expect(page).to have_content('NEWSLETTERS')
           expect(page).to have_admin_callout('successfully')
         end
@@ -169,13 +174,15 @@ describe 'Admin manages newsletters', type: :system do
             accept_confirm { find('*', text: 'Deliver').click }
           end
 
+          wait_redirect
           expect(page).to have_content('NEWSLETTERS')
           expect(page).to have_admin_callout('successfully')
+          expect(page).to have_content('Has been sent to')
+          within 'tbody' do
+            expect(page).to have_content('5 / 5')
+          end
         end
 
-        within 'tbody' do
-          expect(page).to have_content('5 / 5')
-        end
       end
     end
 
@@ -210,6 +217,7 @@ describe 'Admin manages newsletters', type: :system do
             accept_confirm { find('*', text: 'Deliver').click }
           end
 
+          wait_redirect
           expect(page).to have_content('NEWSLETTERS')
           expect(page).to have_admin_callout('successfully')
         end
