@@ -6,9 +6,6 @@
 #
 require_dependency 'decidim/assembly'
 Decidim::Assembly.class_eval do
-  belongs_to  :areas,
-              class_name: 'Areas',
-              foreign_key: 'decidim_area_id'
 
 
   has_and_belongs_to_many :users,
