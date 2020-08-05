@@ -3,9 +3,9 @@
 require 'spec_helper'
 
 describe 'Admin explores processes', type: :system do
-  let!(:area) { create(:area) }
-
   let(:organization) { create(:organization) }
+  let!(:area) { create(:area, organization: organization) }
+  let!(:process) { create(:participatory_process, organization: organization, area: area) }
 
   let!(:admin) { create(:user, :admin, :confirmed, organization: organization) }
 
@@ -29,8 +29,9 @@ describe 'Admin explores processes', type: :system do
       end
 
       it "renders a new column for the process department (aka area)" do
-        check_column_header_exists(position: 3, content: "DEPARTMENT / AREA")
-        check_column_data_exists(position: 3, content: "#{department_admin.name}-#{department_admin.email}")
+        check_column_header_exists(position: 2, content: "DEPARTMENT/AREA")
+        check_column_data_exists(position: 2, content: area.name['en'])
+        check_column_data_exists(position: 3, content: department_admin.name)
       end
       it "renders a new column for the department admins in the process"
       it "renders a new column for the process admins in the process"
