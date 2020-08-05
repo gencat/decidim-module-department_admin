@@ -4,6 +4,9 @@ This project is in BETA, but going to be tested in production.
 
 ## next version:
 
+## Version 0.0.14 (MINOR)
+- Role visualization in backoffice [#26](https://github.com/gencat/decidim-department-admin/pull/26)
+
 ## Version 0.0.13 (PATCH)
 - Fix space user roles permissions that were shadowed by department_admin [#27](https://github.com/gencat/decidim-department-admin/pull/27)
 
