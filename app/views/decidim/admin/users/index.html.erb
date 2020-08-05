@@ -43,6 +43,7 @@ function changeFilter(el) {
             <% Decidim::User::Roles.all.map do |role| %>
               <li><%= link_to t("models.user.fields.roles.#{role}", scope: "decidim.admin"), url_for(role: role, q: @query) %></li>
             <% end %>
+            <li><%= link_to t("models.user.fields.roles.space_admin", scope: "decidim.admin"), url_for(role: "space_admin", q: @query) %></li>
             <li><%= link_to t(".filter.all"), url_for(q: @query) %></li>
           </ul>
         </li>
@@ -109,6 +110,10 @@ function changeFilter(el) {
               <% user.participatory_processes.each do |participatory_process| %>
                 <% $rolesWithTitle.push ['process_admin', translated_attribute(participatory_process.title)] %>
               <% end %>
+            <% end %>
+            <%# if user is admin then add admin role %>
+            <% if user.admin %>
+              <% $rolesWithTitle.push ['admin', ''] %>
             <% end %>
             <%# if user had assemblies then add role of assembly admin %>
             <% if user.assemblies.size > 0 %>

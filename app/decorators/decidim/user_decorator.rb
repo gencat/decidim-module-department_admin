@@ -27,13 +27,8 @@ Decidim::User.class_eval do
   scope :admins, -> { where(admin: true) }
   scope :user_managers, -> { where(roles: ["user_manager"]) }
   scope :department_admins, -> { where(roles: ["department_admin"]) }
-  scope :space_administrator, -> { where(roles: ["department_admin"]) }
 
   def department_admin?
     role?('department_admin')
-  end
-
-  def space_administrator?
-    role?('space_administrator')
   end
 end

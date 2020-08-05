@@ -25,7 +25,6 @@ require_dependency 'decidim/admin/users_controller'
     @user ||= original_collection.find(params[:id])
     @spaces = []
     @user.participatory_processes.each do |process|
-
       if process.participatory_process_group then
         if process.participatory_process_group&.name[locale] != '' then
           type = process.participatory_process_group&.name[locale]
@@ -35,12 +34,10 @@ require_dependency 'decidim/admin/users_controller'
       else 
         type = t("models.user.fields.process_type", scope: "decidim.admin")
       end
-
       process_title = process.title[locale]
       if process_title == '' then
         process_title = process.title["ca"]
       end
-
       @spaces.push({"title" => process_title,
                     "type" => type,
                     "area" => process.area&.name[locale],

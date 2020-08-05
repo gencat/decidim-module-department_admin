@@ -48,12 +48,12 @@ module Decidim
                         ' from decidim_participatory_process_user_roles ' +
                         ' where decidim_participatory_process_id in (select id' +
                          ' from decidim_participatory_processes' +
-                         ' where lower(title::text) like lower(?)))' +
+                         ' where lower(title::text) like lower(%?%)))' +
                       ' or id in  ( select decidim_user_id' +
                       ' from decidim_assembly_user_roles' +
                       ' where decidim_assembly_id in (select id' +
                         ' from decidim_assemblies' +
-                        ' where lower(title::text) like lower(?))))', "%#{process_name}%", "%#{process_name}%")
+                        ' where lower(title::text) like lower(%?%))))', process_name, process_name)
       end
 
       def filter_by_role(users)
@@ -61,6 +61,8 @@ module Decidim
         if 'space_admin' == role then
           users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' +
                ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")')
+        elsif 'admin' == role then
+          users.where('"decidim_users"."admin" = ?', true)
         else
           users.where("? = any(roles)", role)
         end
