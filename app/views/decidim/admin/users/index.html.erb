@@ -100,46 +100,33 @@ function changeFilter(el) {
         </thead>
         <tbody>
           <% @users.each do |user| %>
-            <% $roles = user.roles %>
-            <% $rolesWithTitle = [] %>
-            <% $roles.each do |role| %>
-              <% $rolesWithTitle.push [role, '' ] %>
-            <% end %>
+            <% roles_with_title= user.roles.collect { |role| [role, '' ] } %>
             <%# if user had particiatory processes then add role of process admin %>
-            <% if user.participatory_processes.size > 0 %>
-              <% user.participatory_processes.each do |participatory_process| %>
-                <% $rolesWithTitle.push ['process_admin', translated_attribute(participatory_process.title)] %>
-              <% end %>
+            <% user.participatory_processes.each do |participatory_process| %>
+              <% roles_with_title.push ['process_admin', translated_attribute(participatory_process.title)] %>
             <% end %>
             <%# if user is admin then add admin role %>
-            <% if user.admin %>
-              <% $rolesWithTitle.push ['admin', ''] %>
-            <% end %>
+            <% roles_with_title.push ['admin', ''] if user.admin? %>
             <%# if user had assemblies then add role of assembly admin %>
-            <% if user.assemblies.size > 0 %>
-              <% user.assemblies.each do |assembly| %>
-                <% $rolesWithTitle.push ['assembly_admin', translated_attribute(assembly.title)] %>
-              <% end %>
+            <% user.assemblies.each do |assembly| %>
+              <% roles_with_title.push ['assembly_admin', translated_attribute(assembly.title)] %>
             <% end %>
-            <% $i = 0 %>
-            <% puts $rolesWithTitle %>
-            <% $length = $rolesWithTitle.size %>
-            <% begin %>
-              <% if !@role || @role.blank? || !$rolesWithTitle[$i].nil? && (@role == $rolesWithTitle[$i][0] || @role == 'space_admin' && ($rolesWithTitle[$i][0] == 'process_admin' || $rolesWithTitle[$i][0] == 'assembly_admin')) %>              
+            <% roles_with_title.each do |role_and_title| %>
+              <% if true || @role.blank? || (@role == role_and_title[0] || @role == 'space_admin' && (role_and_title[0] == 'process_admin' || role_and_title[0] == 'assembly_admin')) %>              
               <tr data-user-id="<%= user.id %>">
                 <td>
-                  <% if $rolesWithTitle[$i].nil? || $rolesWithTitle[$i][0].empty? %>
-                    <%= t("models.user.fields.roles.#{ user.active_role}", scope: "decidim.admin") %>
+                  <% if role_and_title.nil? || role_and_title[0].empty? %>
+                    <%= t("models.user.fields.roles.#{user.active_role}", scope: "decidim.admin") %>
                   <% else %>
-                    <%= t("models.user.fields.roles.#{ $rolesWithTitle[$i][0] }", scope: "decidim.admin") %>
+                    <%= t("models.user.fields.roles.#{role_and_title[0] }", scope: "decidim.admin") %>
                   <% end %>
                 </td>
                 <td><%= user.name %></td>
                 <td><%= user.email %></td>
                 <td><%= translated_attribute(user.areas.first&.name) %></td>
                 <td>
-                  <% if !$rolesWithTitle[$i].nil? && !$rolesWithTitle[$i][1].empty? %>
-                    <%= $rolesWithTitle[$i][1] %>
+                  <% if !role_and_title.nil? && !role_and_title[1].empty? %>
+                    <%= role_and_title[1] %>
                   <% end %>
                 </td>
                 <td>
@@ -175,8 +162,7 @@ function changeFilter(el) {
                 </td>
               </tr>
               <% end %>
-              <% $i += 1 %>
-            <% end while $i < $length %>
+            <% end %>
           <% end %>
         </tbody>
       </table>
