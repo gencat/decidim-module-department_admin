@@ -5,13 +5,16 @@ require_dependency 'decidim/admin/users_controller'
 # Sort Admins by role and area
 ::Decidim::Admin::UsersController.class_eval do
   alias_method :original_collection, :collection
+
   helper_method :sort_order_spaces
+  include ::Decidim::DepartmentAdmin::ApplicationHelper
+  helper_method :roles_with_title
 
   before_action :set_global_params
 
   def collection
     users= original_collection
-    Decidim::Admin::UserAdminFilter.for(users,@query, @process_name,@role)
+    Decidim::Admin::UserAdminFilter.for(users,@query, @search_text,@role, current_locale)
   end
 
   # It is necessary to overwrite this method to correctly locate the user.
@@ -86,7 +89,7 @@ require_dependency 'decidim/admin/users_controller'
 
   def set_global_params
     @query = params[:q]
-    @process_name = params[:process_name]
+    @search_text = params[:search_text]
     @role = params[:role]
   end
 end

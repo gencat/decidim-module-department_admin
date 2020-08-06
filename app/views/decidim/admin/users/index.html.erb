@@ -6,8 +6,8 @@ window.onload = function () {
     el = document.getElementById("query_filter") 
     el.checked = true;
     changeFilter(el);
-  } else if (!!urlParams.get("process_name")) {
-    el = document.getElementById("process_name_filter");
+  } else if (!!urlParams.get("search_text")) {
+    el = document.getElementById("search_text_filter");
     el.checked = true;
     changeFilter(el);
   }
@@ -15,13 +15,13 @@ window.onload = function () {
 
 function changeFilter(el) {
   if (el.value === "query") {
-    document.getElementById("process_name").style.display = 'none';
-    document.getElementById("process_name").value = '';
+    document.getElementById("search_text").style.display = 'none';
+    document.getElementById("search_text").value = '';
     document.getElementById("q").style.display = 'block';
   } else {
     document.getElementById("q").style.display = 'none';
     document.getElementById("q").value = '';
-    document.getElementById("process_name").style.display = 'block';
+    document.getElementById("search_text").style.display = 'block';
   }
 }
 
@@ -49,8 +49,8 @@ function changeFilter(el) {
         </li>
       </ul>
       <%= t("models.user.fields.search_question", scope: "decidim.admin") %>
-      <input type="radio" id="process_name_filter" name="filter_search" value="process_name" onchange="changeFilter(this)" style="margin-left: 20px">
-      <label for="process_name_filter"><%= t("models.user.fields.search_field_processes", scope: "decidim.admin") %></label>
+      <input type="radio" id="search_text_filter" name="filter_search" value="search_text" onchange="changeFilter(this)" style="margin-left: 20px">
+      <label for="search_text_filter"><%= t("models.user.fields.search_field_processes", scope: "decidim.admin") %></label>
       <input type="radio" id="query_filter" name="filter_search" value="query" checked onchange="changeFilter(this)">
       <label for="query_filter"><%= t("models.user.fields.search_field_admins", scope: "decidim.admin") %></label>
   </div>
@@ -59,7 +59,7 @@ function changeFilter(el) {
       <div class="filters__search">
         <div class="input-group">
           <%= search_field_tag :q, @query,label: false, class: "input-group-field", placeholder: t(".search") %>
-          <%= search_field_tag :process_name, @process_name,label: false, class: "input-group-field", placeholder: t(".search"), style: "display: none" %>
+          <%= search_field_tag :search_text, @search_text,label: false, class: "input-group-field", placeholder: t(".search"), style: "display: none" %>
           <%= hidden_field_tag :role, @role %>
           <div class="input-group-button">
             <button type="submit" class="button button--muted">
@@ -100,19 +100,8 @@ function changeFilter(el) {
         </thead>
         <tbody>
           <% @users.each do |user| %>
-            <% roles_with_title= user.roles.collect { |role| [role, '' ] } %>
-            <%# if user had particiatory processes then add role of process admin %>
-            <% user.participatory_processes.each do |participatory_process| %>
-              <% roles_with_title.push ['process_admin', translated_attribute(participatory_process.title)] %>
-            <% end %>
-            <%# if user is admin then add admin role %>
-            <% roles_with_title.push ['admin', ''] if user.admin? %>
-            <%# if user had assemblies then add role of assembly admin %>
-            <% user.assemblies.each do |assembly| %>
-              <% roles_with_title.push ['assembly_admin', translated_attribute(assembly.title)] %>
-            <% end %>
-            <% roles_with_title.each do |role_and_title| %>
-              <% if true || @role.blank? || (@role == role_and_title[0] || @role == 'space_admin' && (role_and_title[0] == 'process_admin' || role_and_title[0] == 'assembly_admin')) %>              
+            <% roles_with_title(user).each do |role_and_title| %>
+              <% if @role.blank? || (@role == role_and_title[0] || @role == 'space_admin' && (role_and_title[0] == 'process_admin' || role_and_title[0] == 'assembly_admin')) %>              
               <tr data-user-id="<%= user.id %>">
                 <td>
                   <% if role_and_title.nil? || role_and_title[0].empty? %>
