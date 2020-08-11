@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+#  NOTE: This module is being override to take into account when a user is a department_admin.
+
 module Decidim
   module Admin
     module UserRolesHelper
