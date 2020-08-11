@@ -5,9 +5,34 @@ en:
       models:
         user:
           fields:
+            title: Title
+            type: Type
+            created_at: Created at
+            private: Private
+            published: Published
             department: Department/Area
+            spaces: Process / Regulations / Assemblies
+            process_type: Process
+            assembly_type: Assemby
+            search_question: What are you looking for?
+            search_field_processes: Processes
+            search_field_admins: Administrators
+            administrated_spaces: Administrated spaces
             roles:
               department_admin: Department Administrator
+              space_admin: Space Administrator
+              process_admin: Process Administrator
+              assembly_admin: Assembly Administrator
+        participatory_process:
+          fields:
+            department: Department/Area
+            department_role: Department role
+            process_role: Process role
+        assembly:
+          fields:
+            department: Department/Area
+            department_role: Department role
+            assembly_role: Assembly role
       users:
         form:
           area: Area

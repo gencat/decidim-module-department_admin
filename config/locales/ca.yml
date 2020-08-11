@@ -5,9 +5,34 @@ ca:
       models:
         user:
           fields:
+            title: Titol
+            type: Tipus
+            created_at: Data de creació
+            private: Privat
+            published: Publicat
             department: Departament/Àrea
+            spaces: Procés / Normativa / Consell
+            process_type: Procés
+            assembly_type: Consell
+            search_question: Què estàs cercant?
+            search_field_processes: Processos
+            search_field_admins: Administradores
+            administrated_spaces: Espais administrats
             roles:
-              department_admin: Administrador de departament
+              department_admin: Administradora de departament
+              space_admin: Administradora d'espai
+              process_admin: Administradora de procés
+              assembly_admin: Administradora de consell
+        participatory_process:
+          fields:
+            department: Departament/Àrea
+            department_role: Rol departament
+            process_role: Rol procés
+        assembly:
+          fields:
+            department: Departament/Àrea
+            department_role: Rol departament
+            assembly_role: Rol consell
       users:
         form:
           area: Àrea

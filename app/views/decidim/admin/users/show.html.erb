@@ -1,0 +1,99 @@
+<% @user = Decidim::User.find_by_id(params[:id]) %>
+<div class="process-title">
+  <div class="process-title-content">
+    <a target="_blank" href="/admin/users?role=space_admin"><%= t("models.user.fields.administrated_spaces", scope: "decidim.admin") %></a>
+  </div>
+</div>
+<div class="card">
+  <div class="card-divider">
+    <h2 class="card-title">
+      <%= @user.name + '(' + @user.email + ')' %>
+    </h2>
+  </div>
+  <div class="card-section">
+    <div class="table-scroll">
+      <table class="table-list">
+        <thead>
+          <tr>
+            <th class="table-list__actions">
+              <% if params[:sort_column] == 'title' && params[:sort_order] == 'asc' %>
+                <%= link_to(t("models.user.fields.title", scope: "decidim.admin") + '▲', :sort_column => 'title', :sort_order => 'desc') %>
+              <% elsif params[:sort_column] == 'title' && params[:sort_order] == 'desc' %>
+                <%= link_to(t("models.user.fields.title", scope: "decidim.admin") + '▼', :sort_column => '', :sort_order => '') %>
+              <% else %>
+                <%= link_to(t("models.user.fields.title", scope: "decidim.admin"), :sort_column => 'title', :sort_order => 'asc') %>
+              <% end %>
+            </th>
+            <th class="table-list__actions">
+              <% if params[:sort_column] == 'type' && params[:sort_order] == 'asc' %>
+                <%= link_to(t("models.user.fields.type", scope: "decidim.admin") + '▲', :sort_column => 'type', :sort_order => 'desc') %>
+              <% elsif params[:sort_column] == 'type' && params[:sort_order] == 'desc' %>
+                <%= link_to(t("models.user.fields.type", scope: "decidim.admin") + '▼', :sort_column => '', :sort_order => '') %>
+              <% else %>
+                <%= link_to(t("models.user.fields.type", scope: "decidim.admin"), :sort_column => 'type', :sort_order => 'asc') %>
+              <% end %>
+            </th>
+            <th class="table-list__actions">
+              <% if params[:sort_column] == 'area' && params[:sort_order] == 'asc' %>
+                <%= link_to(t("models.user.fields.department", scope: "decidim.admin") + '▲', :sort_column => 'area', :sort_order => 'desc') %>
+              <% elsif params[:sort_column] == 'area' && params[:sort_order] == 'desc' %>
+                <%= link_to(t("models.user.fields.department", scope: "decidim.admin") + '▼', :sort_column => '', :sort_order => '') %>
+              <% else %>
+                <%= link_to(t("models.user.fields.department", scope: "decidim.admin"), :sort_column => 'area', :sort_order => 'asc') %>
+              <% end %>
+            </th>
+            <th class="table-list__actions">
+              <% if params[:sort_column] == 'created_at' && params[:sort_order] == 'desc' %>
+                <%= link_to(t("models.user.fields.created_at", scope: "decidim.admin") + '▲', :sort_column => 'created_at', :sort_order => 'asc') %>
+              <% elsif params[:sort_column] == 'created_at' && params[:sort_order] == 'asc' %>
+                <%= link_to(t("models.user.fields.created_at", scope: "decidim.admin") + '▼', :sort_column => '', :sort_order => '') %>
+              <% else %>
+                <%= link_to(t("models.user.fields.created_at", scope: "decidim.admin"), :sort_column => 'created_at', :sort_order => 'desc') %>
+              <% end %>
+            </th>
+            <th class="table-list__actions">
+              <% if params[:sort_column] == 'private' && params[:sort_order] == 'desc' %>
+                <%= link_to(t("models.user.fields.private", scope: "decidim.admin") + '▲', :sort_column => 'private', :sort_order => 'asc') %>
+              <% elsif params[:sort_column] == 'private' && params[:sort_order] == 'asc' %>
+                <%= link_to(t("models.user.fields.private", scope: "decidim.admin") + '▼', :sort_column => '', :sort_order => '') %>
+              <% else %>
+                <%= link_to(t("models.user.fields.private", scope: "decidim.admin"), :sort_column => 'private', :sort_order => 'desc') %>
+              <% end %>
+            </th>
+            <th class="table-list__actions">
+              <% if params[:sort_column] == 'published' && params[:sort_order] == 'desc' %>
+                <%= link_to(t("models.user.fields.published", scope: "decidim.admin") + '▲', :sort_column => 'published', :sort_order => 'asc') %>
+              <% elsif params[:sort_column] == 'published' && params[:sort_order] == 'asc' %>
+                <%= link_to(t("models.user.fields.published", scope: "decidim.admin") + '▼', :sort_column => '', :sort_order => '') %>
+              <% else %>
+                <%= link_to(t("models.user.fields.published", scope: "decidim.admin"), :sort_column => 'published', :sort_order => 'desc') %>
+              <% end %>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @spaces.each do |space| %>
+            <tr>
+              <td><%= space["title"] %></td>
+              <td><%= space["type"] %></td>
+              <td><%= space["area"] %></td>
+              <td><%= l space["created_at"], format: :short %></td>
+              <td>
+                <% if space["private"] %>
+                  <strong class="text-alert"><%= t("assemblies.index.private", scope: "decidim.admin") %></strong>
+                <% else %>
+                  <strong class="text-success"><%= t("assemblies.index.public", scope: "decidim.admin") %></strong>
+                <% end %></td>
+              <td>
+                <% if space["published"] %>
+                  <strong class="text-success"><%= t("assemblies.index.published", scope: "decidim.admin") %></strong>
+                <% else %>
+                  <strong class="text-alert"><%= t("assemblies.index.not_published", scope: "decidim.admin") %></strong>
+                <% end %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

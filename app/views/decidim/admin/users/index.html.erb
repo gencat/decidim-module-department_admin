@@ -1,3 +1,32 @@
+<script type="text/javascript">
+
+const urlParams = new URLSearchParams(window.location.search);
+window.onload = function () {
+  if (!!urlParams.get("q")) {
+    el = document.getElementById("query_filter") 
+    el.checked = true;
+    changeFilter(el);
+  } else if (!!urlParams.get("search_text")) {
+    el = document.getElementById("search_text_filter");
+    el.checked = true;
+    changeFilter(el);
+  }
+}
+
+function changeFilter(el) {
+  if (el.value === "query") {
+    document.getElementById("search_text").style.display = 'none';
+    document.getElementById("search_text").value = '';
+    document.getElementById("q").style.display = 'block';
+  } else {
+    document.getElementById("q").style.display = 'none';
+    document.getElementById("q").value = '';
+    document.getElementById("search_text").style.display = 'block';
+  }
+}
+
+
+</script>
 <div class="filters row">
   <div class="column medium-3">
     <span class="dropdown-menu-inverted_label"><%= t(".filter_by") %> :</span>
@@ -14,16 +43,23 @@
             <% Decidim::User::Roles.all.map do |role| %>
               <li><%= link_to t("models.user.fields.roles.#{role}", scope: "decidim.admin"), url_for(role: role, q: @query) %></li>
             <% end %>
+            <li><%= link_to t("models.user.fields.roles.space_admin", scope: "decidim.admin"), url_for(role: "space_admin", q: @query) %></li>
             <li><%= link_to t(".filter.all"), url_for(q: @query) %></li>
           </ul>
         </li>
       </ul>
+      <%= t("models.user.fields.search_question", scope: "decidim.admin") %>
+      <input type="radio" id="search_text_filter" name="filter_search" value="search_text" onchange="changeFilter(this)" style="margin-left: 20px">
+      <label for="search_text_filter"><%= t("models.user.fields.search_field_processes", scope: "decidim.admin") %></label>
+      <input type="radio" id="query_filter" name="filter_search" value="query" checked onchange="changeFilter(this)">
+      <label for="query_filter"><%= t("models.user.fields.search_field_admins", scope: "decidim.admin") %></label>
   </div>
   <div class="column medium-4">
     <%= form_tag "", method: :get do %>
       <div class="filters__search">
         <div class="input-group">
           <%= search_field_tag :q, @query,label: false, class: "input-group-field", placeholder: t(".search") %>
+          <%= search_field_tag :search_text, @search_text,label: false, class: "input-group-field", placeholder: t(".search"), style: "display: none" %>
           <%= hidden_field_tag :role, @role %>
           <div class="input-group-button">
             <button type="submit" class="button button--muted">
@@ -54,6 +90,7 @@
             <th><%= t("models.user.fields.name", scope: "decidim.admin") %></th>
             <th><%= t("models.user.fields.email", scope: "decidim.admin") %></th>
             <th><%= t("models.user.fields.department", scope: "decidim.admin") %></th>
+            <th><%= t("models.user.fields.spaces", scope: "decidim.admin") %></th>
             <th><%= t("models.user.fields.invitation_sent_at", scope: "decidim.admin") %></th>
             <th><%= t("models.user.fields.invitation_accepted_at", scope: "decidim.admin") %></th>
             <th><%= t("models.user.fields.last_sign_in_at", scope: "decidim.admin") %></th>
@@ -63,37 +100,58 @@
         </thead>
         <tbody>
           <% @users.each do |user| %>
-            <tr data-user-id="<%= user.id %>">
-              <td><%= t("models.user.fields.roles.#{user.active_role}", scope: "decidim.admin") %></td>
-              <td><%= user.name %></td>
-              <td><%= user.email %></td>
-              <td><%= translated_attribute(user.areas.first&.name) %></td>
-              <td>
-                <% if user.invitation_sent_at %>
-                  <%= l user.invitation_sent_at, format: :short %>
-                <% end %>
-              </td>
-              <td>
-                <% if user.invitation_accepted_at %>
-                  <%= l user.invitation_accepted_at, format: :short %>
-                <% end %>
-              </td>
-              <td>
-                <% if user.last_sign_in_at %>
-                  <%= l user.last_sign_in_at, format: :short %>
-                <% end %>
-              </td>
-              <td><%= l user.created_at, format: :short %></td>
-              <td class="table-list__actions">
-                <% if allowed_to?(:invite, :admin_user, user: user) && user.invited_to_sign_up? %>
-                  <%= icon_link_to "reload", ["resend_invitation", user], t("actions.resend_invitation", scope: "decidim.admin"), class: "resend-invitation", method: :post %>
-                <% end %>
+            <% roles_with_title(user).each do |role_and_title| %>
+              <% if @role.blank? || (@role == role_and_title[0] || @role == 'space_admin' && (role_and_title[0] == 'process_admin' || role_and_title[0] == 'assembly_admin')) %>              
+              <tr data-user-id="<%= user.id %>">
+                <td>
+                  <% if role_and_title.nil? || role_and_title[0].empty? %>
+                    <%= t("models.user.fields.roles.#{user.active_role}", scope: "decidim.admin") %>
+                  <% else %>
+                    <%= t("models.user.fields.roles.#{role_and_title[0] }", scope: "decidim.admin") %>
+                  <% end %>
+                </td>
+                <td><%= user.name %></td>
+                <td><%= user.email %></td>
+                <td><%= translated_attribute(user.areas.first&.name) %></td>
+                <td>
+                  <% if !role_and_title.nil? && !role_and_title[1].empty? %>
+                    <%= role_and_title[1] %>
+                  <% end %>
+                </td>
+                <td>
+                  <% if user.invitation_sent_at %>
+                    <%= l user.invitation_sent_at, format: :short %>
+                  <% end %>
+                </td>
+                <td>
+                  <% if user.invitation_accepted_at %>
+                    <%= l user.invitation_accepted_at, format: :short %>
+                  <% end %>
+                </td>
+                <td>
+                  <% if user.last_sign_in_at %>
+                    <%= l user.last_sign_in_at, format: :short %>
+                  <% end %>
+                </td>
+                <td><%= l user.created_at, format: :short %></td>
+                <td class="table-list__actions">
+                  <% if user.participatory_processes.size > 0 || user.assemblies.size > 0 %>
+                    <% if allowed_to? :preview, :user, user: user %>
+                      <%= icon_link_to "eye", user_path(user.id), t("actions.preview", scope: "decidim.admin"), class: "action-icon--preview" %>
+                    <% end %>
+                  <% end %>
 
-                <% if allowed_to? :destroy, :admin_user, user: user %>
-                  <%= icon_link_to "circle-x", user, t("actions.destroy", scope: "decidim.admin"), class: "action-icon--remove", method: :delete, data: { confirm: t("actions.confirm_destroy", scope: "decidim.admin") } %>
-                <% end %>
-              </td>
-            </tr>
+                  <% if allowed_to?(:invite, :admin_user, user: user) && user.invited_to_sign_up? %>
+                    <%= icon_link_to "reload", ["resend_invitation", user], t("actions.resend_invitation", scope: "decidim.admin"), class: "resend-invitation", method: :post %>
+                  <% end %>
+
+                  <% if allowed_to? :destroy, :admin_user, user: user %>
+                    <%= icon_link_to "circle-x", user, t("actions.destroy", scope: "decidim.admin"), class: "action-icon--remove", method: :delete, data: { confirm: t("actions.confirm_destroy", scope: "decidim.admin") } %>
+                  <% end %>
+                </td>
+              </tr>
+              <% end %>
+            <% end %>
           <% end %>
         </tbody>
       </table>

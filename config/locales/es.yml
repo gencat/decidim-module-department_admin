@@ -5,9 +5,34 @@ es:
       models:
         user:
           fields:
-            department: Departamento/Area
+            title: Título
+            type: Tipo
+            created_at: Data de creación
+            private: Privado
+            published: Publicado
+            department: Departamento/Área
+            spaces: Procesos / Normativas / Consejo
+            process_type: Proceso
+            assembly_type: Consejo
+            search_question: Que estás buscando?
+            search_field_processes: Procesos
+            search_field_admins: Administradoras
+            administrated_spaces: Espacios administrados
             roles:
-              department_admin: Administrador de departamento
+              department_admin: Administradora de departamento
+              space_admin: Administradora de espacio
+              process_admin: Administradora de proceso
+              assembly_admin: Administradora de consejo
+        participatory_process:
+          fields:
+            department: Departamento/Area
+            department_role: Rol departamento
+            process_role: Rol proceso
+        assembly:
+          fields:
+            department: Departamento/Area  
+            department_role: Rol departamento
+            assembly_role: Rol consejo
       users:
         form:
           area: Area
