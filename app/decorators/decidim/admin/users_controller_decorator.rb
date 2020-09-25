@@ -41,7 +41,7 @@ require_dependency 'decidim/admin/users_controller'
       if process_title == '' then
         process_title = process.title["ca"]
       end
-      byebug
+
       @spaces.push({"title" => process_title,
                     "type" => type,
                     "area" => process.area.nil? ? "" : process.area&.name[locale],
