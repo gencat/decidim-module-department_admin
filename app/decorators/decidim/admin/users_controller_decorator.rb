@@ -31,26 +31,27 @@ require_dependency 'decidim/admin/users_controller'
       if process.participatory_process_group then
         if process.participatory_process_group&.name[locale] != '' then
           type = process.participatory_process_group&.name[locale]
-        else 
+        else
           type = process.participatory_process_group&.name["ca"]
         end
-      else 
+      else
         type = t("models.user.fields.process_type", scope: "decidim.admin")
       end
       process_title = process.title[locale]
       if process_title == '' then
         process_title = process.title["ca"]
       end
+
       @spaces.push({"title" => process_title,
                     "type" => type,
-                    "area" => process.area&.name[locale],
+                    "area" => process.area.nil? ? "" : process.area&.name[locale],
                     "created_at" => process.created_at,
                     "private" => process.private_space?,
                     "published" => process.published?})
     end
 
     @user.assemblies.each do |assembly|
-      
+
       if assembly.area && assembly.area.name then
         area_name = assembly.area.name[locale]
       else
@@ -62,7 +63,7 @@ require_dependency 'decidim/admin/users_controller'
         assembly_title = assembly.title["ca"]
       end
 
-      @spaces.push({"title" => assembly_title, 
+      @spaces.push({"title" => assembly_title,
                     "type" => t("models.user.fields.assembly_type", scope: "decidim.admin"),
                     "area" => area_name,
                     "created_at" => assembly.created_at,
@@ -82,7 +83,7 @@ require_dependency 'decidim/admin/users_controller'
       @spaces.sort! {|x, y| y["title"] <=> x["title"]}
     end
   end
-  
+
   def sort_spaces(column, order)
     @spaces.sort! {|x, y| x[column] <=> y[column]}.reverse
   end
