@@ -4,11 +4,14 @@ This project is in BETA, but going to be tested in production.
 
 ## next version:
 
+## Version 0.0.15 (PATCH)
+- Fix admin user profile's detail view [\#28](https://github.com/gencat/decidim-department-admin/pull/28)
+
 ## Version 0.0.14 (MINOR)
-- Role visualization in backoffice [#26](https://github.com/gencat/decidim-department-admin/pull/26)
+- Role visualization in backoffice [\#26](https://github.com/gencat/decidim-department-admin/pull/26)
 
 ## Version 0.0.13 (PATCH)
-- Fix space user roles permissions that were shadowed by department_admin [#27](https://github.com/gencat/decidim-department-admin/pull/27)
+- Fix space user roles permissions that were shadowed by department_admin [\#27](https://github.com/gencat/decidim-department-admin/pull/27)
 
 ## Version 0.0.12 (PATCH)
 - FIX: Change method name: `organization_assemblies` to `collection`.
@@ -24,10 +27,10 @@ This project is in BETA, but going to be tested in production.
 - Add permission for department_admins to add assembly administrators (assembly_user_role).
 
 ## Version 0.0.8 (MINOR)
-- Add permission for department_admins to export components. 
+- Add permission for department_admins to export components.
 
 ## Version 0.0.7 (MINOR)
-- Fix Newsletters query. In admin newsletter list, filter newsletters only with same area/department than current user. 
+- Fix Newsletters query. In admin newsletter list, filter newsletters only with same area/department than current user.
 
 ## Version 0.0.6 (MINOR)
 - Add a search field in admins index.
