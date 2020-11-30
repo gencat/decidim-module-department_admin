@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.summary = 'A decidim department_admin module'
   s.description = "This Dedicim's module produces a new \"department admin\" role which restricts the permissions of an Admin into participatory spaces of a given Area."
 
-  s.files = Dir['{app,config,lib}/**/*', 'LICENSE-AGPLv3.txt', 'Rakefile', 'README.md']
+  s.files = Dir['{app,db,config,lib}/**/*', 'LICENSE-AGPLv3.txt', 'Rakefile', 'README.md']
   s.test_files = Dir['spec/**/*']
 
   s.add_dependency 'decidim-core', DECIDIM_VER
