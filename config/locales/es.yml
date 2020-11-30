@@ -3,36 +3,36 @@ es:
   decidim:
     admin:
       models:
-        user:
+        assembly:
           fields:
-            title: Título
-            type: Tipo
-            created_at: Data de creación
-            private: Privado
-            published: Publicado
-            department: Departamento/Área
-            spaces: Procesos / Normativas / Consejo
-            process_type: Proceso
-            assembly_type: Consejo
-            search_question: Que estás buscando?
-            search_field_processes: Procesos
-            search_field_admins: Administradoras
-            administrated_spaces: Espacios administrados
-            roles:
-              department_admin: Administradora de departamento
-              space_admin: Administradora de espacio
-              process_admin: Administradora de proceso
-              assembly_admin: Administradora de consejo
+            assembly_role: Rol consejo
+            department: Departamento/Area
+            department_role: Rol departamento
         participatory_process:
           fields:
             department: Departamento/Area
             department_role: Rol departamento
             process_role: Rol proceso
-        assembly:
+        user:
           fields:
-            department: Departamento/Area  
-            department_role: Rol departamento
-            assembly_role: Rol consejo
+            administrated_spaces: Espacios administrados
+            assembly_type: Consejo
+            created_at: Data de creación
+            department: Departamento/Área
+            private: Privado
+            process_type: Proceso
+            published: Publicado
+            roles:
+              assembly_admin: Administradora de consejo
+              department_admin: Administradora de departamento
+              process_admin: Administradora de proceso
+              space_admin: Administradora de espacio
+            search_field_admins: Administradoras
+            search_field_processes: Procesos
+            search_question: Que estás buscando?
+            spaces: Procesos / Normativas / Consejo
+            title: Título
+            type: Tipo
       users:
         form:
           area: Area

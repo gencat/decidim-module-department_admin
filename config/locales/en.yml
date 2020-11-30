@@ -3,36 +3,36 @@ en:
   decidim:
     admin:
       models:
-        user:
+        assembly:
           fields:
-            title: Title
-            type: Type
-            created_at: Created at
-            private: Private
-            published: Published
+            assembly_role: Assembly role
             department: Department/Area
-            spaces: Process / Regulations / Assemblies
-            process_type: Process
-            assembly_type: Assemby
-            search_question: What are you looking for?
-            search_field_processes: Processes
-            search_field_admins: Administrators
-            administrated_spaces: Administrated spaces
-            roles:
-              department_admin: Department Administrator
-              space_admin: Space Administrator
-              process_admin: Process Administrator
-              assembly_admin: Assembly Administrator
+            department_role: Department role
         participatory_process:
           fields:
             department: Department/Area
             department_role: Department role
             process_role: Process role
-        assembly:
+        user:
           fields:
+            administrated_spaces: Administrated spaces
+            assembly_type: Assemby
+            created_at: Created at
             department: Department/Area
-            department_role: Department role
-            assembly_role: Assembly role
+            private: Private
+            process_type: Process
+            published: Published
+            roles:
+              assembly_admin: Assembly Administrator
+              department_admin: Department Administrator
+              process_admin: Process Administrator
+              space_admin: Space Administrator
+            search_field_admins: Administrators
+            search_field_processes: Processes
+            search_question: What are you looking for?
+            spaces: Process / Regulations / Assemblies
+            title: Title
+            type: Type
       users:
         form:
           area: Area

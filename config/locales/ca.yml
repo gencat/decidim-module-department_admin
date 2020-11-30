@@ -3,36 +3,36 @@ ca:
   decidim:
     admin:
       models:
-        user:
+        assembly:
           fields:
-            title: Titol
-            type: Tipus
-            created_at: Data de creació
-            private: Privat
-            published: Publicat
+            assembly_role: Rol consell
             department: Departament/Àrea
-            spaces: Procés / Normativa / Consell
-            process_type: Procés
-            assembly_type: Consell
-            search_question: Què estàs cercant?
-            search_field_processes: Processos
-            search_field_admins: Administradores
-            administrated_spaces: Espais administrats
-            roles:
-              department_admin: Administradora de departament
-              space_admin: Administradora d'espai
-              process_admin: Administradora de procés
-              assembly_admin: Administradora de consell
+            department_role: Rol departament
         participatory_process:
           fields:
             department: Departament/Àrea
             department_role: Rol departament
             process_role: Rol procés
-        assembly:
+        user:
           fields:
+            administrated_spaces: Espais administrats
+            assembly_type: Consell
+            created_at: Data de creació
             department: Departament/Àrea
-            department_role: Rol departament
-            assembly_role: Rol consell
+            private: Privat
+            process_type: Procés
+            published: Publicat
+            roles:
+              assembly_admin: Administradora de consell
+              department_admin: Administradora de departament
+              process_admin: Administradora de procés
+              space_admin: Administradora d'espai
+            search_field_admins: Administradores
+            search_field_processes: Processos
+            search_question: Què estàs cercant?
+            spaces: Procés / Normativa / Consell
+            title: Titol
+            type: Tipus
       users:
         form:
           area: Àrea
