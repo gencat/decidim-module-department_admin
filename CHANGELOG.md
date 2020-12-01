@@ -4,6 +4,10 @@ This project is in BETA, but going to be tested in production.
 
 ## next version:
 
+## Version 0.0.16 (MINOR)
+- A user can only belong to one single department. [\#30](https://github.com/gencat/decidim-department-admin/pull/30)
+- When a department_admin is promoted to admin, she looses the role and the department. [\#30](https://github.com/gencat/decidim-department-admin/pull/30)
+
 ## Version 0.0.15 (PATCH)
 - Fix admin user profile's detail view [\#28](https://github.com/gencat/decidim-department-admin/pull/28)
 

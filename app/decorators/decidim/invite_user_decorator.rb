@@ -9,6 +9,7 @@ Decidim::InviteUser.class_eval do
 
   def update_user
     add_selected_area_to(user)
+    clear_department_admin_role if admin_role?
     original_update_user
   end
 
@@ -31,10 +32,18 @@ Decidim::InviteUser.class_eval do
   private #---------------------------------------------------------
 
   def add_selected_area_to(user)
-    user.areas << form.selected_area if form.selected_area.present?
+    if form.selected_area.present?
+      user.areas.clear
+      user.areas << form.selected_area
+    end
   end
 
   def admin_role?
     form.role == 'admin'
+  end
+
+  def clear_department_admin_role
+    user.areas.clear
+    user.roles.delete('department_admin')
   end
 end
