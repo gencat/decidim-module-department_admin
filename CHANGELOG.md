@@ -4,6 +4,11 @@ This project is in BETA, but going to be tested in production.
 
 ## next version:
 
+## Version 0.1.0 (MINOR)
+- Increase minimum Decidim version to v0.22
+- Add some documentation regarding the invitation of admins.
+- Fix do not require an area to exist to invite new admins.
+
 ## Version 0.0.16 (MINOR)
 - A user can only belong to one single department. [\#30](https://github.com/gencat/decidim-department-admin/pull/30)
 - When a department_admin is promoted to admin, she looses the role and the department. [\#30](https://github.com/gencat/decidim-department-admin/pull/30)
