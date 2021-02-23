@@ -2,6 +2,10 @@
 
 require 'spec_helper'
 
+#
+# To "downgrade" an admin to department_admin, it must first be removed from admins
+# create a new admin as department_admin.
+#
 describe 'Admin invite user', type: :system do
   let!(:area) { create(:area) }
 
