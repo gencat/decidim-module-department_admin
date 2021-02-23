@@ -22,12 +22,12 @@ describe 'Admin manages participatory processes', versioning: true, type: :syste
 
   it 'should see the import button' do
     visit_admin_processes_list
-    expect(page)to have_content("Import")
+    expect(page).to have_content("Import")
   end
 
   it 'should see the export button' do
     visit_admin_processes_list
-    expect(page)to have_css("icon--data-transfer-download")
+    expect(page).to have_css("icon--data-transfer-download")
   end
 
   it 'should see only processes in the same area' do
