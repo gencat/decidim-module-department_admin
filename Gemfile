@@ -6,6 +6,8 @@ ruby RUBY_VERSION
 
 gemspec
 
+DECIDIM_VERSION= { git: "https://github.com/gencat/decidim", branch: "release/0.22-stable" }.freeze
+
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
 
@@ -19,7 +21,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'faker', '~> 1.9'
   gem 'social-share-button'
-  gem 'decidim'
+  gem 'decidim', DECIDIM_VERSION
   gem 'rubocop-rspec'
 end
 

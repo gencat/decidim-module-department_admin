@@ -15,6 +15,6 @@ Decidim::InviteUserForm.class_eval do
   # called from the command
   # returns the selected Decidim::Area instance.
   def selected_area
-    Decidim::Area.find(area_id)
+    Decidim::Area.find_by_id(area_id)
   end
 end
