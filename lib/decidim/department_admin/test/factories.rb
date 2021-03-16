@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'decidim/core/test/factories'
+require "decidim/core/test/factories"
 
 FactoryBot.define do
   factory :department_admin, parent: :user do
-    roles { ['department_admin'] }
+    roles { ["department_admin"] }
     transient do
       area { nil }
     end

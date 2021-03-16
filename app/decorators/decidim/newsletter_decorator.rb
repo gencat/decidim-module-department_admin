@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_dependency 'decidim/newsletter'
+require_dependency "decidim/newsletter"
 
 Decidim::Newsletter.class_eval do
   # The area of the newsletter is the same

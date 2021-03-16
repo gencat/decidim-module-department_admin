@@ -1,0 +1,55 @@
+name: "[CI] Lint / Lint code"
+
+on:
+  push:
+    branches:
+      - master
+      - release/*
+      - "*-stable"
+  pull_request:
+
+env:
+  RUBY_VERSION: 2.6.6
+
+jobs:
+  test-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.0.0
+        with:
+          fetch-depth: 1
+
+      - uses: ruby/setup-ruby@master
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+
+      - name: Recover Ruby dependency cache
+        uses: actions/cache@v2
+        with:
+          path: ./vendor/bundle
+          key: ${{ runner.OS }}-rubydeps-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-rubydeps-${{ env.cache-name }}-
+            ${{ runner.OS }}-rubydeps-
+            ${{ runner.OS }}-
+
+      - name: Set bundle local config configvendor/bundle path
+        run: bundle config set --local path 'vendor/bundle'
+
+      - name: Install Ruby deps
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          command: bundle install --jobs 4 --retry 3
+
+      - name: Rubocop
+        run: bundle exec rubocop -P
+
+      # erb-lint < 0.0.33 raises a NameError but can't upgrade due to gem dependency incompatibilities
+      # These incompabilities are already solved in decidim v0.24 but it still has to be released
+      # Uncomment the following lines after the upgrade
+      #
+      # - name: Erb linter
+      #   run: bundle exec erblint app/views/**/*.erb

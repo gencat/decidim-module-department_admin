@@ -11,9 +11,9 @@ Decidim::Assemblies::Admin::AssembliesController.class_eval do
 
   def collection
     if current_user.admin?
-      query = original_organization_assemblies
+      original_organization_assemblies
     else
-      query= ::Decidim::Assemblies::AssembliesWithUserRole.for(current_user)
+      ::Decidim::Assemblies::AssembliesWithUserRole.for(current_user)
     end
   end
 end

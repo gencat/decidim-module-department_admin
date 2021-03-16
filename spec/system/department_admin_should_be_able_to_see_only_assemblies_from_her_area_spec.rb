@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Admin manages assemblies', versioning: true, type: :system do
+describe "Admin manages assemblies", versioning: true, type: :system do
   let(:organization) { create(:organization) }
   let(:area) { create(:area) }
   let(:department_admin) { create(:department_admin, :confirmed, organization: organization, area: area) }
@@ -16,20 +16,20 @@ describe 'Admin manages assemblies', versioning: true, type: :system do
     visit decidim_admin_assemblies.assemblies_path
   end
 
-  it 'should see the import button' do
+  it "sees the import button" do
     visit_admin_assemblies_list
     expect(page).to have_content("Import")
   end
 
-  it 'should see the export button' do
+  it "sees the export button" do
     visit_admin_assemblies_list
     expect(page).to have_css("icon--data-transfer-download")
   end
 
-  it 'should see only processes in the same area' do
+  it "sees only processes in the same area" do
     visit_admin_assemblies_list
-    expect(page).to have_content(assembly_w_area.title['en'])
-    expect(page).to_not have_content(assembly_wo_area.title['en'])
+    expect(page).to have_content(assembly_w_area.title["en"])
+    expect(page).not_to have_content(assembly_wo_area.title["en"])
   end
 
   context "when department_admin has a user_role in an assembly_wo_area" do
@@ -37,10 +37,10 @@ describe 'Admin manages assemblies', versioning: true, type: :system do
       create(:assembly_user_role, user: department_admin, assembly: assembly_wo_area)
     end
 
-    it "should see both assemblies" do
+    it "sees both assemblies" do
       visit_admin_assemblies_list
-      expect(page).to have_content(assembly_w_area.title['en'])
-      expect(page).to have_content(assembly_wo_area.title['en'])
+      expect(page).to have_content(assembly_w_area.title["en"])
+      expect(page).to have_content(assembly_wo_area.title["en"])
     end
   end
 end

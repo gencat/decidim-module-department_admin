@@ -6,7 +6,7 @@ module Decidim
       def initialize(*)
         # This are the same permissions as Decidim's assemblies space.
         # Right now are the same for admin and public views
-        self.class.delegate_chain= [Decidim::Assemblies::Permissions]
+        self.class.delegate_chain = [Decidim::Assemblies::Permissions]
         super
       end
     end

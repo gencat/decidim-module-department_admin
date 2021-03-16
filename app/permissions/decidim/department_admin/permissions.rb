@@ -16,9 +16,9 @@ module Decidim
       end
 
       def permissions
-        current_permission_action= permission_action
+        current_permission_action = permission_action
         if permission_action.scope == :admin && user&.department_admin?
-          current_permission_action= apply_department_admin_permissions!
+          current_permission_action = apply_department_admin_permissions!
         elsif delegate_chain.present?
           # not admin or not a department_admin, use the standard permissions
           delegate_chain.inject(permission_action) do |injected_permission_action, permission_class|
@@ -33,7 +33,7 @@ module Decidim
 
       def apply_department_admin_permissions!
         # avoid having PermissionCannotBeDisallowedError if permission was already disallowed in the chain
-        new_permission_action= permission_action.dup
+        new_permission_action = permission_action.dup
         if has_permission?(new_permission_action)
           new_permission_action.allow!
           new_permission_action
@@ -137,21 +137,21 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :read, :newsletter) },
           -> { permission_for?(requested_action, :admin, :create, :newsletter) },
           -> { same_area_permission_for?(requested_action, :admin, :update, :newsletter, restricted_rsrc: context[:newsletter]) },
-          -> { same_area_permission_for?(requested_action, :admin, :destroy, :newsletter, restricted_rsrc: context[:newsletter]) }
+          -> { same_area_permission_for?(requested_action, :admin, :destroy, :newsletter, restricted_rsrc: context[:newsletter]) },
         ].any?(&:call)
       end
 
-      ALLOWED_SPACES= ['Decidim::ParticipatoryProcess', 'Decidim::Assembly'].freeze
+      ALLOWED_SPACES = ["Decidim::ParticipatoryProcess", "Decidim::Assembly"].freeze
       def permission_for_current_space?(permission_action)
-        has= permission_for?(permission_action, :admin, :read, :participatory_space)
-        has||= permission_for?(permission_action, :public, :read, :participatory_space)
-        has&&= ALLOWED_SPACES.include?(context[:current_participatory_space].class.name)
+        has = permission_for?(permission_action, :admin, :read, :participatory_space)
+        has ||= permission_for?(permission_action, :public, :read, :participatory_space)
+        has &&= ALLOWED_SPACES.include?(context[:current_participatory_space].class.name)
         has
       end
 
       # Does user have permission for the specified scope/action/subject?
       def permission_for?(requested_action, scope, action, subject, expected_context = {})
-        is_action?(requested_action, scope, action, subject, expected_context)
+        same_action?(requested_action, scope, action, subject, expected_context)
       end
 
       # Does user have permission for the specified scope/action/subject?
@@ -159,21 +159,21 @@ module Decidim
       # has the same area as current user.
       def same_area_permission_for?(requested_action, scope, action, subject, restricted_rsrc:)
         if restricted_rsrc.respond_to?(:area) || restricted_rsrc.nil?
-          is= is_action?(requested_action, scope, action, subject)
-          is&&= in_same_area?(restricted_rsrc)
+          is = same_action?(requested_action, scope, action, subject)
+          is &&= in_same_area?(restricted_rsrc)
           is
         elsif restricted_rsrc.try(:participatory_space).try(:area).present?
-          same_area_permission_for?(requested_action, scope, action, subject, restricted_rsrc:restricted_rsrc.try(:participatory_space))
+          same_area_permission_for?(requested_action, scope, action, subject, restricted_rsrc: restricted_rsrc.try(:participatory_space))
         else
           permission_for?(requested_action, scope, action, subject)
         end
       end
 
       # Is current action requesting permissions for the specified scope/action/subject?
-      def is_action?(requested_action, scope, action, subject, expected_context = {})
-        is= requested_action.matches?(scope, action, subject)
+      def same_action?(requested_action, scope, action, subject, expected_context = {})
+        is = requested_action.matches?(scope, action, subject)
         expected_context.each_pair do |key, expected_value|
-          is&&= (context.try(:[], key) == expected_value)
+          is &&= (context.try(:[], key) == expected_value)
         end
         is
       end

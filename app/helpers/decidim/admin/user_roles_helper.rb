@@ -5,8 +5,10 @@
 module Decidim
   module Admin
     module UserRolesHelper
+      # rubocop: disable Rails/HelperInstanceVariable
       def user_role_config
         return @user_role_config if @user_role_config
+
         space = current_participatory_space
         @user_role_config = if current_user.admin?
                               space.user_role_config_for(current_user, :organization_admin)
@@ -17,6 +19,7 @@ module Decidim
                               space.user_role_config_for(current_user, role&.role)
                             end
       end
+      # rubocop: enable Rails/HelperInstanceVariable
     end
   end
 end

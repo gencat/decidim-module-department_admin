@@ -4,7 +4,7 @@
 # This decorator adds required associations between Decidim::User and Area.
 #
 
-require_dependency 'decidim/user'
+require_dependency "decidim/user"
 Decidim::User.class_eval do
   has_and_belongs_to_many :areas,
                           join_table: :department_admin_areas,
@@ -29,6 +29,6 @@ Decidim::User.class_eval do
   scope :department_admins, -> { where(roles: ["department_admin"]) }
 
   def department_admin?
-    role?('department_admin')
+    role?("department_admin")
   end
 end
