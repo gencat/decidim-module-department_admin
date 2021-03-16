@@ -9,10 +9,8 @@ module Decidim::Admin
       let(:newsletter) do
         create(:newsletter,
                organization: organization,
-               body: Decidim::Faker::Localized.sentence(3),
                author: current_user)
       end
-      # let(:current_user) { create :user, :admin, :confirmed, organization: organization }
       let(:area) { create(:area, organization: organization) }
       let(:current_user) { create(:department_admin, :confirmed, organization: organization, area: area) }
       let(:send_to_all_users) { false }
@@ -54,7 +52,6 @@ module Decidim::Admin
 
             deliverable_users.each do |user|
               email = emails.find { |e| e.to.include? user.email }
-              expect(email_body(email)).to include(newsletter.body[user.locale])
             end
 
             newsletter.reload
