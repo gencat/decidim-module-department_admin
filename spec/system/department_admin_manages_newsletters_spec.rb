@@ -17,6 +17,26 @@ describe "Admin manages newsletters", type: :system do
     sleep(0.5)
   end
 
+  def fill_newsletter_form
+    fill_in_i18n(
+      :newsletter_subject,
+      "#newsletter-subject-tabs",
+      en: "A fancy newsletter for %{name}",
+      es: "Un correo electrónico muy chulo para %{name}",
+      ca: "Un correu electrònic flipant per a %{name}"
+    )
+
+    fill_in_i18n_editor(
+      :newsletter_settings_body,
+      "#newsletter-settings--body-tabs",
+      en: "Hello %{name}! Relevant content.",
+      es: "Hola, %{name}! Contenido relevante.",
+      ca: "Hola, %{name}! Contingut rellevant."
+    )
+
+    find("*[type=submit]").click
+  end
+
   context "when creating and previewing a newsletter" do
     it "allows a newsletter to be created" do
       visit decidim_admin.newsletters_path
@@ -25,27 +45,15 @@ describe "Admin manages newsletters", type: :system do
         find(".button.new").click
       end
 
-      within ".new_newsletter" do
-        fill_in_i18n(
-          :newsletter_subject,
-          "#newsletter-subject-tabs",
-          en: "A fancy newsletter for %{name}",
-          es: "Un correo electrónico muy chulo para %{name}",
-          ca: "Un correu electrònic flipant per a %{name}"
-        )
-
-        fill_in_i18n_editor(
-          :newsletter_body,
-          "#newsletter-body-tabs",
-          en: "Hello %{name}! Relevant content.",
-          es: "Hola, %{name}! Contenido relevante.",
-          ca: "Hola, %{name}! Contingut rellevant."
-        )
-
-        find("*[type=submit]").click
+      within "#basic_only_text .card-footer" do
+        click_link("Use this template")
       end
 
-      expect(page).to have_content("PREVIEW")
+      within "#new_newsletter_" do
+        fill_newsletter_form
+      end
+
+      expect(page).to have_content("Preview")
       expect(page).to have_content("A fancy newsletter for #{department_admin.name}")
     end
   end
@@ -87,27 +95,11 @@ describe "Admin manages newsletters", type: :system do
         click_link "Edit"
       end
 
-      within ".edit_newsletter" do
-        fill_in_i18n(
-          :newsletter_subject,
-          "#newsletter-subject-tabs",
-          en: "A fancy newsletter",
-          es: "Un correo electrónico muy chulo",
-          ca: "Un correu electrònic flipant"
-        )
-
-        fill_in_i18n_editor(
-          :newsletter_body,
-          "#newsletter-body-tabs",
-          en: "Relevant content.",
-          es: "Contenido relevante.",
-          ca: "Contingut rellevant."
-        )
-
-        find("*[type=submit]").click
+      within "#edit_newsletter_#{newsletter.id}" do
+        fill_newsletter_form
       end
 
-      expect(page).to have_content("PREVIEW")
+      expect(page).to have_content("Preview")
       expect(page).to have_content("A fancy newsletter")
     end
   end
@@ -139,7 +131,7 @@ describe "Admin manages newsletters", type: :system do
           end
 
           wait_redirect
-          expect(page).to have_content("NEWSLETTERS")
+          expect(page).to have_content("Newsletters")
           expect(page).to have_admin_callout("successfully")
         end
 
@@ -175,7 +167,7 @@ describe "Admin manages newsletters", type: :system do
           end
 
           wait_redirect
-          expect(page).to have_content("NEWSLETTERS")
+          expect(page).to have_content("Newsletters")
           expect(page).to have_admin_callout("successfully")
           expect(page).to have_content("Has been sent to")
           within "tbody" do
@@ -217,7 +209,7 @@ describe "Admin manages newsletters", type: :system do
           end
 
           wait_redirect
-          expect(page).to have_content("NEWSLETTERS")
+          expect(page).to have_content("Newsletters")
           expect(page).to have_admin_callout("successfully")
         end
 
