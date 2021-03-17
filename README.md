@@ -22,6 +22,19 @@ Add this line to your application's Gemfile:
 gem 'decidim-department_admin
 ```
 
+Edit your app's `config/application.rb` file to enforce railties ordering:
+```ruby
+module YourDecidimApp
+  class Application < Rails::Application
+
+...
+    config.railties_order = [:main_app, ::Decidim::DepartmentAdmin::Engine, :all]
+...
+
+  end
+end
+```
+
 And then execute:
 
 ```bash
