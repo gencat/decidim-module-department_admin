@@ -5,17 +5,33 @@ module Decidim
     class Permissions < Decidim::DefaultPermissions
       class << self
         attr_writer :delegate_chain
+        attr_writer :configurable_checks
       end
 
       class << self
         attr_reader :delegate_chain
+        attr_reader :configurable_checks
       end
 
       def delegate_chain
         self.class.delegate_chain
       end
 
+      # Applications with custom modules can configure their checks in an initializer.
+      # The checks will be executed in `has_permissions?`, and the syntax should be like:
+      #
+      # <code>
+      # Decidim::DepartmentAdmin::Permissions.configurable_checks= [
+      #  {permission_for?: [:admin, :enter, :space_area, space_name: :courses]}
+      # ]
+      # </code>
+      def configurable_checks
+        ::Decidim::DepartmentAdmin::Permissions.configurable_checks || []
+      end
+
       def permissions
+        # byebug if same_action?(permission_action, :admin, :enter, :space_area, space_name: :courses)
+
         current_permission_action = permission_action
         if permission_action.scope == :admin && user&.department_admin?
           current_permission_action = apply_department_admin_permissions!
@@ -48,12 +64,13 @@ module Decidim
       end
 
       def has_permission?(requested_action)
-        [
+        default_checks = [
           -> { permission_for?(requested_action, :admin, :read, :admin_dashboard) },
           -> { permission_for?(requested_action, :public, :read, :admin_dashboard) },
 
-          # PARTICIPATORY PROCESSES
           -> { permission_for_current_space?(requested_action) },
+
+          # PARTICIPATORY PROCESSES
           -> { permission_for?(requested_action, :admin, :enter, :space_area, space_name: :processes) },
           -> { permission_for?(requested_action, :admin, :read, :process_list) },
           -> { permission_for?(requested_action, :admin, :create, :process) },
@@ -138,7 +155,22 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :create, :newsletter) },
           -> { same_area_permission_for?(requested_action, :admin, :update, :newsletter, restricted_rsrc: context[:newsletter]) },
           -> { same_area_permission_for?(requested_action, :admin, :destroy, :newsletter, restricted_rsrc: context[:newsletter]) },
-        ].any?(&:call)
+
+          # CONFERENCES
+          -> { permission_for?(requested_action, :admin, :enter, :space_area, space_name: :conferences) },
+        ]
+        default_checks.any?(&:call) || any_configurable_check?(requested_action)
+      end
+
+      def any_configurable_check?(requested_action)
+        configurable_checks.any? do |check|
+          check = check.entries.first
+          method = check.first
+          args = check.last
+          next unless [:permission_for?, :same_area_permission_for].include?(method)
+
+          send(method, requested_action, *args)
+        end
       end
 
       ALLOWED_SPACES = ["Decidim::ParticipatoryProcess", "Decidim::Assembly"].freeze
