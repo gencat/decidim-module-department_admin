@@ -78,6 +78,8 @@ module Decidim
           -> { same_area_permission_for?(requested_action, :admin, :update, :process, restricted_rsrc: context[:process]) },
           -> { same_area_permission_for?(requested_action, :admin, :publish, :process, restricted_rsrc: context[:process]) },
           -> { same_area_permission_for?(requested_action, :admin, :unpublish, :process, restricted_rsrc: context[:process]) },
+          -> { permission_for?(requested_action, :admin, :import, :process) },
+
           # STEPS
           -> { permission_for?(requested_action, :admin, :read, :process_step) },
           -> { permission_for?(requested_action, :admin, :create, :process_step) },
@@ -133,6 +135,7 @@ module Decidim
           -> { same_area_permission_for?(requested_action, :admin, :update, :assembly, restricted_rsrc: context[:assembly]) },
           -> { same_area_permission_for?(requested_action, :admin, :publish, :assembly, restricted_rsrc: context[:assembly]) },
           -> { same_area_permission_for?(requested_action, :admin, :unpublish, :assembly, restricted_rsrc: context[:assembly]) },
+          -> { permission_for?(requested_action, :admin, :import, :assembly) },
           # Assemly Admin: USER ROLES
           -> { permission_for?(requested_action, :admin, :index, :assembly_user_role) },
           -> { permission_for?(requested_action, :admin, :read, :assembly_user_role) },
