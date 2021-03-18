@@ -101,7 +101,7 @@ module DecidimDepartmentAdminTestApp
   class Application < Rails::Application
 
 ...
-    config.railties_order = [Decidim::Core::Engine, Decidim::DepartmentAdmin::Engine, :main_app, :all]
+    config.railties_order = [:main_app, ::Decidim::DepartmentAdmin::Engine, :all]
 ...
 
   end
