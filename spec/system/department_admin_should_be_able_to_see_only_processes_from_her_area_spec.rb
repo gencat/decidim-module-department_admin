@@ -27,7 +27,7 @@ describe "Admin manages participatory processes", versioning: true, type: :syste
 
   it "sees the export button" do
     visit_admin_processes_list
-    expect(page).to have_css("icon--data-transfer-download")
+    expect(page).to have_css(".icon--data-transfer-download")
   end
 
   it "sees only processes in the same area" do

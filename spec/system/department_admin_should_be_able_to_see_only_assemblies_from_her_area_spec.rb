@@ -23,7 +23,7 @@ describe "Admin manages assemblies", versioning: true, type: :system do
 
   it "sees the export button" do
     visit_admin_assemblies_list
-    expect(page).to have_css("icon--data-transfer-download")
+    expect(page).to have_css(".icon--data-transfer-download")
   end
 
   it "sees only processes in the same area" do

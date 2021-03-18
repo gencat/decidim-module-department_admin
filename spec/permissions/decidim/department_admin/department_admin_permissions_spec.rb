@@ -54,7 +54,7 @@ module Decidim
 
             it "does not allow accepted actions with unexpected context" do
               action = PermissionAction.new(scope: :admin, action: :enter, subject: :space_area)
-              permissions = DepartmentAdmin::Permissions.new(user, action, space_name: :conferences)
+              permissions = DepartmentAdmin::Permissions.new(user, action, space_name: :custom_module)
               expect { permissions.permissions.allowed? }.to raise_error(Decidim::PermissionAction::PermissionNotSetError)
             end
           end
