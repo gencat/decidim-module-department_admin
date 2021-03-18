@@ -93,19 +93,20 @@ bin/rails decidim:generate_external_test_app
 cd spec/decidim_dummy_app/
 bundle exec rails decidim_department_admin:install:migrations
 RAILS_ENV=test bundle exec rails db:migrate
+sed -ie '/^  class Application < Rails::Application/a config.railties_order = [:main_app, ::Decidim::DepartmentAdmin::Engine, :all]' spec/decidim_dummy_app/config/application.rb
 ```
 
-Edit dummy_app's `config/application.rb` file to enforce railties ordering:
+This last line modifies dummy_app's `config/application.rb` file to enforce railties ordering, adding:
 ```ruby
 module DecidimDepartmentAdminTestApp
   class Application < Rails::Application
-
-...
     config.railties_order = [:main_app, ::Decidim::DepartmentAdmin::Engine, :all]
 ...
 
   end
 end
+```
+
 ```
 
 And run tests:

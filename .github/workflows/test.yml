@@ -65,8 +65,9 @@ jobs:
         run: |
           bundle exec rake decidim:generate_external_test_app
           cd spec/decidim_dummy_app/
-          bundle exec rails decidim_challenges:install:migrations
+          bundle exec rails decidim_department_admin:install:migrations
           RAILS_ENV=test bundle exec rails db:migrate
+          sed -ie '/^  class Application < Rails::Application/a config.railties_order = [:main_app, ::Decidim::DepartmentAdmin::Engine, :all]' config/application.rb
 
       - name: Setup Code Climate test-reporter
         run: |
