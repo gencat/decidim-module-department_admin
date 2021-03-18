@@ -6,7 +6,7 @@ ruby RUBY_VERSION
 
 gemspec
 
-DECIDIM_VERSION = { git: "https://github.com/gencat/decidim", branch: "release/0.22-stable" }.freeze
+DECIDIM_VERSION = "< 0.24"
 
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
