@@ -95,7 +95,7 @@ describe "Admin manages newsletters", type: :system do
         click_link "Edit"
       end
 
-      within "#edit_newsletter_#{newsletter.id}" do
+      within ".edit_newsletter" do
         fill_newsletter_form
       end
 
