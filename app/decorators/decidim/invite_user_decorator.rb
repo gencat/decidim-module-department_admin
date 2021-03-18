@@ -39,11 +39,11 @@ Decidim::InviteUser.class_eval do
   end
 
   def admin_role?
-    form.role == 'admin'
+    form.role == "admin"
   end
 
   def clear_department_admin_role
     user.areas.clear
-    user.roles.delete('department_admin')
+    user.roles.delete("department_admin")
   end
 end

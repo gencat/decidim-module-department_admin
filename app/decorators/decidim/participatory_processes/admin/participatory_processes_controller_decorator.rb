@@ -10,10 +10,10 @@ Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessesController.class_e
   alias_method :original_organization_processes, :collection
 
   def collection
-    @collection||= if current_user.admin?
-      original_organization_processes
-    else
-      ::Decidim::ParticipatoryProcessesWithUserRole.for(current_user)
-    end
+    @collection ||= if current_user.admin?
+                      original_organization_processes
+                    else
+                      ::Decidim::ParticipatoryProcessesWithUserRole.for(current_user)
+                    end
   end
 end

@@ -6,8 +6,8 @@ module Decidim
     class AdminEngine < ::Rails::Engine
       isolate_namespace Decidim::DepartmentAdmin::Admin
 
-      paths['db/migrate'] = nil
-      paths['lib/tasks'] = nil
+      paths["db/migrate"] = nil
+      paths["lib/tasks"] = nil
 
       routes do
         # Add admin engine routes here

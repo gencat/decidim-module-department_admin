@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 module Decidim::Admin
   describe DeliverNewsletter do
-    describe 'call' do
+    describe "call" do
       let(:organization) { create(:organization) }
       let(:newsletter) do
         create(:newsletter,
                organization: organization,
-               body: Decidim::Faker::Localized.sentence(3),
                author: current_user)
       end
-      # let(:current_user) { create :user, :admin, :confirmed, organization: organization }
       let(:area) { create(:area, organization: organization) }
       let(:current_user) { create(:department_admin, :confirmed, organization: organization, area: area) }
       let(:send_to_all_users) { false }
@@ -27,7 +25,7 @@ module Decidim::Admin
           send_to_followers: send_to_followers,
           send_to_participants: send_to_participants,
           participatory_space_types: participatory_space_types,
-          scope_ids: scope_ids
+          scope_ids: scope_ids,
         }
       end
 
@@ -42,9 +40,9 @@ module Decidim::Admin
 
       let(:command) { described_class.new(newsletter, form, current_user) }
 
-      shared_examples_for 'selective newsletter' do
-        context 'when everything is ok' do
-          it 'updates the counters and delivers to the right users' do
+      shared_examples_for "selective newsletter" do
+        context "when everything is ok" do
+          it "updates the counters and delivers to the right users" do
             clear_emails
             expect(emails.length).to eq(0)
 
@@ -52,20 +50,15 @@ module Decidim::Admin
 
             expect(emails.length).to eq(deliverable_users.count)
 
-            deliverable_users.each do |user|
-              email = emails.find { |e| e.to.include? user.email }
-              expect(email_body(email)).to include(newsletter.body[user.locale])
-            end
-
             newsletter.reload
             expect(newsletter.total_deliveries).to eq(deliverable_users.count)
             expect(newsletter.total_recipients).to eq(deliverable_users.count)
           end
 
-          it 'logs the action', versioning: true do
+          it "logs the action", versioning: true do
             expect(Decidim.traceability)
               .to receive(:perform_action!)
-              .with('deliver', newsletter, current_user)
+              .with("deliver", newsletter, current_user)
               .and_call_original
 
             expect do
@@ -74,43 +67,43 @@ module Decidim::Admin
 
             action_log = Decidim::ActionLog.last
             expect(action_log.version).to be_present
-            expect(action_log.version.event).to eq 'update'
+            expect(action_log.version.event).to eq "update"
           end
         end
       end
 
-      context 'when the user is a department admin' do
+      context "when the user is a department admin" do
         let!(:participatory_process) { create(:participatory_process, organization: organization, area: area) }
         let!(:component) { create(:dummy_component, organization: newsletter.organization, participatory_space: participatory_process) }
 
-        context 'when no spaces selected ' do
-          it 'is not valid' do
+        context "when no spaces selected " do
+          it "is not valid" do
             expect { command.call }.to broadcast(:invalid)
           end
         end
 
-        context 'when spaces selected' do
+        context "when spaces selected" do
           let(:participatory_space_types) do
             [
-              { 'id' => nil,
-                'manifest_name' => 'participatory_processes',
-                'ids' => [component.participatory_space.id.to_s] },
-              { 'id' => nil,
-                'manifest_name' => 'assemblies',
-                'ids' => [] },
-              { 'id' => nil,
-                'manifest_name' => 'conferences',
-                'ids' => [] },
-              { 'id' => nil,
-                'manifest_name' => 'consultations',
-                'ids' => [] },
-              { 'id' => nil,
-                'manifest_name' => 'initiatives',
-                'ids' => [] }
+              { "id" => nil,
+                "manifest_name" => "participatory_processes",
+                "ids" => [component.participatory_space.id.to_s] },
+              { "id" => nil,
+                "manifest_name" => "assemblies",
+                "ids" => [] },
+              { "id" => nil,
+                "manifest_name" => "conferences",
+                "ids" => [] },
+              { "id" => nil,
+                "manifest_name" => "consultations",
+                "ids" => [] },
+              { "id" => nil,
+                "manifest_name" => "initiatives",
+                "ids" => [] },
             ]
           end
 
-          context 'when sending to followers' do
+          context "when sending to followers" do
             let(:send_to_followers) { true }
 
             let!(:deliverable_users) do
@@ -127,10 +120,10 @@ module Decidim::Admin
               end
             end
 
-            it_behaves_like 'selective newsletter'
+            it_behaves_like "selective newsletter"
           end
 
-          context 'when sending to all space participants' do
+          context "when sending to all space participants" do
             let(:send_to_participants) { true }
             let!(:deliverable_users) do
               create_list(:user, rand(2..9), :confirmed, organization: organization, newsletter_notifications_at: Time.current)
@@ -142,10 +135,10 @@ module Decidim::Admin
               end
             end
 
-            it_behaves_like 'selective newsletter'
+            it_behaves_like "selective newsletter"
           end
 
-          context 'when sending to followers and participants' do
+          context "when sending to followers and participants" do
             let(:send_to_participants) { true }
             let(:send_to_followers) { true }
 
@@ -173,7 +166,7 @@ module Decidim::Admin
               end
             end
 
-            it_behaves_like 'selective newsletter'
+            it_behaves_like "selective newsletter"
           end
         end
       end

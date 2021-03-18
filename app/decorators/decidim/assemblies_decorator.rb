@@ -4,10 +4,8 @@
 # This decorator adds required associations between Decidim::ParticipatoryProcess and Departaments.
 #
 #
-require_dependency 'decidim/assembly'
+require_dependency "decidim/assembly"
 Decidim::Assembly.class_eval do
-
-
   has_and_belongs_to_many :users,
                           join_table: :decidim_assembly_user_roles,
                           foreign_key: :decidim_assembly_id,

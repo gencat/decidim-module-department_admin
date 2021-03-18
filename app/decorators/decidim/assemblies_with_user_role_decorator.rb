@@ -10,10 +10,10 @@ Decidim::Assemblies::AssembliesWithUserRole.class_eval do
   alias_method :assembly_ids_by_assemblies_user_table, :assembly_ids
 
   def assembly_ids
-    ids= [assembly_ids_by_assemblies_user_table]
+    ids = [assembly_ids_by_assemblies_user_table]
     if user&.department_admin?
       ids << ::Decidim::Assembly
-        .where('decidim_area_id' => user.areas.pluck(:id)).pluck(:id)
+             .where("decidim_area_id" => user.areas.pluck(:id)).pluck(:id)
     end
 
     ::Decidim::Assembly.where(id: ids.flatten.uniq)

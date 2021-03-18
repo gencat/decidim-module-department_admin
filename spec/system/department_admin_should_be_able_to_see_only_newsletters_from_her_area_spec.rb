@@ -1,43 +1,43 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'Admin manages newsletters', versioning: true, type: :system do
+describe "Admin manages newsletters", versioning: true, type: :system do
   let(:organization) { create(:organization) }
   let(:area) { create(:area) }
   let(:admin) { create(:user, :admin, :confirmed, organization: organization) }
   let(:department_admin) { create(:department_admin, :confirmed, organization: organization, area: area) }
 
   let!(:newsletter_w_area) do
-      create(:newsletter,
-             organization: organization,
-             subject: {
-               en: 'A fancy newsletter for %{name}',
-               es: 'Un correo electrónico muy chulo para %{name}',
-               ca: 'Un correu electrònic flipant per a %{name}'
-             },
-             body: {
-               en: 'Hello %{name}! Relevant content.',
-               es: 'Hola, %{name}! Contenido relevante.',
-               ca: 'Hola, %{name}! Contingut rellevant.'
-             },
-             author: department_admin)
+    create(:newsletter,
+           organization: organization,
+           subject: {
+             en: "A fancy newsletter for %{name}",
+             es: "Un correo electrónico muy chulo para %{name}",
+             ca: "Un correu electrònic flipant per a %{name}",
+           },
+           body: {
+             en: "Hello %{name}! Relevant content.",
+             es: "Hola, %{name}! Contenido relevante.",
+             ca: "Hola, %{name}! Contingut rellevant.",
+           },
+           author: department_admin)
   end
 
   let!(:newsletter_wo_area) do
-      create(:newsletter,
-             organization: organization,
-             subject: {
-               en: 'A fancy newsletter for %{name} without area',
-               es: 'Un correo electrónico muy chulo para %{name} sin area',
-               ca: 'Un correu electrònic flipant per a %{name} sense area'
-             },
-             body: {
-               en: 'Hello %{name}! Relevant content.',
-               es: 'Hola, %{name}! Contenido relevante.',
-               ca: 'Hola, %{name}! Contingut rellevant.'
-             },
-             author: admin)
+    create(:newsletter,
+           organization: organization,
+           subject: {
+             en: "A fancy newsletter for %{name} without area",
+             es: "Un correo electrónico muy chulo para %{name} sin area",
+             ca: "Un correu electrònic flipant per a %{name} sense area",
+           },
+           body: {
+             en: "Hello %{name}! Relevant content.",
+             es: "Hola, %{name}! Contenido relevante.",
+             ca: "Hola, %{name}! Contingut rellevant.",
+           },
+           author: admin)
   end
 
   before do
@@ -46,8 +46,8 @@ describe 'Admin manages newsletters', versioning: true, type: :system do
     visit decidim_admin.newsletters_path
   end
 
-  it 'should see only newsletters in the same area' do
-    expect(page).to have_content(newsletter_w_area.subject['en'])
-    expect(page).to_not have_content(newsletter_wo_area.subject['en'])
+  it "sees only newsletters in the same area" do
+    expect(page).to have_content(newsletter_w_area.subject["en"])
+    expect(page).not_to have_content(newsletter_wo_area.subject["en"])
   end
 end

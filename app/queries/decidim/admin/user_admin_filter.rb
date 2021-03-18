@@ -8,7 +8,7 @@ module Decidim
       # scope - the ActiveRecord::Relation of users to be filtered
       # name_query - query to filter user group names
       # role - evaluation role to be used as a filter
-      def self.for(scope, name_query = nil, search_text = nil, role = nil, current_locale=:ca)
+      def self.for(scope, name_query = nil, search_text = nil, role = nil, current_locale = :ca)
         new(scope, name_query, search_text, role, current_locale).query
       end
 
@@ -17,12 +17,12 @@ module Decidim
       # scope - the ActiveRecord::Relation of users to be filtered
       # name_query - query to filter user group names
       # role - users role, must be defined as a scope in the user model
-      def initialize(scope, name_query = nil, search_text = nil, role = nil, current_locale=:ca)
+      def initialize(scope, name_query = nil, search_text = nil, role = nil, current_locale = :ca)
         @scope = scope
         @name_query = name_query
         @search_text = search_text
         @role = role
-        @current_locale= current_locale
+        @current_locale = current_locale
       end
 
       # List the User groups by the diferents filters.
@@ -31,7 +31,7 @@ module Decidim
         users = filter_by_search(users)
         users = filter_by_search_text(users)
         users = filter_by_role(users)
-        Kaminari.paginate_array(users.sort { |u1, u2| "#{u1.active_role}||#{u1.areas.first&.name}" <=> "#{u2.active_role}||#{u2.areas.first&.name}"})
+        Kaminari.paginate_array(users.sort { |u_1, u_2| "#{u_1.active_role}||#{u_1.areas.first&.name}" <=> "#{u_2.active_role}||#{u_2.areas.first&.name}" })
       end
 
       private
@@ -40,12 +40,14 @@ module Decidim
 
       def filter_by_search(users)
         return users if name_query.blank?
-        users.where("LOWER(name) LIKE LOWER(?) or LOWER(email) like LOWER(?)", "%#{name_query}%" , "%#{name_query}%")
+
+        users.where("LOWER(name) LIKE LOWER(?) or LOWER(email) like LOWER(?)", "%#{name_query}%", "%#{name_query}%")
       end
 
       def filter_by_search_text(users)
         return users if search_text.blank?
-        containing_proces_name= "%#{search_text}%"
+
+        containing_proces_name = "%#{search_text}%"
         users.where(<<-EOSQL, current_locale, containing_proces_name, current_locale, containing_proces_name)
           (id in (select decidim_user_id
                   from decidim_participatory_process_user_roles
@@ -59,15 +61,16 @@ module Decidim
                         select id
                         from decidim_assemblies
                         where lower(title->>?) like lower(?))))
-EOSQL
+        EOSQL
       end
 
       def filter_by_role(users)
         return users unless Decidim::User::Roles.all.include?(role)
-        if 'space_admin' == role then
-          users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' +
+
+        if role == "space_admin"
+          users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' \
                ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")')
-        elsif 'admin' == role then
+        elsif role == "admin"
           users.where('"decidim_users"."admin" = ?', true)
         else
           users.where("? = any(roles)", role)

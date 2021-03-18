@@ -6,8 +6,8 @@ Decidim::ParticipatoryProcesses::Admin::CreateParticipatoryProcess.class_eval do
   alias_method :original_call, :call
 
   def call
-    author= form.current_user
-    form.area_id= author.areas.first.id if author.department_admin?
+    author = form.current_user
+    form.area_id = author.areas.first.id if author.department_admin?
     original_call
   end
 end
