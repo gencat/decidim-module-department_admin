@@ -10,7 +10,7 @@ Decidim::Conferences::Admin::CreateConference.class_eval do
     form.area_id = author.areas.first.id if author.department_admin?
     original_call
   end
-  
+
   private
 
   def conference

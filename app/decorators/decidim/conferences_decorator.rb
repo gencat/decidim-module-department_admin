@@ -7,10 +7,10 @@
 require_dependency "decidim/conference"
 Decidim::Conference.class_eval do
   belongs_to :area,
-              foreign_key: "decidim_area_id",
-              class_name: "Decidim::Area",
-              optional: true
-  
+             foreign_key: "decidim_area_id",
+             class_name: "Decidim::Area",
+             optional: true
+
   has_and_belongs_to_many :users,
                           join_table: :decidim_conference_user_roles,
                           foreign_key: :decidim_conference_id,

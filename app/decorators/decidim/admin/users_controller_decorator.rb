@@ -70,7 +70,7 @@ require_dependency "decidim/admin/users_controller"
 
     @user.conferences.each do |conference|
       area_name = if conference.area && conference.area.name
-        conference.area.name[locale]
+                    conference.area.name[locale]
                   else
                     ""
                   end
