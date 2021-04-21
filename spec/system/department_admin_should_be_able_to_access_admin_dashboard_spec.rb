@@ -41,7 +41,6 @@ describe "Department admin should be able to access Admin Dashboard", type: :sys
       expect(page).to have_content("New newsletter")
     end
 
-
     it "is able to access 'Conferences'" do
       expect(page).to have_content("Conferences")
       click_link "Conferences"
