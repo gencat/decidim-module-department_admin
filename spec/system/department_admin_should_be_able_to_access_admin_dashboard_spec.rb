@@ -45,7 +45,7 @@ describe "Department admin should be able to access Admin Dashboard", type: :sys
       expect(page).to have_content("Conferences")
       click_link "Conferences"
       expect(page).to have_current_path "/admin/conferences"
-      expect(page).to have_content("New conference")
+      expect(page).to have_content("New Conference")
     end
     # TODO: not supported at the moment
     # it "should be able to access 'Initiatives'"
