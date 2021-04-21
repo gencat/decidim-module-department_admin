@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "decidim-core", DECIDIM_VER
+  s.add_dependency "decidim-conferences", DECIDIM_VER
   s.add_development_dependency "decidim", DECIDIM_VER
   s.add_development_dependency "decidim-dev", DECIDIM_VER
 end
