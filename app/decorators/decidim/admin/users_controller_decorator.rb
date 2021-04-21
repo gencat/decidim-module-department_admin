@@ -68,6 +68,24 @@ require_dependency "decidim/admin/users_controller"
                    "published" => assembly.published?)
     end
 
+    @user.conferences.each do |conference|
+      area_name = if conference.area && conference.area.name
+        conference.area.name[locale]
+                  else
+                    ""
+                  end
+
+      conference_title = conference.title[locale]
+      conference_title = conference.title["ca"] if conference_title == ""
+
+      @spaces.push("title" => conference_title,
+                   "type" => t("models.user.fields.conference_type", scope: "decidim.admin"),
+                   "area" => area_name,
+                   "created_at" => conference.created_at,
+                   "private" => conference.private_space?,
+                   "published" => conference.published?)
+    end
+
     # rubocop: disable Style/NestedTernaryOperator
     if params[:sort_column] && (params[:sort_column] == "published" || params[:sort_column] == "private") && params[:sort_order] && params[:sort_order] == "asc"
       @spaces.sort! { |x, y| x[params[:sort_column]] ? 0 : (1 <=> y[params[:sort_column]] ? 0 : 1) }

@@ -19,6 +19,10 @@ Decidim::Area.class_eval do
            class_name: "Assemblies",
            foreign_key: "decidim_area_id"
 
+  has_many :conferences,
+           class_name: "Conferences",
+           foreign_key: "decidim_area_id"
+
   def has_department_admins?
     Decidim::User.where(organization: organization).any? do |u|
       u.areas.exists?(id)
