@@ -65,6 +65,19 @@ module Decidim
         artifact = Decidim::Assemblies::Admin::ApplicationController
         AssembliesAdminApplicationControllerPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
         register_new_permissions_for(artifact, AssembliesAdminApplicationControllerPermissions)
+
+        # **
+        # Modify decidim-conferences permissions registry
+        # **
+        require "decidim/conferences/admin/conference_copies_controller"
+        require "decidim/conferences/admin/components_controller"
+        artifact = ::Decidim::Conferences::Admin::Concerns::ConferenceAdmin
+        ConferencesAdminConcernPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
+        register_new_permissions_for(artifact, ConferencesAdminConcernPermissions)
+
+        artifact = Decidim::Conferences::Admin::ApplicationController
+        ConferencesAdminApplicationControllerPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
+        register_new_permissions_for(artifact, ConferencesAdminApplicationControllerPermissions)
       end
 
       # make decorators available to applications that use this Engine
@@ -82,6 +95,9 @@ module Decidim
         # override assemblies space manifest permissions with DepartmentAdmin's one
         manifest = Decidim.find_participatory_space_manifest(:assemblies)
         manifest.permissions_class_name = "Decidim::Assemblies::ParticipatorySpacePermissions"
+        # override conferences space manifest permissions with DepartmentAdmin's one
+        manifest = Decidim.find_participatory_space_manifest(:conferences)
+        manifest.permissions_class_name = "Decidim::Conferences::ParticipatorySpacePermissions"
       end
 
       #------------------------------------------------------

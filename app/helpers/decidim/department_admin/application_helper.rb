@@ -20,6 +20,10 @@ module Decidim
         user_assemblies_filtered(user, current_locale, @search_text).each do |assembly|
           roles_with_title << ["assembly_admin", translated_attribute(assembly.title)]
         end
+        # if user had conferences then add role of conference admin
+        user_conferences_filtered(user, current_locale, @search_text).each do |conference|
+          roles_with_title << ["conference_admin", translated_attribute(conference.title)]
+        end
         roles_with_title
       end
       # rubocop: enable Rails/HelperInstanceVariable
@@ -34,6 +38,12 @@ module Decidim
 
       def user_assemblies_filtered(user, _locale, search_text)
         query = user.assemblies
+        query = query.where("lower(title->>?) like lower(?)", current_locale, "%#{search_text}%") if search_text.present?
+        query
+      end
+
+      def user_conferences_filtered(user, _locale, search_text)
+        query = user.conferences
         query = query.where("lower(title->>?) like lower(?)", current_locale, "%#{search_text}%") if search_text.present?
         query
       end

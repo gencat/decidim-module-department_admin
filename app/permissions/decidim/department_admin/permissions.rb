@@ -161,6 +161,17 @@ module Decidim
 
           # CONFERENCES
           -> { permission_for?(requested_action, :admin, :enter, :space_area, space_name: :conferences) },
+          -> { permission_for?(requested_action, :admin, :read, :conference_list) },
+          -> { permission_for?(requested_action, :admin, :create, :conference) },
+          -> { permission_for?(requested_action, :admin, :preview, :conference) },
+          -> { same_area_permission_for?(requested_action, :admin, :update, :conference, restricted_rsrc: context[:conference]) },
+          # Conference Admin: USER ROLES
+          -> { permission_for?(requested_action, :admin, :index, :conference_user_role) },
+          -> { permission_for?(requested_action, :admin, :read, :conference_user_role) },
+          -> { permission_for?(requested_action, :admin, :create, :conference_user_role) },
+          -> { permission_for?(requested_action, :admin, :update, :conference_user_role) },
+          -> { permission_for?(requested_action, :admin, :invite, :conference_user_role) },
+          -> { permission_for?(requested_action, :admin, :destroy, :conference_user_role) },
         ]
         default_checks.any?(&:call) || any_configurable_check?(requested_action)
       end
@@ -176,7 +187,7 @@ module Decidim
         end
       end
 
-      ALLOWED_SPACES = ["Decidim::ParticipatoryProcess", "Decidim::Assembly"].freeze
+      ALLOWED_SPACES = ["Decidim::ParticipatoryProcess", "Decidim::Assembly", "Decidim::Conference"].freeze
       def permission_for_current_space?(permission_action)
         has = permission_for?(permission_action, :admin, :read, :participatory_space)
         has ||= permission_for?(permission_action, :public, :read, :participatory_space)
