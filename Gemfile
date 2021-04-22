@@ -9,7 +9,6 @@ gemspec
 # use CodiTramuntana's fork to get https://github.com/CodiTramuntana/decidim/pull/48 while in 0.23
 DECIDIM_VERSION = { git: "https://github.com/CodiTramuntana/decidim", branch: "release/0.23-stable" }.freeze
 
-gem "decidim-conferences", DECIDIM_VERSION
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
 
@@ -22,6 +21,7 @@ group :development, :test do
   gem "bootsnap"
   gem "byebug", platform: :mri
   gem "decidim", DECIDIM_VERSION
+  gem "decidim-conferences", DECIDIM_VERSION
   gem "faker", "~> 1.9"
   gem "rubocop-rspec"
   gem "social-share-button"
