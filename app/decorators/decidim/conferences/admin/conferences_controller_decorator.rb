@@ -4,16 +4,18 @@
 # This decorator adds the capability to the controller to query conferences
 # filtering by User role `department_admin`.
 #
-Decidim::Conferences::Admin::ConferencesController.class_eval do
-  private
+if defined?(Decidim::Conferences)
+  Decidim::Conferences::Admin::ConferencesController.class_eval do
+    private
 
-  alias_method :original_organization_conferences, :collection
+    alias_method :original_collection, :collection
 
-  def collection
-    @collection ||= if current_user.admin?
-                      original_organization_conferences
-                    else
-                      ::Decidim::Conferences::ConferencesWithUserRole.for(current_user)
-                    end
+    def collection
+      @collection ||= if current_user.admin?
+                        original_collection
+                      else
+                        ::Decidim::Conferences::ConferencesWithUserRole.for(current_user)
+                      end
+    end
   end
 end

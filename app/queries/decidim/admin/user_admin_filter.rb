@@ -48,35 +48,58 @@ module Decidim
         return users if search_text.blank?
 
         containing_proces_name = "%#{search_text}%"
-        users.where(<<-EOSQL, current_locale, containing_proces_name, current_locale, containing_proces_name)
-          (id in (select decidim_user_id
-                  from decidim_participatory_process_user_roles
-                  where decidim_participatory_process_id in (
-                    select id
-                    from decidim_participatory_processes
-                    where lower(title->>?) like lower(?)))
-          or id in  ( select decidim_user_id
-                      from decidim_assembly_user_roles
-                      where decidim_assembly_id in (
-                        select id
-                        from decidim_assemblies
-                        where lower(title->>?) like lower(?)))
-          or id in  ( select decidim_user_id
-                      from decidim_conference_user_roles
-                      where decidim_conference_id in (
-                        select id
-                        from decidim_conferences
-                        where lower(title->>?) like lower(?))))
-        EOSQL
+
+        if defined?(Decidim::Conferences)
+          users.where(<<-EOSQL, current_locale, containing_proces_name, current_locale, containing_proces_name)
+            (id in (select decidim_user_id
+                    from decidim_participatory_process_user_roles
+                    where decidim_participatory_process_id in (
+                      select id
+                      from decidim_participatory_processes
+                      where lower(title->>?) like lower(?)))
+            or id in  ( select decidim_user_id
+                        from decidim_assembly_user_roles
+                        where decidim_assembly_id in (
+                          select id
+                          from decidim_assemblies
+                          where lower(title->>?) like lower(?)))
+            or id in  ( select decidim_user_id
+                        from decidim_conference_user_roles
+                        where decidim_conference_id in (
+                          select id
+                          from decidim_conferences
+                          where lower(title->>?) like lower(?))))
+          EOSQL
+        else
+          users.where(<<-EOSQL, current_locale, containing_proces_name, current_locale, containing_proces_name)
+            (id in (select decidim_user_id
+                    from decidim_participatory_process_user_roles
+                    where decidim_participatory_process_id in (
+                      select id
+                      from decidim_participatory_processes
+                      where lower(title->>?) like lower(?)))
+            or id in  ( select decidim_user_id
+                        from decidim_assembly_user_roles
+                        where decidim_assembly_id in (
+                          select id
+                          from decidim_assemblies
+                          where lower(title->>?) like lower(?))))
+          EOSQL
+        end
       end
 
       def filter_by_role(users)
         return users unless Decidim::User::Roles.all.include?(role)
 
         if role == "space_admin"
-          users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' \
-               ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")' \
-               ' or "decidim_users"."id" in (select "decidim_conference_user_roles"."decidim_user_id" from "decidim_conference_user_roles")')
+          if defined?(Decidim::Conferences)
+            users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' \
+                ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")' \
+                ' or "decidim_users"."id" in (select "decidim_conference_user_roles"."decidim_user_id" from "decidim_conference_user_roles")')
+          else
+            users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' \
+                ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")')
+          end
         elsif role == "admin"
           users.where('"decidim_users"."admin" = ?', true)
         else

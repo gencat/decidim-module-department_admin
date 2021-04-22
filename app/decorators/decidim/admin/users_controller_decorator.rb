@@ -68,22 +68,20 @@ require_dependency "decidim/admin/users_controller"
                    "published" => assembly.published?)
     end
 
-    @user.conferences.each do |conference|
-      area_name = if conference.area && conference.area.name
-                    conference.area.name[locale]
-                  else
-                    ""
-                  end
+    if defined?(Decidim::Conferences)
+      @user.conferences.each do |conference|
+        area_name = conference.area&.name.try(:[], locale) || ""
 
-      conference_title = conference.title[locale]
-      conference_title = conference.title["ca"] if conference_title == ""
+        conference_title = conference.title[locale]
+        conference_title = conference.title["ca"] if conference_title.blank?
 
-      @spaces.push("title" => conference_title,
-                   "type" => t("models.user.fields.conference_type", scope: "decidim.admin"),
-                   "area" => area_name,
-                   "created_at" => conference.created_at,
-                   "private" => conference.private_space?,
-                   "published" => conference.published?)
+        @spaces.push("title" => conference_title,
+                     "type" => t("models.user.fields.conference_type", scope: "decidim.admin"),
+                     "area" => area_name,
+                     "created_at" => conference.created_at,
+                     "private" => conference.private_space?,
+                     "published" => conference.published?)
+      end
     end
 
     # rubocop: disable Style/NestedTernaryOperator

@@ -135,7 +135,7 @@ function changeFilter(el) {
                 </td>
                 <td><%= l user.created_at, format: :short %></td>
                 <td class="table-list__actions">
-                  <% if user.participatory_processes.size > 0 || user.assemblies.size > 0 || user.conferences.size > 0 %>
+                  <% if user.participatory_processes.size > 0 || user.assemblies.size > 0 || (defined?(Decidim::Conferences) && user.conferences.size > 0) %>
                     <% if allowed_to? :preview, :user, user: user %>
                       <%= icon_link_to "eye", user_path(user.id), t("actions.preview", scope: "decidim.admin"), class: "action-icon--preview" %>
                     <% end %>
