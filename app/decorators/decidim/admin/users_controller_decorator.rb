@@ -85,9 +85,9 @@ require_dependency "decidim/admin/users_controller"
     end
 
     # rubocop: disable Style/NestedTernaryOperator
-    if params[:sort_column] && (params[:sort_column] == "published" || params[:sort_column] == "private") && params[:sort_order] && params[:sort_order] == "asc"
+    if (params[:sort_column] == "published" || params[:sort_column] == "private") && params[:sort_order] == "asc"
       @spaces.sort! { |x, y| x[params[:sort_column]] ? 0 : (1 <=> y[params[:sort_column]] ? 0 : 1) }
-    elsif params[:sort_column] && (params[:sort_column] == "published" || params[:sort_column] == "private") && params[:sort_order] && params[:sort_order] == "desc"
+    elsif (params[:sort_column] == "published" || params[:sort_column] == "private") && params[:sort_order] == "desc"
       @spaces.sort! { |x, y| y[params[:sort_column]] ? 0 : 1 <=> x[params[:sort_column]] ? 0 : 1 }
     elsif params[:sort_column] && params[:sort_order] && params[:sort_order] == "asc"
       @spaces.sort! { |x, y| x[params[:sort_column]] <=> y[params[:sort_column]] }
