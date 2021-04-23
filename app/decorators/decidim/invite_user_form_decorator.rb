@@ -7,6 +7,21 @@
 Decidim::InviteUserForm.class_eval do
   attribute :area_id, Integer
 
+  alias_method :original_roles_method, :available_roles_for_select
+
+  def available_roles_for_select
+    if current_user.department_admin?
+      Decidim::User::Roles.all.select { |n| n == "department_admin" }.map do |role|
+        [
+          I18n.t("models.user.fields.roles.#{role}", scope: "decidim.admin"),
+          role,
+        ]
+      end
+    else
+      original_roles_method
+    end
+  end
+
   # called from the view
   def available_areas_for_select
     Decidim::Area.all.collect { |area| [area.translated_name, area.id] }

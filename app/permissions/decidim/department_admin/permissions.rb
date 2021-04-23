@@ -172,6 +172,15 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :update, :conference_user_role) },
           -> { permission_for?(requested_action, :admin, :invite, :conference_user_role) },
           -> { permission_for?(requested_action, :admin, :destroy, :conference_user_role) },
+
+          # USERS ADMINISTRATORS
+          -> { permission_for?(requested_action, :admin, :enter, :space_area, space_name: :users) },
+          -> { permission_for?(requested_action, :admin, :read, :admin_user) },
+          -> { permission_for?(requested_action, :admin, :create, :admin_user) },
+          -> { permission_for?(requested_action, :admin, :read, :managed_user) },
+          # USERS PARTICIPANTS
+          -> { permission_for?(requested_action, :admin, :index, :officialization) },
+          -> { permission_for?(requested_action, :admin, :read, :officialization) },
         ]
         default_checks.any?(&:call) || any_configurable_check?(requested_action)
       end
