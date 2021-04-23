@@ -181,6 +181,7 @@ module Decidim
           # USERS PARTICIPANTS
           -> { permission_for?(requested_action, :admin, :index, :officialization) },
           -> { permission_for?(requested_action, :admin, :read, :officialization) },
+          -> { permission_for?(requested_action, :admin, :create, :officialization) },
         ]
         default_checks.any?(&:call) || any_configurable_check?(requested_action)
       end
