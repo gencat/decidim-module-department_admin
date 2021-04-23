@@ -49,42 +49,33 @@ module Decidim
 
         containing_proces_name = "%#{search_text}%"
 
-        if defined?(Decidim::Conferences)
-          users.where(<<-EOSQL, current_locale, containing_proces_name, current_locale, containing_proces_name)
-            (id in (select decidim_user_id
-                    from decidim_participatory_process_user_roles
-                    where decidim_participatory_process_id in (
-                      select id
-                      from decidim_participatory_processes
-                      where lower(title->>?) like lower(?)))
-            or id in  ( select decidim_user_id
-                        from decidim_assembly_user_roles
-                        where decidim_assembly_id in (
-                          select id
-                          from decidim_assemblies
-                          where lower(title->>?) like lower(?)))
-            or id in  ( select decidim_user_id
-                        from decidim_conference_user_roles
-                        where decidim_conference_id in (
-                          select id
-                          from decidim_conferences
-                          where lower(title->>?) like lower(?))))
-          EOSQL
+        query = <<-EOSQL
+          (id in (select decidim_user_id
+                  from decidim_participatory_process_user_roles
+                  where decidim_participatory_process_id in (
+                    select id
+                    from decidim_participatory_processes
+                    where lower(title->>?) like lower(?)))
+          or id in  ( select decidim_user_id
+                      from decidim_assembly_user_roles
+                      where decidim_assembly_id in (
+                        select id
+                        from decidim_assemblies
+                        where lower(title->>?) like lower(?)))
+          #{if defined?(Decidim::Conferences)
+              "or id in  ( select decidim_user_id
+                          from decidim_conference_user_roles
+                          where decidim_conference_id in (
+                            select id
+                            from decidim_conferences
+                            where lower(title->>?) like lower(?))))" else ")"
+            end}
+        EOSQL
+
+        if defined?(Decidim::Conference)
+          users.where(query, current_locale, containing_proces_name, current_locale, containing_proces_name, current_locale, containing_proces_name)
         else
-          users.where(<<-EOSQL, current_locale, containing_proces_name, current_locale, containing_proces_name)
-            (id in (select decidim_user_id
-                    from decidim_participatory_process_user_roles
-                    where decidim_participatory_process_id in (
-                      select id
-                      from decidim_participatory_processes
-                      where lower(title->>?) like lower(?)))
-            or id in  ( select decidim_user_id
-                        from decidim_assembly_user_roles
-                        where decidim_assembly_id in (
-                          select id
-                          from decidim_assemblies
-                          where lower(title->>?) like lower(?))))
-          EOSQL
+          users.where(query, current_locale, containing_proces_name, current_locale, containing_proces_name)
         end
       end
 

@@ -43,7 +43,7 @@ module Decidim
       end
 
       def user_conferences_filtered(user, _locale, search_text)
-        return unless defined?(Decidim::Conferences)
+        return [] unless defined?(Decidim::Conferences)
 
         query = user.conferences
         query = query.where("lower(title->>?) like lower(?)", current_locale, "%#{search_text}%") if search_text.present?
