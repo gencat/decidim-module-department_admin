@@ -24,6 +24,7 @@
           <%= link_to t("menu.impersonations", scope: "decidim.admin"), decidim_admin.impersonatable_users_path %>
         </li>
       <% end %>
+      <%# This override is require because this permission is not check in the original file %>
       <% if allowed_to? :index, :authorization_workflow %>
         <li <% if is_active_link?(decidim_admin.authorization_workflows_path) %> class="is-active" <% end %>>
           <%= link_to t("menu.authorization_workflows", scope: "decidim.admin"), decidim_admin.authorization_workflows_path %>
