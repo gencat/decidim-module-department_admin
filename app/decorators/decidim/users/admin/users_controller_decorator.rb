@@ -11,7 +11,10 @@ Decidim::Admin::UsersController.class_eval do
 
   def collection
     if current_user.department_admin?
-      @collection ||= current_organization.users_with_any_role.where("'department_admin' = ANY(roles)")
+      @collection ||= current_organization.users_with_any_role
+                                          .joins(:areas)
+                                          .where("'department_admin' = ANY(roles)")
+                                          .where('decidim_areas.id': current_user.areas.pluck(:id))
     else
       original_method
     end

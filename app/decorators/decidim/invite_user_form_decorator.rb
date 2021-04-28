@@ -24,7 +24,11 @@ Decidim::InviteUserForm.class_eval do
 
   # called from the view
   def available_areas_for_select
-    Decidim::Area.all.collect { |area| [area.translated_name, area.id] }
+    if current_user.department_admin?
+      current_user.areas.collect { |area| [area.translated_name, area.id] }
+    else
+      Decidim::Area.all.collect { |area| [area.translated_name, area.id] }
+    end
   end
 
   # called from the command
