@@ -7,6 +7,7 @@ The module currently only affects the following participatory spaces and admin b
 - Participatory Processes: administer processes with the same area as the user's one.
 - Assemblies: administer assemblies with the same area as the user's one.
 - Newsletters: send newsletters to participants in the spaces with the same area as user's one.
+- Conferences: administer conferences with the same area as the user's one.
 
 ## Usage
 
@@ -62,7 +63,8 @@ The engine also configures de `app/decorators` directory to be loaded during rai
 ### Custom Permissions
 The `Decidim::DepartmentAdmin::Permissions` class is the responsible to allow all permissions related with the "departmen admin" role.
 
-`Decidim::Assemblies::ParticipatorySpacePermissions` and `Decidim::ParticipatoryProcesses::ParticipatorySpacePermissions` are subclassing `Decidim::DepartmentAdmin::Permissions` in order to force the permissions classes where they delegate.
+`Decidim::Assemblies::ParticipatorySpacePermissions`, `Decidim::ParticipatoryProcesses::ParticipatorySpacePermissions` and
+`Decidim::Conferences::ParticipatorySpacePermissions` are subclassing `Decidim::DepartmentAdmin::Permissions` in order to force the permissions classes where they delegate.
 
 ### Decorators
 Inside `app/decorators` there are all the tricks done in order for department_admin module to work.

@@ -8,6 +8,11 @@ es:
             assembly_role: Rol consejo
             department: Departamento/Area
             department_role: Rol departamento
+        conference:
+          fields:
+            conference_role: Rol jornada
+            department: Departamento/Area
+            department_role: Rol departamento
         participatory_process:
           fields:
             department: Departamento/Area
@@ -44,3 +49,8 @@ es:
     components:
       department_admin:
         name: Admin de Departamento
+    conferences:
+      admin:
+        conferences:
+          form:
+            select_an_area: Selecciona una Area

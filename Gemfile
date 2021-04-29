@@ -21,6 +21,7 @@ group :development, :test do
   gem "bootsnap"
   gem "byebug", platform: :mri
   gem "decidim", DECIDIM_VERSION
+  gem "decidim-conferences", DECIDIM_VERSION
   gem "faker", "~> 1.9"
   gem "rubocop-rspec"
   gem "social-share-button"

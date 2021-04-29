@@ -68,10 +68,26 @@ require_dependency "decidim/admin/users_controller"
                    "published" => assembly.published?)
     end
 
+    if defined?(Decidim::Conferences)
+      @user.conferences.each do |conference|
+        area_name = conference.area&.name.try(:[], locale) || ""
+
+        conference_title = conference.title[locale]
+        conference_title = conference.title["ca"] if conference_title.blank?
+
+        @spaces.push("title" => conference_title,
+                     "type" => t("models.user.fields.conference_type", scope: "decidim.admin"),
+                     "area" => area_name,
+                     "created_at" => conference.created_at,
+                     "private" => conference.private_space?,
+                     "published" => conference.published?)
+      end
+    end
+
     # rubocop: disable Style/NestedTernaryOperator
-    if params[:sort_column] && (params[:sort_column] == "published" || params[:sort_column] == "private") && params[:sort_order] && params[:sort_order] == "asc"
+    if (params[:sort_column] == "published" || params[:sort_column] == "private") && params[:sort_order] == "asc"
       @spaces.sort! { |x, y| x[params[:sort_column]] ? 0 : (1 <=> y[params[:sort_column]] ? 0 : 1) }
-    elsif params[:sort_column] && (params[:sort_column] == "published" || params[:sort_column] == "private") && params[:sort_order] && params[:sort_order] == "desc"
+    elsif (params[:sort_column] == "published" || params[:sort_column] == "private") && params[:sort_order] == "desc"
       @spaces.sort! { |x, y| y[params[:sort_column]] ? 0 : 1 <=> x[params[:sort_column]] ? 0 : 1 }
     elsif params[:sort_column] && params[:sort_order] && params[:sort_order] == "asc"
       @spaces.sort! { |x, y| x[params[:sort_column]] <=> y[params[:sort_column]] }

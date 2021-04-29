@@ -36,6 +36,9 @@ module Decidim
             should_allow_action(:admin, :index, :newsletter)
             should_allow_action(:admin, :create, :newsletter)
             should_allow_action(:admin, :create, :attachment_collection)
+            should_allow_action(:admin, :read, :conference_list)
+            should_allow_action(:admin, :read, :conference_user_role)
+            should_allow_action(:admin, :create, :conference)
           end
 
           it "does not allow non accepted actions" do
@@ -50,6 +53,7 @@ module Decidim
             it "allows accepted actions with expected context" do
               should_allow_action_with_ctx(:admin, :enter, :space_area, space_name: :processes)
               should_allow_action_with_ctx(:admin, :enter, :space_area, space_name: :assemblies)
+              should_allow_action_with_ctx(:admin, :enter, :space_area, space_name: :conferences)
             end
 
             it "does not allow accepted actions with unexpected context" do
@@ -63,6 +67,7 @@ module Decidim
             context "when process has same area as department_admin" do
               let(:process) { create(:participatory_process, organization: area.organization, area: area) }
               let(:assembly) { create(:assembly, organization: area.organization, area: area) }
+              let(:conference) { create(:conference, organization: area.organization, area: area) }
 
               it "allows accepted actions with expected context" do
                 should_allow_action_with_ctx(:admin, :read, :participatory_space, current_participatory_space: process)
@@ -71,6 +76,7 @@ module Decidim
                 should_allow_action_with_ctx(:admin, :update, :process_step, process_step: pps)
                 should_allow_action_with_ctx(:admin, :destroy, :process_step, process_step: pps)
                 should_allow_action_with_ctx(:admin, :update, :assembly, assembly: assembly)
+                should_allow_action_with_ctx(:admin, :update, :conference, conference: conference)
                 # -> {permission_for?(requested_action, :admin, :read, :newsletter, restricted_rsrc: context[:newsletter])},
               end
 

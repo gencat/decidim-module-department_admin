@@ -23,5 +23,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "decidim-core", DECIDIM_VER
   s.add_development_dependency "decidim", DECIDIM_VER
+  s.add_development_dependency "decidim-conferences", DECIDIM_VER
   s.add_development_dependency "decidim-dev", DECIDIM_VER
 end

@@ -8,6 +8,11 @@ en:
             assembly_role: Assembly role
             department: Department/Area
             department_role: Department role
+        conference:
+          fields:
+            conference_role: Conference role
+            department: Department/Area
+            department_role: Department role
         participatory_process:
           fields:
             department: Department/Area
@@ -44,3 +49,8 @@ en:
     components:
       department_admin:
         name: Department Admin
+    conferences:
+      admin:
+        conferences:
+          form:
+            select_an_area: Select an area
