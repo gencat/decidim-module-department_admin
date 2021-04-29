@@ -32,7 +32,9 @@ Decidim::InviteUser.class_eval do
   private #---------------------------------------------------------
 
   def add_selected_area_to(user)
-    if form.selected_area.present?
+    if current_user.department_admin?
+      user.areas << current_user.areas.first
+    elsif form.selected_area.present?
       user.areas.clear
       user.areas << form.selected_area
     end

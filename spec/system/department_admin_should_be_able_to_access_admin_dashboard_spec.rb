@@ -34,6 +34,13 @@ describe "Department admin should be able to access Admin Dashboard", type: :sys
       expect(page).to have_content("New assembly")
     end
 
+    it "is able to access 'Participants'" do
+      expect(page).to have_content("Participants")
+      click_link "Participants"
+      expect(page).to have_current_path "/admin/users"
+      expect(page).to have_content("New Participant")
+    end
+
     it "is able to access 'Newsletter'" do
       expect(page).to have_content("Newsletter")
       click_link "Newsletter"
@@ -56,10 +63,6 @@ describe "Department admin should be able to access Admin Dashboard", type: :sys
   context "when accessing the dashboard some left menu elements should NOT be accessible" do
     it "is not able to access 'Pages'" do
       expect(page).not_to have_content("Pages")
-    end
-
-    it "is not able to access 'Participants'" do
-      expect(page).not_to have_content("Participants")
     end
 
     it "is not able to access 'Settings'" do

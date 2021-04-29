@@ -10,8 +10,12 @@
   <%= form.select :role, @form.available_roles_for_select, label: t(".role") %>
 </div>
 
-<div id="area-block" class="row column" <%= if form.object.role != 'department_admin' then %Q(style="display: none").html_safe end %>>
-  <%= form.select :area_id, @form.available_areas_for_select, label: t(".area") %>
+<div id="area-block" class="row column">
+  <%= form.select :area_id,
+                  @form.available_areas_for_select,
+                  { label: t(".area") },
+                  { disabled: current_user.roles.include?('department_admin') }
+  %>
 </div>
 
 <%= javascript_tag do %>
