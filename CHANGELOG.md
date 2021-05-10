@@ -7,6 +7,8 @@ Following Semantic Versioning 2.
 - Allow to perform all actions in Conferences (decidim-conferences).
 - Allow to perform some actions in Participants (decidim-participants).
 - Increase minimum Decidim version to v0.23
+- Fix polymorphic error in redirect or link_to. In order to do that,
+  strings are changed by symbols. [CVE-2021-22885](https://github.com/advisories/GHSA-hjg4-8q5f-x6fm)
 
 ## Version 0.1.0 (MINOR)
 - Increase minimum Decidim version to v0.22
