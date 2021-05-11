@@ -3,6 +3,9 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.3.0 (MINOR)
+- Increase minimum Decidim version to v0.24.2
+
 ## Version 0.2.0 (MINOR)
 - Allow to perform all actions in Conferences (decidim-conferences).
 - Allow to perform some actions in Participants (decidim-participants).
