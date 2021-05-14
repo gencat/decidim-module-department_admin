@@ -12,6 +12,8 @@ Decidim::Admin::NewslettersHelper.class_eval do
       original_spaces_user_can_admin
     end
   end
+  # rubocop: disable Metrics/CyclomaticComplexity
+  # rubocop: disable Metrics/PerceivedComplexity
 
   def spaces_department_admin_can_admin
     @spaces_user_can_admin ||= {}
@@ -31,4 +33,6 @@ Decidim::Admin::NewslettersHelper.class_eval do
     end
     @spaces_user_can_admin
   end
+  # rubocop: enable Metrics/CyclomaticComplexity
+  # rubocop: enable Metrics/PerceivedComplexity
 end

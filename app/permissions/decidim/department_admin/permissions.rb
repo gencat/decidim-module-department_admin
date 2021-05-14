@@ -30,7 +30,7 @@ module Decidim
       end
 
       def permissions
-        # byebug if same_action?(permission_action, :admin, :enter, :space_area, space_name: :courses)
+        # byebug if same_action?(permission_action, :admin, :read, :global_moderation)
 
         current_permission_action = permission_action
         if permission_action.scope == :admin && user&.department_admin?
