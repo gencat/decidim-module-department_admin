@@ -23,7 +23,7 @@ module Decidim
         @search_text = search_text
         @role = role
         @current_locale = current_locale
-        super
+        super(scope)
       end
 
       # List the User groups by the diferents filters.
