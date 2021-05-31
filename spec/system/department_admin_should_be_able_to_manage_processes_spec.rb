@@ -20,6 +20,15 @@ describe "Admin manages participatory processes", versioning: true, type: :syste
   # it_behaves_like "manage processes examples"
   # it_behaves_like "manage processes announcements"
 
+  context "with processes" do
+    let!(:participatory_process) { create(:participatory_process, organization: organization, area: area, participatory_process_group: participatory_process_groups.first) }
+
+    it "browses the list of processes" do
+      visit decidim_admin_participatory_processes.participatory_processes_path
+      expect(page).to have_content(translated(participatory_process.title))
+    end
+  end
+
   context "when creating a participatory process" do
     let(:image1_filename) { "city.jpeg" }
     let(:image1_path) { Decidim::Dev.asset(image1_filename) }

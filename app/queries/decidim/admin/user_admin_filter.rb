@@ -23,6 +23,7 @@ module Decidim
         @search_text = search_text
         @role = role
         @current_locale = current_locale
+        super(scope)
       end
 
       # List the User groups by the diferents filters.
@@ -82,7 +83,8 @@ module Decidim
       def filter_by_role(users)
         return users unless Decidim::User::Roles.all.include?(role)
 
-        if role == "space_admin"
+        case role
+        when "space_admin"
           if defined?(Decidim::Conferences)
             users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' \
                 ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")' \
@@ -91,7 +93,7 @@ module Decidim
             users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' \
                 ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")')
           end
-        elsif role == "admin"
+        when "admin"
           users.where('"decidim_users"."admin" = ?', true)
         else
           users.where("? = any(roles)", role)

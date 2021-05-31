@@ -4,13 +4,11 @@ module Decidim
   module DepartmentAdmin
     class Permissions < Decidim::DefaultPermissions
       class << self
-        attr_writer :delegate_chain
-        attr_writer :configurable_checks
+        attr_writer :delegate_chain, :configurable_checks
       end
 
       class << self
-        attr_reader :delegate_chain
-        attr_reader :configurable_checks
+        attr_reader :delegate_chain, :configurable_checks
       end
 
       def delegate_chain

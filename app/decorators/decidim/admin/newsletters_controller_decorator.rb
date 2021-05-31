@@ -13,7 +13,7 @@ require_dependency "decidim/admin/newsletters_controller"
 
     @collection ||= Decidim::Newsletter.where(organization: current_organization)
                                        .joins(author: :areas)
-                                       .where("department_admin_areas.decidim_area_id = ?", current_user_areas.pluck(:id))
+                                       .where(department_admin_areas: { decidim_area_id: current_user_areas.pluck(:id) })
   end
 
   def current_user_areas
