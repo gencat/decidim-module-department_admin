@@ -10,9 +10,7 @@ Decidim::DecidimFormHelper.class_eval do
   def areas_for_select(organization)
     author = current_user
 
-    if author&.department_admin?
-      return author.areas if controller_path.split("/").include?("admin")
-    end
+    return author.areas if author&.department_admin? && controller_path.split("/").include?("admin")
 
     original_areas_for_select(organization)
   end

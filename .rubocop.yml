@@ -2,6 +2,7 @@ require: rubocop-rspec
 
 # Common configuration.
 AllCops:
+  NewCops: enable
   Include:
     - .simplecov
     - "**/*.rb"
