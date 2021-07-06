@@ -3,12 +3,18 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.3.2 (PATCH)
+- Fix: Rename association to not override the one defined in Decidim::HasPrivateUsers
+
 ## Version 0.3.1 (MINOR)
 - Fixes
 - Add new rubocop cops automatically
 
 ## Version 0.3.0 (PATCH)
 - Increase minimum Decidim version to v0.24.2
+
+## Version 0.2.1 (PATCH)
+- Fix: Rename association to not override the one defined in Decidim::HasPrivateUsers
 
 ## Version 0.2.0 (MINOR)
 - Allow to perform all actions in Conferences (decidim-conferences).
