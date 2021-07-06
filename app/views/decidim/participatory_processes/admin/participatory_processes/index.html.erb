@@ -101,7 +101,7 @@
                 <% end %>
               </td>
               <td>
-                <%= process.users.map(&:name).join(", ") %>
+                <%= process.users_with_any_role.map(&:name).join(", ") %>
               </td>
               <td>
                 <%= l process.created_at, format: :short %>
