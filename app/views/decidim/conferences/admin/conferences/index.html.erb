@@ -52,7 +52,7 @@
                 <% end %>
               </td>
               <td>
-                <%= conference.users.map(&:name).join(", ") %>
+                <%= conference.users_with_any_role.map(&:name).join(", ") %>
               </td>
               <td>
                 <%= l conference.created_at, format: :short %>

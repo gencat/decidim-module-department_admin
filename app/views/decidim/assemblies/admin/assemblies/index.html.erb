@@ -83,7 +83,7 @@
                 <% end %>
               </td>
               <td>
-                <%= assembly.users.map(&:name).join(", ") %>
+                <%= assembly.users_with_any_role.map(&:name).join(", ") %>
               </td>
               <td>
                 <%= l(assembly.created_at, format: :short) %>
