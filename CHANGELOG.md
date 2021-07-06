@@ -3,6 +3,9 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.2.1 (PATCH)
+- Fix: Rename association to not override the one defined in HasPrivateUsers
+
 ## Version 0.2.0 (MINOR)
 - Allow to perform all actions in Conferences (decidim-conferences).
 - Allow to perform some actions in Participants (decidim-participants).
