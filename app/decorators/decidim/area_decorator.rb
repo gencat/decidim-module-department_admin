@@ -6,6 +6,7 @@ Decidim::Area.class_eval do
   before_destroy :abort_if_department_admins
 
   has_and_belongs_to_many :users,
+                          -> { where('\'department_admin\'=ANY("decidim_users"."roles")') },
                           join_table: :department_admin_areas,
                           foreign_key: :decidim_area_id,
                           association_foreign_key: :decidim_user_id,
