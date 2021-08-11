@@ -112,7 +112,11 @@ function changeFilter(el) {
                 </td>
                 <td><%= user.name %></td>
                 <td><%= user.email %></td>
-                <td><%= translated_attribute(user.areas.first&.name) %></td>
+                <td>
+                  <% if user.department_admin? %>
+                    <%= translated_attribute(user.areas.first&.name) %>
+                  <% end %>
+                </td>
                 <td>
                   <% if !role_and_title.nil? && !role_and_title[1].empty? %>
                     <%= role_and_title[1] %>
