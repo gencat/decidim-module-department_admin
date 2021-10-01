@@ -4,7 +4,7 @@
 # This decorator adds the attribute area_id to the ConferenceForm and
 # extends it with utility methods for the view and command.
 #
-if defined?(Decidim::Conferences)
+if defined?(Decidim::Conference)
   Decidim::Conferences::Admin::ConferenceForm.class_eval do
     attribute :area_id, Integer
 

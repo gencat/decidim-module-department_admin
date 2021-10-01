@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if defined?(Decidim::Conferences)
+if defined?(Decidim::Conference)
   Decidim::Conferences::Permissions.class_eval do
     # Intercept the `has_manageable_conferences?` method
     # always returns true if the user is a department_admin. Otherwise delegates to the original method.

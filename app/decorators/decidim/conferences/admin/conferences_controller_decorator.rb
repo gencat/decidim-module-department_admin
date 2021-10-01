@@ -4,7 +4,7 @@
 # This decorator adds the capability to the controller to query conferences
 # filtering by User role `department_admin`.
 #
-if defined?(Decidim::Conferences)
+if defined?(Decidim::Conference)
   Decidim::Conferences::Admin::ConferencesController.class_eval do
     private
 

@@ -4,7 +4,7 @@
 # This decorator adds the capability to query participatory_processes
 # filtering by User role `department_admin`.
 #
-if defined?(Decidim::Conferences)
+if defined?(Decidim::Conference)
   Decidim::Conferences::ConferencesWithUserRole.class_eval do
     private
 
