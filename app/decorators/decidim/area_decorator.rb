@@ -20,7 +20,7 @@ Decidim::Area.class_eval do
            class_name: "Assemblies",
            foreign_key: "decidim_area_id"
 
-  if defined?(Decidim::Conferences)
+  if Decidim::DepartmentAdmin.conferences_defined?
     has_many :conferences,
              class_name: "Conferences",
              foreign_key: "decidim_area_id"

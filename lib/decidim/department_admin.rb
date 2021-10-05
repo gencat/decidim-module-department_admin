@@ -8,5 +8,8 @@ module Decidim
   # This namespace holds the logic of the `DepartmentAdmin` module. This module
   # allows users to create department_admin in a participatory space.
   module DepartmentAdmin
+    def self.conferences_defined?
+      defined?(Decidim::Conferences::QueryExtensions)
+    end
   end
 end

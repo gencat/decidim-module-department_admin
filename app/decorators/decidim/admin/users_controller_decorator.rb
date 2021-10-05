@@ -68,7 +68,7 @@ require_dependency "decidim/admin/users_controller"
                    "published" => assembly.published?)
     end
 
-    if defined?(Decidim::Conferences)
+    if Decidim::DepartmentAdmin.conferences_defined?
       @user.conferences.each do |conference|
         area_name = conference.area&.name.try(:[], locale) || ""
 

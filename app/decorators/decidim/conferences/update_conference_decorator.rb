@@ -2,7 +2,7 @@
 
 # Intercepts the `call` method and forces the Area of the user if it is a
 # department_admin user.
-if defined?(Decidim::Conference)
+if Decidim::DepartmentAdmin.conferences_defined?
   Decidim::Conferences::Admin::UpdateConference.class_eval do
     alias_method :original_call, :call
 

@@ -63,7 +63,7 @@ module Decidim
                         select id
                         from decidim_assemblies
                         where lower(title->>?) like lower(?)))
-          #{if defined?(Decidim::Conferences)
+          #{if Decidim::DepartmentAdmin.conferences_defined?)
               "or id in  ( select decidim_user_id
                           from decidim_conference_user_roles
                           where decidim_conference_id in (
@@ -73,7 +73,7 @@ module Decidim
             end}
         EOSQL
 
-        if defined?(Decidim::Conference)
+        if Decidim::DepartmentAdmin.conferences_defined?
           users.where(query, current_locale, containing_proces_name, current_locale, containing_proces_name, current_locale, containing_proces_name)
         else
           users.where(query, current_locale, containing_proces_name, current_locale, containing_proces_name)
@@ -85,7 +85,7 @@ module Decidim
 
         case role
         when "space_admin"
-          if defined?(Decidim::Conferences)
+          if Decidim::DepartmentAdmin.conferences_defined?
             users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' \
                 ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")' \
                 ' or "decidim_users"."id" in (select "decidim_conference_user_roles"."decidim_user_id" from "decidim_conference_user_roles")')
