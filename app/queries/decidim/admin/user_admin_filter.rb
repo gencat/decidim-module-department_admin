@@ -63,7 +63,7 @@ module Decidim
                         select id
                         from decidim_assemblies
                         where lower(title->>?) like lower(?)))
-          #{if Decidim::DepartmentAdmin.conferences_defined?)
+          #{if Decidim::DepartmentAdmin.conferences_defined?
               "or id in  ( select decidim_user_id
                           from decidim_conference_user_roles
                           where decidim_conference_id in (
