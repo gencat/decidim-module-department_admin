@@ -57,7 +57,6 @@ describe "Department admin should be able to access Admin Dashboard", type: :sys
     # TODO: not supported at the moment
     # it "should be able to access 'Initiatives'"
     # it "should be able to access 'Consultations'"
-    # it "should be able to access 'Conferences'"
   end
 
   context "when accessing the dashboard some left menu elements should NOT be accessible" do
