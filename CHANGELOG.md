@@ -3,6 +3,9 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.3.4 (PATCH)
+- Check if decidim-conferences is defined in a more reliable way
+
 ## Version 0.3.3 (PATCH)
 - Fix: Department admin on "millora visualització rols" when the user was in table department_admin_areas and has no role "department_admin" it shows like if it was a department_admin
 

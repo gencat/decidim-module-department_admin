@@ -67,7 +67,7 @@ module Decidim
         AssembliesAdminApplicationControllerPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
         register_new_permissions_for(artifact, AssembliesAdminApplicationControllerPermissions)
 
-        if defined?(Decidim::Conferences)
+        if Decidim::DepartmentAdmin.conferences_defined?
           # **
           # Modify decidim-conferences permissions registry
           # **
@@ -99,7 +99,7 @@ module Decidim
         # override assemblies space manifest permissions with DepartmentAdmin's one
         manifest = Decidim.find_participatory_space_manifest(:assemblies)
         manifest.permissions_class_name = "Decidim::Assemblies::ParticipatorySpacePermissions"
-        if defined?(Decidim::Conferences)
+        if Decidim::DepartmentAdmin.conferences_defined?
           # override conferences space manifest permissions with DepartmentAdmin's one
           manifest = Decidim.find_participatory_space_manifest(:conferences)
           manifest.permissions_class_name = "Decidim::Conferences::ParticipatorySpacePermissions"

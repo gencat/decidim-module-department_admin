@@ -3,7 +3,8 @@
 #
 # This decorator adds required associations between Decidim::Conference and Area.
 #
-if defined?(Decidim::Conferences)
+
+if Decidim::DepartmentAdmin.conferences_defined?
   require_dependency "decidim/conference"
   Decidim::Conference.class_eval do
     belongs_to :area,

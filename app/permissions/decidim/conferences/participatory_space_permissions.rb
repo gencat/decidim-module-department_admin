@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if defined?(Decidim::Conferences)
+if Decidim::DepartmentAdmin.conferences_defined?
   module Decidim
     module Conferences
       class ParticipatorySpacePermissions < Decidim::DepartmentAdmin::Permissions
