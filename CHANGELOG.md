@@ -2,6 +2,7 @@
 Following Semantic Versioning 2.
 
 ## next version:
+- Doc: correct how to install the module in the README
 
 ## Version 0.3.4 (PATCH)
 - Check if decidim-conferences is defined in a more reliable way
