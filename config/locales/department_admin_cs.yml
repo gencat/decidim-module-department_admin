@@ -1,0 +1,46 @@
+---
+cs:
+  decidim:
+    admin:
+      models:
+        assembly:
+          fields:
+            assembly_role: Role ve shromáždění
+            department: Oddělení / oblast
+            department_role: Role oddělení
+        participatory_process:
+          fields:
+            department: Oddělení / oblast
+            department_role: Role oddělení
+            process_role: Role procesu
+        user:
+          fields:
+            administrated_spaces: Spravované prostory
+            assembly_type: Shromáždění
+            created_at: Vytvořeno v
+            department: Oddělení / oblast
+            private: Soukromí
+            process_type: Proces
+            published: Publikováno
+            roles:
+              assembly_admin: Správce shromáždění
+              department_admin: Správce oddělení
+              process_admin: Správce procesu
+              space_admin: Správce prostoru
+            search_field_admins: Správci
+            search_field_processes: Procesy
+            search_question: Co hledáte?
+            spaces: Proces / Pravidlo / Shromáždění
+            title: Název
+            type: Typ
+      users:
+        form:
+          area: Oblast
+        index:
+          filter:
+            all: Vše
+          filter_by: filtrovat podle
+          search: Hledat
+    components:
+      department_admin:
+        name: Správce oddělení
