@@ -20,13 +20,13 @@ To create a user with a department admin role, go to admin panel/PARTICIPANTS/Ad
 Add this line to your application's Gemfile if you would like to always have the latest (edge) version:
 
 ```ruby
-gem "decidim-department_admin", git: "https://github.com/gencat/decidim-department-admin.git"
+gem "decidim-department_admin", git: "https://github.com/gencat/decidim-module-department-admin.git"
 ```
 
 Or, add a line like the following to your application's Gemfile if you would like to have the latest stable from the version of your choice, in this case `0.3.x`:
 
 ```ruby
-gem "decidim-department_admin", "~> 0.3.4", git: "https://github.com/gencat/decidim-department-admin.git"
+gem "decidim-department_admin", "~> 0.3.4", git: "https://github.com/gencat/decidim-module-department-admin.git"
 ```
 
 Edit your app's `config/application.rb` file to enforce railties ordering:
