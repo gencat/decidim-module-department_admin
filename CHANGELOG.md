@@ -2,6 +2,10 @@
 Following Semantic Versioning 2.
 
 ## next version:
+
+## Version 0.4.0 (MAJOR)
+- Rename module to decidim-module-department_admin
+- I18N: Add czech language (#48)
 - Doc: correct how to install the module in the README
 
 ## Version 0.3.4 (PATCH)
