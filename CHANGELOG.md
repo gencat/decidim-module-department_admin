@@ -3,6 +3,9 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.4.1 (MINOR)
+- Fix: Select only assemblies with same area when is a deparment admin 
+
 ## Version 0.4.0 (MAJOR)
 - Rename module to decidim-module-department_admin
 - I18N: Add czech language (#48)
