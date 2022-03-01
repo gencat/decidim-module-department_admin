@@ -10,10 +10,10 @@ Decidim::Assemblies::Admin::AssembliesController.class_eval do
   alias_method :original_organization_assemblies, :collection
 
   def collection
-    if current_user.admin?
-      original_organization_assemblies
-    else
+    if current_user.department_admin?
       ::Decidim::Assemblies::AssembliesWithUserRole.for(current_user)
+    else
+      original_organization_assemblies
     end
   end
 end
