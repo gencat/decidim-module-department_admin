@@ -2,6 +2,10 @@
 Following Semantic Versioning 2.
 
 ## next version:
+
+## Version 0.4.3 (MINOR)
+- Increase minimum Decidim version to v0.25.2
+
 ## Version 0.4.2 (MINOR)
 - Add compatibility with new permissions in Decidim 0.24 for Assemblies views.
 - Fix: condition in AssemblyControllerDecorator doesn't take into account when the user is an assembly admin.
