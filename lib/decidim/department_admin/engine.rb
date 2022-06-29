@@ -14,6 +14,13 @@ module Decidim
         Decidim::DepartmentAdmin::Engine.root, "app", "decorators", "{**}"
       )
 
+      config.to_prepare do
+        # activate Decidim LayoutHelper for the overriden views
+        ActiveSupport.on_load :action_controller do
+          helper Decidim::LayoutHelper if respond_to?(:helper)
+        end
+      end
+
       routes do
         # Add engine routes here
         # resources :department_admin
@@ -22,6 +29,7 @@ module Decidim
 
       # rubocop: disable Lint/ConstantDefinitionInBlock
       initializer "department_admin.permissions_registry" do
+        next unless defined? DecidimController
         # **
         # Modify decidim-admin permissions registry
         # **
@@ -86,8 +94,10 @@ module Decidim
 
       # make decorators available to applications that use this Engine
       config.to_prepare do
-        Dir.glob("#{Decidim::DepartmentAdmin::Engine.root}/app/decorators/**/*_decorator*.rb").each do |c|
-          require_dependency(c)
+        decorators = "#{Decidim::DepartmentAdmin::Engine.root}/app/decorators"
+        Rails.autoloaders.main.ignore(decorators)
+        Dir.glob("#{decorators}/**/*_decorator.rb").each do |decorator|
+          load decorator
         end
       end
 

@@ -156,6 +156,7 @@ PATH
   remote: .
   specs:
     decidim-department_admin (0.4.3)
+      decidim-admin (~> 0.25.2)
       decidim-core (~> 0.25.2)
 
 GEM
