@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This file is located at `config/assets.rb` of your module.
 
 base_path = File.expand_path("..", __dir__)

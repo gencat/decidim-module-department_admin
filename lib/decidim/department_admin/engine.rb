@@ -30,6 +30,7 @@ module Decidim
       # rubocop: disable Lint/ConstantDefinitionInBlock
       initializer "department_admin.permissions_registry" do
         next unless defined? DecidimController
+
         # **
         # Modify decidim-admin permissions registry
         # **

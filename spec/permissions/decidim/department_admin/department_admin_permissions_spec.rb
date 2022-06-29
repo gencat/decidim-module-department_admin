@@ -100,19 +100,19 @@ module Decidim
             end
           end
 
-          context "when acction is allowed and context is component" do
-            context "when component has same area as department_admin" do
-              # TODO: complete the test implementation
-              # let(:process) { create(:participatory_process, organization: area.organization, area: area) }
-              # let(:component) { create(:survey, participatory_space: process) }
+          # context "when acction is allowed and context is component" do
+          # context "when component has same area as department_admin" do
+          # TODO: complete the test implementation
+          # let(:process) { create(:participatory_process, organization: area.organization, area: area) }
+          # let(:component) { create(:survey, participatory_space: process) }
 
-              it "should allow accepted actions" # do
-              #   should_allow_action(:admin, :read, :component)
-              #   should_allow_action(:admin, :create, :component)
-              #   should_allow_action_with_ctx(:admin, :export, :component_data, current_participatory_space: process)
-              # end
-            end
-          end
+          # it "should allow accepted actions" # do
+          #   should_allow_action(:admin, :read, :component)
+          #   should_allow_action(:admin, :create, :component)
+          #   should_allow_action_with_ctx(:admin, :export, :component_data, current_participatory_space: process)
+          # end
+          # end
+          # end
         end
       end
     end
