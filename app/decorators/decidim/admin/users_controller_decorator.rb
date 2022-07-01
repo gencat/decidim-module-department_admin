@@ -17,6 +17,13 @@ require_dependency "decidim/admin/users_controller"
     Decidim::Admin::UserAdminFilter.for(users, @query, @search_text, @role, current_locale)
   end
 
+  # override decidim-admin/app/controllers/concerns/decidim/admin/filterable.rb#filtered_collection default behavior.
+  def filtered_collection
+    users = query.result
+    sorted_users = users.sort { |u_1, u_2| "#{u_1.active_role}||#{u_1.areas.first&.name}" <=> "#{u_2.active_role}||#{u_2.areas.first&.name}" }
+    paginate(Kaminari.paginate_array(sorted_users))
+  end
+
   # It is necessary to overwrite this method to correctly locate the user.
   # because we overwrite the collection method
   def user

@@ -31,8 +31,7 @@ module Decidim
         users = scope
         users = filter_by_search(users)
         users = filter_by_search_text(users)
-        users = filter_by_role(users)
-        Kaminari.paginate_array(users.sort { |u_1, u_2| "#{u_1.active_role}||#{u_1.areas.first&.name}" <=> "#{u_2.active_role}||#{u_2.areas.first&.name}" })
+        filter_by_role(users)
       end
 
       private
