@@ -29,7 +29,12 @@ module Decidim
 
       # rubocop: disable Lint/ConstantDefinitionInBlock
       initializer "department_admin.permissions_registry" do
-        next unless defined? DecidimController
+        # activate Decidim LayoutHelper for the overriden views
+        # TO-DO remove the to_prepare "ActiveSupport.on_load :action_controller" that doesn't work for the test env??
+        ::Decidim::Admin::ApplicationController.helper ::Decidim::LayoutHelper
+
+        # avoid webpacker to crash when executing before Decidim is loaded
+        next unless Rails.env.test? || defined? DecidimController
 
         # **
         # Modify decidim-admin permissions registry
@@ -96,7 +101,7 @@ module Decidim
       # make decorators available to applications that use this Engine
       config.to_prepare do
         decorators = "#{Decidim::DepartmentAdmin::Engine.root}/app/decorators"
-        Rails.autoloaders.main.ignore(decorators)
+        # Rails.autoloaders.main.ignore(decorators)
         Dir.glob("#{decorators}/**/*_decorator.rb").each do |decorator|
           load decorator
         end
