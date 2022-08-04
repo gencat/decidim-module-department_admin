@@ -122,7 +122,7 @@ require_dependency "decidim/admin/users_controller"
   end
 
   def set_global_params
-    @query = params[:q]
+    @query_custom_filter = params[:q]
     @search_text = params[:search_text]
     @role = params[:role]
   end

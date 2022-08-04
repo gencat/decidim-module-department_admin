@@ -58,7 +58,7 @@ function changeFilter(el) {
     <%= form_tag "", method: :get do %>
       <div class="filters__search">
         <div class="input-group">
-          <%= search_field_tag :q, @query,label: false, class: "input-group-field", placeholder: t(".search") %>
+          <%= search_field_tag :q, @query_custom_filter,label: false, class: "input-group-field", placeholder: t(".search") %>
           <%= search_field_tag :search_text, @search_text,label: false, class: "input-group-field", placeholder: t(".search"), style: "display: none" %>
           <%= hidden_field_tag :role, @role %>
           <div class="input-group-button">
@@ -87,15 +87,15 @@ function changeFilter(el) {
       <table class="table-list">
         <thead>
           <tr>
-            <th><%= sort_link(query, :role, t("models.user.fields.role", scope: "decidim.admin"), default_order: :desc) %></th>
-            <th><%= sort_link(query, :name, t("models.user.fields.name", scope: "decidim.admin"), default_order: :desc) %></th>
-            <th><%= sort_link(query, :email, t("models.user.fields.email", scope: "decidim.admin"), default_order: :desc) %></th>
-            <th><%= sort_link(query, :department, t("models.user.fields.department", scope: "decidim.admin"), default_order: :desc) %></th>
-            <th><%= sort_link(query, :spaces, t("models.user.fields.spaces", scope: "decidim.admin"), default_order: :desc) %></th>
-            <th><%= sort_link(query, :invitation_sent_at, t("models.user.fields.invitation_sent_at", scope: "decidim.admin"), default_order: :desc) %></th>
-            <th><%= sort_link(query, :invitation_accepted_at, t("models.user.fields.invitation_accepted_at", scope: "decidim.admin"), default_order: :desc) %></th>
-            <th><%= sort_link(query, :last_sign_in_at, t("models.user.fields.last_sign_in_at", scope: "decidim.admin"), default_order: :desc) %></th>
-            <th><%= sort_link(query, :created_at, t("models.user.fields.created_at", scope: "decidim.admin"), default_order: :desc) %></th>
+            <th><%= t("models.user.fields.role", scope: "decidim.admin") %></th>
+            <th><%= t("models.user.fields.name", scope: "decidim.admin") %></th>
+            <th><%= t("models.user.fields.email", scope: "decidim.admin") %></th>
+            <th><%= t("models.user.fields.department", scope: "decidim.admin") %></th>
+            <th><%= t("models.user.fields.spaces", scope: "decidim.admin") %></th>
+            <th><%= t("models.user.fields.invitation_sent_at", scope: "decidim.admin") %></th>
+            <th><%= t("models.user.fields.invitation_accepted_at", scope: "decidim.admin") %></th>
+            <th><%= t("models.user.fields.last_sign_in_at", scope: "decidim.admin") %></th>
+            <th><%= t("models.user.fields.created_at", scope: "decidim.admin") %></th>
             <th></th>
           </tr>
         </thead>
