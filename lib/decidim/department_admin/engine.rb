@@ -14,13 +14,6 @@ module Decidim
         Decidim::DepartmentAdmin::Engine.root, "app", "decorators", "{**}"
       )
 
-      config.to_prepare do
-        # activate Decidim LayoutHelper for the overriden views
-        ActiveSupport.on_load :action_controller do
-          helper Decidim::LayoutHelper if respond_to?(:helper)
-        end
-      end
-
       routes do
         # Add engine routes here
         # resources :department_admin
@@ -30,8 +23,8 @@ module Decidim
       # rubocop: disable Lint/ConstantDefinitionInBlock
       initializer "department_admin.permissions_registry" do
         # activate Decidim LayoutHelper for the overriden views
-        # TO-DO remove the to_prepare "ActiveSupport.on_load :action_controller" that doesn't work for the test env??
         ::Decidim::Admin::ApplicationController.helper ::Decidim::LayoutHelper
+        ::Decidim::ApplicationController.helper ::Decidim::LayoutHelper
 
         # avoid webpacker to crash when executing before Decidim is loaded
         next unless Rails.env.test? || defined? DecidimController
