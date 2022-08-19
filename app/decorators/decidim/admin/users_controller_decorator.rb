@@ -2,6 +2,9 @@
 
 require_dependency "decidim/admin/users_controller"
 
+# This decorator adds the capability to the controller to query users
+# filtering by User role `department_admin`.
+
 # Sort Admins by role and area
 ::Decidim::Admin::UsersController.class_eval do
   alias_method :original_collection, :collection
@@ -13,8 +16,14 @@ require_dependency "decidim/admin/users_controller"
   before_action :set_global_params
 
   def collection
-    users = original_collection
-    Decidim::Admin::UserAdminFilter.for(users, @query, @search_text, @role, current_locale)
+    if current_user.department_admin?
+      @collection ||= current_organization.users_with_any_role
+                                          .joins(:areas)
+                                          .where("'department_admin' = ANY(roles)")
+                                          .where('decidim_areas.id': current_user.areas.pluck(:id))
+    else
+      original_collection
+    end
   end
 
   # override decidim-admin/app/controllers/concerns/decidim/admin/filterable.rb#filtered_collection default behavior.
@@ -113,7 +122,7 @@ require_dependency "decidim/admin/users_controller"
   end
 
   def set_global_params
-    @query = params[:q]
+    @query_custom_filter = params[:q]
     @search_text = params[:search_text]
     @role = params[:role]
   end
