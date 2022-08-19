@@ -38,10 +38,10 @@ require_dependency "decidim/admin/users_controller"
     @spaces = []
     @user.participatory_processes.each do |process|
       type = if process.participatory_process_group
-               if process.participatory_process_group&.name&.[](locale) != ""
-                 process.participatory_process_group&.name&.[](locale)
+               if process.participatory_process_group&.title&.[](locale) != ""
+                 process.participatory_process_group&.title&.[](locale)
                else
-                 process.participatory_process_group&.name&.[]("ca")
+                 process.participatory_process_group&.title&.[]("ca")
                end
              else
                t("models.user.fields.process_type", scope: "decidim.admin")
