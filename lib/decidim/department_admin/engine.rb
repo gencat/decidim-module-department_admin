@@ -94,7 +94,6 @@ module Decidim
       # make decorators available to applications that use this Engine
       config.to_prepare do
         decorators = "#{Decidim::DepartmentAdmin::Engine.root}/app/decorators"
-        # Rails.autoloaders.main.ignore(decorators)
         Dir.glob("#{decorators}/**/*_decorator.rb").each do |decorator|
           load decorator
         end
