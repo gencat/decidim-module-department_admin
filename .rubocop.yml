@@ -1089,18 +1089,6 @@ Metrics/CyclomaticComplexity:
   Exclude:
     - "**/*/permissions.rb"
 
-Metrics/LineLength:
-  Max: 180
-  # To make it possible to copy or click on URIs in the code, we allow lines
-  # containing a URI to be longer than Max.
-  AllowHeredoc: true
-  AllowURI: true
-  URISchemes:
-    - http
-    - https
-  Exclude:
-    - "**/spec/**/*"
-
 Metrics/MethodLength:
   CountComments: false  # count full line comments?
   Max: 15
@@ -1127,6 +1115,18 @@ Lint/AmbiguousBlockAssociation:
 # Allow safe assignment in conditions.
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
+
+Layout/LineLength:
+  Max: 180
+  # To make it possible to copy or click on URIs in the code, we allow lines
+  # containing a URI to be longer than Max.
+  AllowHeredoc: true
+  AllowURI: true
+  URISchemes:
+    - http
+    - https
+  Exclude:
+    - "**/spec/**/*"
 
 # checks whether the end keywords are aligned properly for `do` `end` blocks.
 Layout/BlockAlignment:

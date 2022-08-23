@@ -5,6 +5,7 @@ require "decidim/core/test/factories"
 FactoryBot.define do
   factory :department_admin, parent: :user do
     roles { ["department_admin"] }
+    admin_terms_accepted_at { Time.zone.now }
     transient do
       area { nil }
     end

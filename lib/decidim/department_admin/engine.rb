@@ -20,12 +20,15 @@ module Decidim
         # root to: "department_admin#index"
       end
 
-      initializer "decidim_department_admin.assets" do |app|
-        app.config.assets.precompile += %w(decidim_department_admin_manifest.js decidim_department_admin_manifest.css)
-      end
-
       # rubocop: disable Lint/ConstantDefinitionInBlock
       initializer "department_admin.permissions_registry" do
+        # activate Decidim LayoutHelper for the overriden views
+        ::Decidim::Admin::ApplicationController.helper ::Decidim::LayoutHelper
+        ::Decidim::ApplicationController.helper ::Decidim::LayoutHelper
+
+        # avoid webpacker to crash when executing before Decidim is loaded
+        next unless Rails.env.test? || defined? DecidimController
+
         # **
         # Modify decidim-admin permissions registry
         # **
@@ -84,10 +87,15 @@ module Decidim
       end
       # rubocop: enable Lint/ConstantDefinitionInBlock
 
+      initializer "department_admin.webpacker.assets_path" do
+        Decidim.register_assets_path File.expand_path("app/packs", root)
+      end
+
       # make decorators available to applications that use this Engine
       config.to_prepare do
-        Dir.glob("#{Decidim::DepartmentAdmin::Engine.root}/app/decorators/**/*_decorator*.rb").each do |c|
-          require_dependency(c)
+        decorators = "#{Decidim::DepartmentAdmin::Engine.root}/app/decorators"
+        Dir.glob("#{decorators}/**/*_decorator.rb").each do |decorator|
+          load decorator
         end
       end
 
