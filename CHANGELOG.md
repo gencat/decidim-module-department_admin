@@ -3,6 +3,9 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.4.4 (MINOR)
+- Increase minimum Decidim version to v0.26.2
+
 ## Version 0.4.3 (MINOR)
 - Increase minimum Decidim version to v0.25.2
 

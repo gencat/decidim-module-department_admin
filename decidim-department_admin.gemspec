@@ -4,7 +4,7 @@ $LOAD_PATH.push File.expand_path("lib", __dir__)
 
 require "decidim/department_admin/version"
 
-DECIDIM_VER = "~> 0.25.2"
+DECIDIM_VER = "~> 0.26.2"
 
 Gem::Specification.new do |s|
   s.version = Decidim::DepartmentAdmin.version
