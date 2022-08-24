@@ -46,6 +46,11 @@ en:
             all: All
           filter_by: Filter by
           search: Search
+      shared:
+        filters:
+          filter_by: Filter by
+          filter:
+            all: All
     components:
       department_admin:
         name: Department Admin

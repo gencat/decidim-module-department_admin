@@ -1,7 +1,12 @@
-GIT
-  remote: https://github.com/CodiTramuntana/decidim
-  revision: a914802246990985733aba16164e79df81e2e3e4
-  branch: release/0.26-stable
+PATH
+  remote: .
+  specs:
+    decidim-department_admin (0.5.0)
+      decidim-admin (~> 0.26.2)
+      decidim-core (~> 0.26.2)
+
+PATH
+  remote: /home/laurajv/decidim_fork
   specs:
     decidim (0.26.2)
       decidim-accountability (= 0.26.2)
@@ -148,13 +153,6 @@ GIT
       decidim-forms (= 0.26.2)
     decidim-verifications (0.26.2)
       decidim-core (= 0.26.2)
-
-PATH
-  remote: .
-  specs:
-    decidim-department_admin (0.5.0)
-      decidim-admin (~> 0.26.2)
-      decidim-core (~> 0.26.2)
 
 GEM
   remote: https://rubygems.org/
@@ -333,6 +331,12 @@ GEM
     declarative-builder (0.1.0)
       declarative-option (< 0.2.0)
     declarative-option (0.1.0)
+    deface (1.9.0)
+      actionview (>= 5.2)
+      nokogiri (>= 1.6)
+      polyglot
+      railties (>= 5.2)
+      rainbow (>= 2.1.0)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     devise (4.8.1)
@@ -489,7 +493,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.13.6-x86_64-linux)
       racc (~> 1.4)
-    oauth (0.5.10)
+    oauth (1.0.0)
+      version_gem (~> 1.1)
     oauth2 (1.4.10)
       faraday (>= 0.17.3, < 3.0)
       jwt (>= 1.0, < 3.0)
@@ -530,6 +535,7 @@ GEM
     pg_search (2.3.6)
       activerecord (>= 5.2)
       activesupport (>= 5.2)
+    polyglot (0.3.5)
     premailer (1.16.0)
       addressable
       css_parser (>= 1.6.0)
@@ -708,6 +714,7 @@ GEM
     valid_email2 (2.3.1)
       activemodel (>= 3.2)
       mail (~> 2.5)
+    version_gem (1.1.0)
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -759,6 +766,7 @@ DEPENDENCIES
   decidim-conferences!
   decidim-department_admin!
   decidim-dev (~> 0.26.2)
+  deface
   execjs (~> 2.7.0)
   faker
   letter_opener_web (~> 1.3)

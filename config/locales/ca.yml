@@ -46,6 +46,11 @@ ca:
             all: Totes
           filter_by: Filtra per
           search: Cerca
+      shared:
+        filters:
+          filter_by: Filtra per
+          filter:
+            all: Totes
     components:
       department_admin:
         name: Admin de Departament
