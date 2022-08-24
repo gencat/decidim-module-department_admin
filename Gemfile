@@ -17,6 +17,8 @@ DECIDIM_VERSION = { git: "https://github.com/CodiTramuntana/decidim", branch: "r
 # your gem to rubygems.org.
 gem "execjs", "~> 2.7.0"
 
+gem "deface"
+
 group :development, :test do
   gem "bootsnap"
   gem "byebug", platform: :mri

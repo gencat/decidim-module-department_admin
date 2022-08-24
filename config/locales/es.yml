@@ -46,6 +46,11 @@ es:
             all: Todas
           filter_by: Filtrado por
           search: Buscar
+      shared:
+        filters:
+          filter_by: Filtrado por
+          filters:
+            all: Todas
     components:
       department_admin:
         name: Admin de Departamento
