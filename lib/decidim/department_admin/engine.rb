@@ -95,7 +95,7 @@ module Decidim
       config.to_prepare do
         decorators = "#{Decidim::DepartmentAdmin::Engine.root}/app/decorators"
         Dir.glob("#{decorators}/**/*_decorator.rb").each do |decorator|
-          load decorator
+          require_dependency(decorator)
         end
       end
 
