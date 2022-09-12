@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Decidim::NewslettersHelperDecorator
+  # rubocop: disable Metrics/CyclomaticComplexity
+  # rubocop: disable Metrics/PerceivedComplexity
   def self.decorate
     Decidim::Admin::NewslettersHelper.class_eval do
       alias_method :original_spaces_user_can_admin, :spaces_user_can_admin
@@ -14,8 +16,6 @@ module Decidim::NewslettersHelperDecorator
           original_spaces_user_can_admin
         end
       end
-      # rubocop: disable Metrics/CyclomaticComplexity
-      # rubocop: disable Metrics/PerceivedComplexity
 
       def spaces_department_admin_can_admin
         @spaces_user_can_admin ||= {}
@@ -35,10 +35,10 @@ module Decidim::NewslettersHelperDecorator
         end
         @spaces_user_can_admin
       end
-      # rubocop: enable Metrics/CyclomaticComplexity
-      # rubocop: enable Metrics/PerceivedComplexity
     end
   end
+  # rubocop: enable Metrics/CyclomaticComplexity
+  # rubocop: enable Metrics/PerceivedComplexity
 end
 
 ::Decidim::NewslettersHelperDecorator.decorate

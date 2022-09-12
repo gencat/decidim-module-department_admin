@@ -6,19 +6,19 @@ module Decidim::Conferences::Admin::ConferencesControllerDecorator
   # filtering by User role `department_admin`.
   #
   def self.decorate
-    if Decidim::DepartmentAdmin.conferences_defined?
-      Decidim::Conferences::Admin::ConferencesController.class_eval do
-        private
+    return unless Decidim::DepartmentAdmin.conferences_defined?
 
-        alias_method :original_collection, :collection
+    Decidim::Conferences::Admin::ConferencesController.class_eval do
+      private
 
-        def collection
-          @collection ||= if current_user.admin?
-                            original_collection
-                          else
-                            ::Decidim::Conferences::ConferencesWithUserRole.for(current_user)
-                          end
-        end
+      alias_method :original_collection, :collection
+
+      def collection
+        @collection ||= if current_user.admin?
+                          original_collection
+                        else
+                          ::Decidim::Conferences::ConferencesWithUserRole.for(current_user)
+                        end
       end
     end
   end

@@ -5,6 +5,8 @@ require_dependency "decidim/admin/users_controller"
 # This decorator adds the capability to the controller to query users
 # filtering by User role `department_admin`.
 module Decidim::Admin::UsersControllerDecorator
+  # rubocop: disable Metrics/CyclomaticComplexity
+  # rubocop: disable Metrics/PerceivedComplexity
   def self.decorate
     # Sort Admins by role and area
     ::Decidim::Admin::UsersController.class_eval do
@@ -14,7 +16,6 @@ module Decidim::Admin::UsersControllerDecorator
       helper_method :roles_with_title
 
       def collection
-        byebug
         if current_user.department_admin?
           @collection ||= current_organization.users_with_any_role
                                               .joins(:areas)
@@ -27,20 +28,19 @@ module Decidim::Admin::UsersControllerDecorator
 
       # override decidim-admin/app/controllers/concerns/decidim/admin/filterable.rb#filtered_collection default behavior.
       def filtered_collection
-        byebug
-        users = query.result
-        sorted_users = users.sort { |u_1, u_2| "#{u_1.active_role}||#{u_1.areas.first&.name}" <=> "#{u_2.active_role}||#{u_2.areas.first&.name}" }
+        result = if params[:role].present? && %w(department_admin user_manager).include?(params[:role])
+                   query.result.where("? = ANY(roles)", params[:role])
+                 elsif params[:role].present? && params[:role] == "admin"
+                   query.result.where(admin: true)
+                 elsif params[:role] == "space_admin"
+                   Decidim::User.space_admins(current_organization)
+                 else
+                   query.result + Decidim::User.space_admins(current_organization)
+        end
+        sorted_users = result.uniq.sort { |u_1, u_2| "#{u_1.active_role}||#{u_1.areas.first&.name}" <=> "#{u_2.active_role}||#{u_2.areas.first&.name}" }
         paginate(Kaminari.paginate_array(sorted_users))
       end
 
-      # It is necessary to overwrite this method to correctly locate the user.
-      # because we overwrite the collection method
-      def user
-        @user ||= original_collection.find(params[:id])
-      end
-
-      # rubocop: disable Metrics/CyclomaticComplexity
-      # rubocop: disable Metrics/PerceivedComplexity
       def show
         locale = params[:locale] || "ca"
         @user ||= original_collection.find(params[:id])
@@ -114,10 +114,10 @@ module Decidim::Admin::UsersControllerDecorator
         end
         # rubocop: enable Style/NestedTernaryOperator
       end
-      # rubocop: enable Metrics/CyclomaticComplexity
-      # rubocop: enable Metrics/PerceivedComplexity
     end
   end
+  # rubocop: enable Metrics/CyclomaticComplexity
+  # rubocop: enable Metrics/PerceivedComplexity
 end
 
 ::Decidim::Admin::UsersControllerDecorator.decorate

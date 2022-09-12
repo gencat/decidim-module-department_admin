@@ -6,21 +6,21 @@ module Decidim::ConferencesWithUserRoleDecorator
   # filtering by User role `department_admin`.
   #
   def self.decorate
-    if Decidim::DepartmentAdmin.conferences_defined?
-      Decidim::Conferences::ConferencesWithUserRole.class_eval do
-        private
+    return unless Decidim::DepartmentAdmin.conferences_defined?
 
-        alias_method :conference_ids_by_conferences_user_table, :conference_ids
+    Decidim::Conferences::ConferencesWithUserRole.class_eval do
+      private
 
-        def conference_ids
-          ids = [conference_ids_by_conferences_user_table]
-          if user&.department_admin?
-            ids << ::Decidim::Conference
-                   .where("decidim_area_id" => user.areas.pluck(:id)).pluck(:id)
-          end
+      alias_method :conference_ids_by_conferences_user_table, :conference_ids
 
-          ::Decidim::Conference.where(id: ids.flatten.uniq)
+      def conference_ids
+        ids = [conference_ids_by_conferences_user_table]
+        if user&.department_admin?
+          ids << ::Decidim::Conference
+                 .where("decidim_area_id" => user.areas.pluck(:id)).pluck(:id)
         end
+
+        ::Decidim::Conference.where(id: ids.flatten.uniq)
       end
     end
   end

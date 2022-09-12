@@ -39,6 +39,13 @@ module Decidim::UserDecorator
       def department_admin?
         role?("department_admin")
       end
+
+      def self.space_admins(organization)
+        Decidim::User.where(organization: organization, id: (
+            Decidim::ParticipatoryProcessUserRole.joins(:user).where(role: "admin", decidim_users: { decidim_organization_id: organization }).pluck(:decidim_user_id) +
+            Decidim::AssemblyUserRole.joins(:user).where(role: "admin", decidim_users: { decidim_organization_id: organization }).pluck(:decidim_user_id)
+          ).uniq)
+      end
     end
   end
 end
