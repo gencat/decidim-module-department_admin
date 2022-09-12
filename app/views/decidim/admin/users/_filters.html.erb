@@ -20,9 +20,9 @@
       </li>
     </ul>
     <%= t('models.user.fields.search_question', scope: 'decidim.admin') %>
-    <input type='radio' id='search_text_filter' name='filter_search' value='search_text' onchange='changeFilter(this)' style='margin-left: 20px'>
-    <label for='search_text_filter'><%= t('models.user.fields.search_field_processes', scope: 'decidim.admin') %></label>
-    <input type='radio' id='query_filter' name='filter_search' value='query' checked onchange='changeFilter(this)'>
+    <input type='radio' id='processes_filter' name='filter_search' value='search_text' <%= params[:filter_search] == "search_text" ? "checked" : "" %> style='margin-left: 20px'>
+    <label for='processes_filter'><%= t('models.user.fields.search_field_processes', scope: 'decidim.admin') %></label>
+    <input type='radio' id='query_filter' name='filter_search' value='query' <%= params[:filter_search].blank? || params[:filter_search] == "query" ? "checked" : "" %> >
     <label for='query_filter'><%= t('models.user.fields.search_field_admins', scope: 'decidim.admin') %></label>
   </div>
 </div>
