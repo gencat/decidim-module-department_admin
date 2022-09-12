@@ -28,15 +28,17 @@ module Decidim::Admin::UsersControllerDecorator
 
       # override decidim-admin/app/controllers/concerns/decidim/admin/filterable.rb#filtered_collection default behavior.
       def filtered_collection
-        result = if params[:role].present? && %w(department_admin user_manager).include?(params[:role])
-                   query.result.where("? = ANY(roles)", params[:role])
-                 elsif params[:role].present? && params[:role] == "admin"
+        @role = params[:role]
+        result = if @role.present? && %w(department_admin user_manager).include?(@role)
+                   query.result.where("? = ANY(roles)", @role)
+                 elsif @role.present? && @role == "admin"
                    query.result.where(admin: true)
-                 elsif params[:role] == "space_admin"
+                 elsif @role == "space_admin"
                    Decidim::User.space_admins(current_organization)
                  else
                    query.result + Decidim::User.space_admins(current_organization)
-        end
+                 end
+
         sorted_users = result.uniq.sort { |u_1, u_2| "#{u_1.active_role}||#{u_1.areas.first&.name}" <=> "#{u_2.active_role}||#{u_2.areas.first&.name}" }
         paginate(Kaminari.paginate_array(sorted_users))
       end
