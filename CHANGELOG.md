@@ -5,6 +5,7 @@ Following Semantic Versioning 2.
 
 ## Version 0.5.0 (MINOR)
 - Increase minimum Decidim version to v0.26.2
+- Upgrade Ruby to 2.7.5
 
 ## Version 0.4.3 (MINOR)
 - Increase minimum Decidim version to v0.25.2
