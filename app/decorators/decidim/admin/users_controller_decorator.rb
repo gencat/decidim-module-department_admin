@@ -13,34 +13,41 @@ module Decidim::Admin::UsersControllerDecorator
       alias_method :original_collection, :collection
 
       include ::Decidim::DepartmentAdmin::ApplicationHelper
-      helper_method :roles_with_title
+      helper_method :roles_with_title, :filtered_collection
+
+      before_action :read_params, only: :index
+
+      def read_params
+        @role = params[:role]
+        @by_process_name = params[:filter_search] == "by_process_name"
+        term = params.dig(:q, :name_or_nickname_or_email_cont)
+        @search_text = term
+      end
 
       def collection
-        if current_user.department_admin?
-          @collection ||= current_organization.users_with_any_role
-                                              .joins(:areas)
-                                              .where("'department_admin' = ANY(roles)")
-                                              .where('decidim_areas.id': current_user.areas.pluck(:id))
-        else
-          original_collection
+        @collection ||= begin
+          filtered = if @by_process_name
+                       ::Decidim::Admin::UserAdminBySpaceNameFilter.for(@search_text, current_organization, current_locale)
+                     else
+                       ::Decidim::Admin::UserAdminFilter.for(original_collection, @search_text, @role, current_organization)
+                     end
+          if current_user.department_admin?
+            filtered.joins(:areas)
+                    .where("'department_admin' = ANY(roles)")
+                    .where('decidim_areas.id': current_user.areas.pluck(:id))
+          else
+            filtered
+          end
         end
       end
 
       # override decidim-admin/app/controllers/concerns/decidim/admin/filterable.rb#filtered_collection default behavior.
       def filtered_collection
-        @role = params[:role]
-        result = if @role.present? && %w(department_admin user_manager).include?(@role)
-                   query.result.where("? = ANY(roles)", @role)
-                 elsif @role.present? && @role == "admin"
-                   query.result.where(admin: true)
-                 elsif @role == "space_admin"
-                   Decidim::User.space_admins(current_organization)
-                 else
-                   query.result + Decidim::User.space_admins(current_organization)
-                 end
-
-        sorted_users = result.uniq.sort { |u_1, u_2| "#{u_1.active_role}||#{u_1.areas.first&.name}" <=> "#{u_2.active_role}||#{u_2.areas.first&.name}" }
-        paginate(Kaminari.paginate_array(sorted_users))
+        @filtered_collection ||= begin
+          users = @by_process_name ? collection : query.result
+          sorted_users = users.uniq.sort { |u_1, u_2| "#{u_1.active_role}||#{u_1.areas.first&.name}" <=> "#{u_2.active_role}||#{u_2.areas.first&.name}" }
+          paginate(Kaminari.paginate_array(sorted_users))
+        end
       end
 
       def show

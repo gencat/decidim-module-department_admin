@@ -21,10 +21,10 @@ module Decidim::Admin
       let!(:department_admin_user) { create(:department_admin, :confirmed, organization: organization) }
       let!(:user_manager) { create(:user, :confirmed, organization: organization, roles: ["user_manager"]) }
       let!(:process_admin) { create(:user, :confirmed, organization: organization) }
-      let!(:participatory_process) { create(:participatory_process, organization: organization) }
+      let!(:participatory_process) { create(:participatory_process, organization: organization, title: { en: "A Process space" }) }
       let!(:process_admin_rel) { Decidim::ParticipatoryProcessUserRole.create(role: "admin", user: process_admin, participatory_process: participatory_process) }
       let!(:assembly_admin) { create(:user, :confirmed, organization: organization) }
-      let!(:assembly) { create(:assembly, organization: organization) }
+      let!(:assembly) { create(:assembly, organization: organization, title: { en: "An Assembly space" }) }
       let!(:assembly_admin_rel) { Decidim::AssemblyUserRole.create(role: "admin", user: assembly_admin, assembly: assembly) }
 
       let(:subject) { controller.filtered_collection }
@@ -35,6 +35,26 @@ module Decidim::Admin
 
           expect(subject).to include(admin_user, department_admin_user, user_manager, assembly_admin, process_admin)
           expect(subject).not_to include(participant)
+          expect(response).to render_template(:index)
+        end
+      end
+
+      context "when filtering by process admin email in user term" do
+        it "lists the process admin user" do
+          get :index, params: { q: { name_or_nickname_or_email_cont: process_admin.email.split("@").first } }
+
+          expect(subject).to include(process_admin)
+          expect(subject).not_to include(admin_user, department_admin_user, user_manager, assembly_admin, participant)
+          expect(response).to render_template(:index)
+        end
+      end
+
+      context "when filtering by space name" do
+        it "lists the space_admins in spaces matching the given term" do
+          get :index, params: { q: { name_or_nickname_or_email_cont: "space" }, filter_search: "by_process_name" }
+
+          expect(subject).to include(process_admin, assembly_admin)
+          expect(subject).not_to include(admin_user, department_admin_user, user_manager, participant)
           expect(response).to render_template(:index)
         end
       end

@@ -26,7 +26,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @users.each do |user| %>
+          <% filtered_collection.each do |user| %>
             <% roles_with_title(user).each do |role_and_title| %>
               <% if @role.blank? || (@role == role_and_title[0] || @role == 'space_admin' && (role_and_title[0] == 'process_admin' || role_and_title[0] == 'assembly_admin' || role_and_title[0] == 'conference_admin')) %>              
               <tr data-user-id="<%= user.id %>">

@@ -26,19 +26,18 @@ module Decidim
         end
         roles_with_title
       end
-      # rubocop: enable Rails/HelperInstanceVariable
 
       private
 
       def user_participatory_processes_filtered(user, _locale, search_text)
         query = user.participatory_processes
-        query = query.where("lower(title->>?) like lower(?)", current_locale, "%#{search_text}%") if search_text.present?
+        query = query.where("lower(title->>?) like lower(?)", current_locale, "%#{search_text}%") if @by_process_name && search_text.present?
         query
       end
 
       def user_assemblies_filtered(user, _locale, search_text)
         query = user.assemblies
-        query = query.where("lower(title->>?) like lower(?)", current_locale, "%#{search_text}%") if search_text.present?
+        query = query.where("lower(title->>?) like lower(?)", current_locale, "%#{search_text}%") if @by_process_name && search_text.present?
         query
       end
 
@@ -46,9 +45,10 @@ module Decidim
         return [] unless Decidim::DepartmentAdmin.conferences_defined?
 
         query = user.conferences
-        query = query.where("lower(title->>?) like lower(?)", current_locale, "%#{search_text}%") if search_text.present?
+        query = query.where("lower(title->>?) like lower(?)", current_locale, "%#{search_text}%") if @by_process_name && search_text.present?
         query
       end
+      # rubocop: enable Rails/HelperInstanceVariable
     end
   end
 end
