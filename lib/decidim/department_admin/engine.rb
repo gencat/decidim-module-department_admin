@@ -19,7 +19,7 @@ module Decidim
         # resources :department_admin
         # root to: "department_admin#index"
       end
-      
+
       initializer "department_admin.webpacker.assets_path" do
         Decidim.register_assets_path File.expand_path("app/packs", root)
       end
