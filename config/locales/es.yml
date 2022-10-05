@@ -38,6 +38,11 @@ es:
             spaces: Procesos / Normativas / Consejo
             title: Título
             type: Tipo
+      shared:
+        filters:
+          filter:
+            all: Todas
+          filter_by: Filtrado por
       users:
         form:
           area: Area

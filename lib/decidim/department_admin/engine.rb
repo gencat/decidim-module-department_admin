@@ -20,6 +20,10 @@ module Decidim
         # root to: "department_admin#index"
       end
 
+      initializer "department_admin.webpacker.assets_path" do
+        Decidim.register_assets_path File.expand_path("app/packs", root)
+      end
+
       # rubocop: disable Lint/ConstantDefinitionInBlock
       initializer "department_admin.permissions_registry" do
         # activate Decidim LayoutHelper for the overriden views
@@ -87,15 +91,11 @@ module Decidim
       end
       # rubocop: enable Lint/ConstantDefinitionInBlock
 
-      initializer "department_admin.webpacker.assets_path" do
-        Decidim.register_assets_path File.expand_path("app/packs", root)
-      end
-
       # make decorators available to applications that use this Engine
       config.to_prepare do
         decorators = "#{Decidim::DepartmentAdmin::Engine.root}/app/decorators"
         Dir.glob("#{decorators}/**/*_decorator.rb").each do |decorator|
-          load decorator
+          require_dependency(decorator)
         end
       end
 

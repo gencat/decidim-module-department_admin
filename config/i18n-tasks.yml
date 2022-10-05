@@ -113,6 +113,11 @@ ignore_unused:
 - 'decidim.admin.models.user.fields.roles.department_admin'
 - 'decidim.admin.users.form.area'
 - 'decidim.components.department_admin.name'
+- 'decidim.admin.shared.filters.filter.all'
+- 'decidim.admin.shared.filters.filter_by'
+- 'decidim.admin.users.index.filter.all'
+- 'decidim.admin.users.index.filter_by'
+- 'decidim.admin.users.index.search'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

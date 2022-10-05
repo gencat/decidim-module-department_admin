@@ -1,21 +1,27 @@
 # frozen_string_literal: true
 
-#
-# This decorator adds the capability to the controller to query conferences
-# filtering by User role `department_admin`.
-#
-if Decidim::DepartmentAdmin.conferences_defined?
-  Decidim::Conferences::Admin::ConferencesController.class_eval do
-    private
+module Decidim::Conferences::Admin::ConferencesControllerDecorator
+  #
+  # This decorator adds the capability to the controller to query conferences
+  # filtering by User role `department_admin`.
+  #
+  def self.decorate
+    return unless Decidim::DepartmentAdmin.conferences_defined?
 
-    alias_method :original_collection, :collection
+    Decidim::Conferences::Admin::ConferencesController.class_eval do
+      private
 
-    def collection
-      @collection ||= if current_user.admin?
-                        original_collection
-                      else
-                        ::Decidim::Conferences::ConferencesWithUserRole.for(current_user)
-                      end
+      alias_method :original_collection, :collection
+
+      def collection
+        @collection ||= if current_user.admin?
+                          original_collection
+                        else
+                          ::Decidim::Conferences::ConferencesWithUserRole.for(current_user)
+                        end
+      end
     end
   end
 end
+
+::Decidim::Conferences::Admin::ConferencesControllerDecorator.decorate

@@ -38,6 +38,11 @@ ca:
             spaces: Procés / Normativa / Consell
             title: Titol
             type: Tipus
+      shared:
+        filters:
+          filter:
+            all: Totes
+          filter_by: Filtra per
       users:
         form:
           area: Àrea

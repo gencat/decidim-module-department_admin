@@ -115,8 +115,6 @@ module DecidimDepartmentAdminTestApp
 end
 ```
 
-```
-
 And run tests:
 
 ```bash

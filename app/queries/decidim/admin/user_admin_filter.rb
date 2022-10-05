@@ -6,96 +6,43 @@ module Decidim
     # name
     class UserAdminFilter < Rectify::Query
       # scope - the ActiveRecord::Relation of users to be filtered
-      # name_query - query to filter user group names
+      # termsc - text to filter users by
       # role - evaluation role to be used as a filter
-      def self.for(scope, name_query = nil, search_text = nil, role = nil, current_locale = :ca)
-        new(scope, name_query, search_text, role, current_locale).query
+      def self.for(scope, term = nil, role = nil, organization = nil)
+        new(scope, term, role, organization).query
       end
 
       # Initializes the class.
       #
       # scope - the ActiveRecord::Relation of users to be filtered
-      # name_query - query to filter user group names
+      # term - text to filter users by name or email
       # role - users role, must be defined as a scope in the user model
-      def initialize(scope, name_query = nil, search_text = nil, role = nil, current_locale = :ca)
+      def initialize(scope, term = nil, role = nil, organization = nil)
         @scope = scope
-        @name_query = name_query
-        @search_text = search_text
+        @term = term
         @role = role
-        @current_locale = current_locale
+        @organization = organization
         super(scope)
       end
 
-      # List the User groups by the diferents filters.
       def query
-        users = scope
-        users = filter_by_search(users)
-        users = filter_by_search_text(users)
-        filter_by_role(users)
+        filter_by_role(scope)
       end
 
       private
 
-      attr_reader :name_query, :search_text, :role, :scope, :current_locale
-
-      def filter_by_search(users)
-        return users if name_query.blank?
-
-        users.where("LOWER(name) LIKE LOWER(?) or LOWER(email) like LOWER(?)", "%#{name_query}%", "%#{name_query}%")
-      end
-
-      def filter_by_search_text(users)
-        return users if search_text.blank?
-
-        containing_proces_name = "%#{search_text}%"
-
-        query = <<-EOSQL
-          (id in (select decidim_user_id
-                  from decidim_participatory_process_user_roles
-                  where decidim_participatory_process_id in (
-                    select id
-                    from decidim_participatory_processes
-                    where lower(title->>?) like lower(?)))
-          or id in  ( select decidim_user_id
-                      from decidim_assembly_user_roles
-                      where decidim_assembly_id in (
-                        select id
-                        from decidim_assemblies
-                        where lower(title->>?) like lower(?)))
-          #{if Decidim::DepartmentAdmin.conferences_defined?
-              "or id in  ( select decidim_user_id
-                          from decidim_conference_user_roles
-                          where decidim_conference_id in (
-                            select id
-                            from decidim_conferences
-                            where lower(title->>?) like lower(?))))" else ")"
-            end}
-        EOSQL
-
-        if Decidim::DepartmentAdmin.conferences_defined?
-          users.where(query, current_locale, containing_proces_name, current_locale, containing_proces_name, current_locale, containing_proces_name)
-        else
-          users.where(query, current_locale, containing_proces_name, current_locale, containing_proces_name)
-        end
-      end
+      attr_reader :term, :role, :scope
 
       def filter_by_role(users)
-        return users unless Decidim::User::Roles.all.include?(role)
-
         case role
         when "space_admin"
-          if Decidim::DepartmentAdmin.conferences_defined?
-            users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' \
-                ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")' \
-                ' or "decidim_users"."id" in (select "decidim_conference_user_roles"."decidim_user_id" from "decidim_conference_user_roles")')
-          else
-            users.where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' \
-                ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")')
-          end
+          Decidim::User.space_admins(@organization)
         when "admin"
           users.where('"decidim_users"."admin" = ?', true)
-        else
+        when "department_admin", "user_manager"
           users.where("? = any(roles)", role)
+        else
+          users.or(Decidim::User.space_admins(@organization))
         end
       end
     end

@@ -38,6 +38,11 @@ en:
             spaces: Process / Regulations / Assemblies
             title: Title
             type: Type
+      shared:
+        filters:
+          filter:
+            all: All
+          filter_by: Filter by
       users:
         form:
           area: Area
