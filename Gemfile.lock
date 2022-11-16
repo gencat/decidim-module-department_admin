@@ -152,7 +152,7 @@ GIT
 PATH
   remote: .
   specs:
-    decidim-department_admin (0.5.0)
+    decidim-department_admin (0.6.0)
       decidim-admin (~> 0.26.2)
       decidim-core (~> 0.26.2)
 
