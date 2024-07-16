@@ -34,7 +34,7 @@ module Decidim::Admin::UsersControllerDecorator
           if current_user.department_admin?
             filtered.joins(:areas)
                     .where("'department_admin' = ANY(roles)")
-                    .where('decidim_areas.id': current_user.areas.pluck(:id))
+                    .where("decidim_areas.id": current_user.areas.pluck(:id))
           else
             filtered
           end
@@ -56,10 +56,10 @@ module Decidim::Admin::UsersControllerDecorator
         @spaces = []
         @user.participatory_processes.each do |process|
           type = if process.participatory_process_group
-                   if process.participatory_process_group&.title&.[](locale) != ""
-                     process.participatory_process_group&.title&.[](locale)
-                   else
+                   if process.participatory_process_group&.title&.[](locale) == ""
                      process.participatory_process_group&.title&.[]("ca")
+                   else
+                     process.participatory_process_group&.title&.[](locale)
                    end
                  else
                    t("models.user.fields.process_type", scope: "decidim.admin")

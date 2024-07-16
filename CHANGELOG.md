@@ -3,6 +3,10 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.7.0 (MINOR)
+- Increase minimum Decidim version to v0.27.6
+- Upgrade Ruby to 3.0.7
+
 ## Version 0.6.0 (MINOR)
 - Fix some decorators for Zeitwerk
 

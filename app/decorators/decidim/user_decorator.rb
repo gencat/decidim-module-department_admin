@@ -44,12 +44,12 @@ module Decidim::UserDecorator
         if Decidim::DepartmentAdmin.conferences_defined?
           Decidim::User.where(organization: organization)
                        .where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' \
-              ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")' \
-              ' or "decidim_users"."id" in (select "decidim_conference_user_roles"."decidim_user_id" from "decidim_conference_user_roles")')
+                              ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")' \
+                              ' or "decidim_users"."id" in (select "decidim_conference_user_roles"."decidim_user_id" from "decidim_conference_user_roles")')
         else
           Decidim::User.where(organization: organization)
                        .where('"decidim_users"."id" in (select "decidim_participatory_process_user_roles"."decidim_user_id" from "decidim_participatory_process_user_roles")' \
-              ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")')
+                              ' or "decidim_users"."id" in (select "decidim_assembly_user_roles"."decidim_user_id" from "decidim_assembly_user_roles")')
         end
       end
     end
