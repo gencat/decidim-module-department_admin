@@ -2,13 +2,12 @@
 
 module Decidim::ParticipatorySpaceResourceableDecorator
   #
-  # This decorator
+  # This decorator verrided method to avoid .to_sym error when logged in user is Depart Admin
+  # Override affects only line `case role_name&.to_sym`
+  # Furthermore added new ParticipatorySpaceRole case for DeparmentAdmin
   #
   def self.decorate
     Decidim::ParticipatorySpaceResourceable.class_eval do
-      # Overrided method to avoid .to_sym error when logged in user is Depart Admin
-      # Override affects only line `case role_name&.to_sym`
-      # Furthermore added new ParticipatorySpaceRole case for DeparmentAdmin
       def user_role_config_for(user, role_name)
         case role_name&.to_sym
         when :organization_admin
