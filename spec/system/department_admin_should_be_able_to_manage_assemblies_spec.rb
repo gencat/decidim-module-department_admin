@@ -57,9 +57,12 @@ describe "Admin manages assemblies", versioning: true, type: :system do
 
         fill_in :assembly_slug, with: "slug"
         fill_in :assembly_hashtag, with: "#hashtag"
-        attach_file :assembly_hero_image, image1_path
-        attach_file :assembly_banner_image, image2_path
+      end
 
+      dynamically_attach_file(:assembly_hero_image, image1_path)
+      dynamically_attach_file(:assembly_banner_image, image2_path)
+
+      within ".new_assembly" do
         find("*[type=submit]").click
       end
 
@@ -67,7 +70,7 @@ describe "Admin manages assemblies", versioning: true, type: :system do
       expect(Decidim::Assembly.last.area).to eq(area)
 
       within ".container" do
-        # expect(page).to have_current_path decidim_admin_assemblies.assemblies_path(parent_id: parent_assembly&.id)
+        # expect(page).to have_current_path decidim_admin_assemblies.assemblies_path(q: { parent_id_eq: parent_assembly&.id })
         expect(page).to have_content("My assembly")
       end
     end
