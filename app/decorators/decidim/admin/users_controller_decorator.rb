@@ -56,7 +56,7 @@ module Decidim::Admin::UsersControllerDecorator
         @spaces = []
         @user.participatory_processes.each do |process|
           type = if process.participatory_process_group
-                   if process.participatory_process_group&.title&.[](locale) == ""
+                   if process.participatory_process_group&.title&.[](locale).blank?
                      process.participatory_process_group&.title&.[]("ca")
                    else
                      process.participatory_process_group&.title&.[](locale)
@@ -65,7 +65,7 @@ module Decidim::Admin::UsersControllerDecorator
                    t("models.user.fields.process_type", scope: "decidim.admin")
                  end
           process_title = process.title[locale]
-          process_title = process.title["ca"] if process_title == ""
+          process_title = process.title["ca"] if process_title.blank?
 
           @spaces.push("title" => process_title,
                        "type" => type,
@@ -83,7 +83,7 @@ module Decidim::Admin::UsersControllerDecorator
                       end
 
           assembly_title = assembly.title[locale]
-          assembly_title = assembly.title["ca"] if assembly_title == ""
+          assembly_title = assembly.title["ca"] if assembly_title.blank?
 
           @spaces.push("title" => assembly_title,
                        "type" => t("models.user.fields.assembly_type", scope: "decidim.admin"),

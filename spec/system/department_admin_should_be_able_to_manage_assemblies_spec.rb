@@ -70,7 +70,7 @@ describe "Admin manages assemblies", versioning: true, type: :system do
       expect(Decidim::Assembly.last.area).to eq(area)
 
       within ".container" do
-        # expect(page).to have_current_path decidim_admin_assemblies.assemblies_path(q: { parent_id_eq: parent_assembly&.id })
+        expect(page).to have_current_path decidim_admin_assemblies.assemblies_path(q: { parent_id_eq: parent_assembly&.id })
         expect(page).to have_content("My assembly")
       end
     end

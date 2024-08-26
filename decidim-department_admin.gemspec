@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email = ["oliver.vh@coditramuntana.com"]
   s.license = "AGPL-3.0"
   s.homepage = "https://github.com/decidim/decidim-module-department_admin"
-  s.required_ruby_version = ">= 2.7"
+  s.required_ruby_version = ">= 3.0.7"
 
   s.name = "decidim-department_admin"
   s.summary = "A decidim department_admin module"

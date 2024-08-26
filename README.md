@@ -77,6 +77,21 @@ Inside `app/decorators` there are all the tricks done in order for department_ad
 
 All decorator artifacts are extensions or modifications to the standard Decidim behavior.
 
+### Temporal fixes
+
+#### Temporal fix: added & in case role_name check.
+
+Currently, in the file:
+- lib/decidim/participatory_space_resourceable.rb
+we have overridden `user_role_config_for` method, in role_name case check.
+
+The reason for this, is that this method is called from `user_role_config` in `Decidim::Admin::UserRolesHelper` file, with second param `role_name` that can be nil as it is called as `role&.role`.
+This happens only when logged in user is Departmental Admin type and this can be possible because this module is only available in this repo.
+So, to avoid error when role_name passed is nil, we override this param check with a simple `role_name&.to_sym`
+
+In next versions, this issue will be patched in `decidim/decidim`, so this override could be removed:
+- lib/decidim/participatory_space_resourceable.rb
+
 ### Run tests
 
 Create a dummy app in your application (if not present):
