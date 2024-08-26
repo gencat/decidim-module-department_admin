@@ -56,11 +56,7 @@ module Decidim::Admin::UsersControllerDecorator
         @spaces = []
         @user.participatory_processes.each do |process|
           type = if process.participatory_process_group
-                   if process.participatory_process_group&.title&.[](locale).blank?
-                     process.participatory_process_group&.title&.[]("ca")
-                   else
-                     process.participatory_process_group&.title&.[](locale)
-                   end
+                   process.participatory_process_group&.title&.[](locale).presence || process.participatory_process_group&.title&.[]("ca")
                  else
                    t("models.user.fields.process_type", scope: "decidim.admin")
                  end
