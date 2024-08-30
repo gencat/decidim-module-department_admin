@@ -76,7 +76,7 @@ module Decidim::Admin
         let!(:participatory_process) { create(:participatory_process, organization: organization, area: area) }
         let!(:component) { create(:dummy_component, organization: newsletter.organization, participatory_space: participatory_process) }
 
-        context "when no spaces selected " do
+        context "when no spaces selected" do
           it "is not valid" do
             expect { command.call }.to broadcast(:invalid)
           end

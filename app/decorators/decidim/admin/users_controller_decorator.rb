@@ -34,7 +34,7 @@ module Decidim::Admin::UsersControllerDecorator
           if current_user.department_admin?
             filtered.joins(:areas)
                     .where("'department_admin' = ANY(roles)")
-                    .where('decidim_areas.id': current_user.areas.pluck(:id))
+                    .where("decidim_areas.id": current_user.areas.pluck(:id))
           else
             filtered
           end
@@ -56,16 +56,12 @@ module Decidim::Admin::UsersControllerDecorator
         @spaces = []
         @user.participatory_processes.each do |process|
           type = if process.participatory_process_group
-                   if process.participatory_process_group&.title&.[](locale) != ""
-                     process.participatory_process_group&.title&.[](locale)
-                   else
-                     process.participatory_process_group&.title&.[]("ca")
-                   end
+                   process.participatory_process_group&.title&.[](locale).presence || process.participatory_process_group&.title&.[]("ca")
                  else
                    t("models.user.fields.process_type", scope: "decidim.admin")
                  end
           process_title = process.title[locale]
-          process_title = process.title["ca"] if process_title == ""
+          process_title = process.title["ca"] if process_title.blank?
 
           @spaces.push("title" => process_title,
                        "type" => type,
@@ -83,7 +79,7 @@ module Decidim::Admin::UsersControllerDecorator
                       end
 
           assembly_title = assembly.title[locale]
-          assembly_title = assembly.title["ca"] if assembly_title == ""
+          assembly_title = assembly.title["ca"] if assembly_title.blank?
 
           @spaces.push("title" => assembly_title,
                        "type" => t("models.user.fields.assembly_type", scope: "decidim.admin"),

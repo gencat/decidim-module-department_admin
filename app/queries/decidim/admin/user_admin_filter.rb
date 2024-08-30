@@ -4,7 +4,7 @@ module Decidim
   module Admin
     # A class used to filter users by whitelisted scope or searches on their
     # name
-    class UserAdminFilter < Rectify::Query
+    class UserAdminFilter < Decidim::Query
       # scope - the ActiveRecord::Relation of users to be filtered
       # termsc - text to filter users by
       # role - evaluation role to be used as a filter

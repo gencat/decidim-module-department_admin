@@ -76,9 +76,12 @@ describe "Admin manages participatory processes", versioning: true, type: :syste
 
         fill_in :participatory_process_slug, with: "slug"
         fill_in :participatory_process_hashtag, with: "#hashtag"
-        attach_file :participatory_process_hero_image, image1_path
-        attach_file :participatory_process_banner_image, image2_path
+      end
 
+      dynamically_attach_file(:participatory_process_hero_image, image1_path)
+      dynamically_attach_file(:participatory_process_banner_image, image2_path)
+
+      within ".new_participatory_process" do
         find("*[type=submit]").click
       end
 
@@ -94,21 +97,21 @@ describe "Admin manages participatory processes", versioning: true, type: :syste
   end
 
   context "when updating a participatory process" do
-    let!(:participatory_process3) { create(:participatory_process, organization: organization, area: area) }
+    let!(:participatory_process_3) { create(:participatory_process, organization: organization, area: area) }
 
     before do
       visit decidim_admin_participatory_processes.participatory_processes_path
     end
 
     it "update a participatory process without images does not delete them" do
-      click_link translated(participatory_process3.title)
+      click_link translated(participatory_process_3.title)
       click_submenu_link "Info"
       click_button "Update"
 
-      expect(participatory_process3.reload.area).to eq(area)
+      expect(participatory_process_3.reload.area).to eq(area)
       expect(page).to have_admin_callout("successfully")
-      expect(page).to have_css("img[src*='#{participatory_process3.attached_uploader(:hero_image).path}']")
-      expect(page).to have_css("img[src*='#{participatory_process3.attached_uploader(:banner_image).path}']")
+      expect(page).to have_css("img[src*='#{participatory_process_3.attached_uploader(:hero_image).path}']")
+      expect(page).to have_css("img[src*='#{participatory_process_3.attached_uploader(:banner_image).path}']")
     end
   end
 end

@@ -27,7 +27,7 @@ module Decidim::Admin
       let!(:assembly) { create(:assembly, organization: organization, title: { en: "An Assembly space" }) }
       let!(:assembly_admin_rel) { Decidim::AssemblyUserRole.create(role: "admin", user: assembly_admin, assembly: assembly) }
 
-      let(:subject) { controller.filtered_collection }
+      subject { controller.filtered_collection }
 
       context "when not filtering" do
         it "lists all kind of admin users" do

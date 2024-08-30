@@ -16,7 +16,7 @@ describe "Department admin should be able to access Admin Dashboard", type: :sys
 
   it "is able to access the admin Dashboard" do
     expect(page).to have_content("Dashboard")
-    expect(page).to have_content("Welcome to the Decidim Admin Panel.")
+    expect(page).to have_content("Welcome to the Admin Panel.")
   end
 
   context "when accessing the dashboard some left menu elements should be accessible" do
@@ -38,7 +38,7 @@ describe "Department admin should be able to access Admin Dashboard", type: :sys
       expect(page).to have_content("Participants")
       click_link "Participants"
       expect(page).to have_current_path "/admin/users"
-      expect(page).to have_content("New Participant")
+      expect(page).to have_content("New admin")
     end
 
     it "is able to access 'Newsletter'" do

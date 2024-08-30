@@ -3,7 +3,7 @@
 module Decidim
   module Admin
     # A class used to filter users by processes that hey administer
-    class UserAdminBySpaceNameFilter < Rectify::Query
+    class UserAdminBySpaceNameFilter < Decidim::Query
       # termsc - text to filter users by
       def self.for(term = nil, organization = nil, current_locale = :ca)
         new(term, organization, current_locale).query
@@ -51,7 +51,8 @@ module Decidim
                           where decidim_conference_id in (
                             select id
                             from decidim_conferences
-                            where lower(title->>?) like lower(?))))" else ")"
+                            where lower(title->>?) like lower(?))))" else
+                                                                       ")"
             end}
         EOSQL
 

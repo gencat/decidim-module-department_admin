@@ -4,7 +4,7 @@ $LOAD_PATH.push File.expand_path("lib", __dir__)
 
 require "decidim/department_admin/version"
 
-DECIDIM_VER = "~> 0.26.2"
+DECIDIM_VER = "~> 0.27.0"
 
 Gem::Specification.new do |s|
   s.version = Decidim::DepartmentAdmin.version
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email = ["oliver.vh@coditramuntana.com"]
   s.license = "AGPL-3.0"
   s.homepage = "https://github.com/decidim/decidim-module-department_admin"
-  s.required_ruby_version = ">= 2.7"
+  s.required_ruby_version = ">= 3.0.7"
 
   s.name = "decidim-department_admin"
   s.summary = "A decidim department_admin module"
@@ -26,4 +26,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "decidim", DECIDIM_VER
   s.add_development_dependency "decidim-conferences", DECIDIM_VER
   s.add_development_dependency "decidim-dev", DECIDIM_VER
+  s.metadata["rubygems_mfa_required"] = "true"
 end

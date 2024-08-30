@@ -9,7 +9,7 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 2.7.5
+  RUBY_VERSION: 3.0.7
   NODE_VERSION: 16.9.1
 
 jobs:
@@ -53,6 +53,23 @@ jobs:
 
       - name: Set bundle local config configvendor/bundle path
         run: bundle config set --local path 'vendor/bundle'
+
+      # chromedriver workaround
+      - uses: nanasess/setup-chromedriver@v2
+        with:
+          chromedriver-version: 119.0.6045.105
+
+      - name: List Chrome
+        shell: "bash"
+        run: apt list --installed | grep chrome
+
+      - name: Remove Chrome
+        shell: "bash"
+        run: sudo apt remove google-chrome-stable
+
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: 119.0.6045.105
 
       - name: Install Ruby deps
         uses: nick-invision/retry@v2
