@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Decidim::ParticipatorySpaceResourceableDecorator
+module Lib::Decidim::ParticipatorySpaceResourceableDecorator
   #
   # This decorator overrided method to avoid .to_sym error when logged in user is Department Admin
   # Override affects only line `case role_name&.to_sym`
@@ -30,4 +30,4 @@ module Decidim::ParticipatorySpaceResourceableDecorator
   end
 end
 
-::Decidim::ParticipatorySpaceResourceableDecorator.decorate
+::Lib::Decidim::ParticipatorySpaceResourceableDecorator.decorate
