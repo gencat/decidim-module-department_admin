@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-if Decidim::DepartmentAdmin.conferences_defined?
-  module Decidim
-    module Conferences
+module Decidim
+  module Conferences
+    if Decidim::DepartmentAdmin.conferences_defined?
       class ParticipatorySpacePermissions < Decidim::DepartmentAdmin::Permissions
         def initialize(*)
           # This are the same permissions as Decidim's conferences space.
@@ -10,6 +10,9 @@ if Decidim::DepartmentAdmin.conferences_defined?
           self.class.delegate_chain = [Decidim::Conferences::Permissions]
           super
         end
+      end
+    else
+      class ParticipatorySpacePermissions
       end
     end
   end
