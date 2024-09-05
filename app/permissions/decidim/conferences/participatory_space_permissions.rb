@@ -2,17 +2,15 @@
 
 module Decidim
   module Conferences
-    if Decidim::DepartmentAdmin.conferences_defined?
-      class ParticipatorySpacePermissions < Decidim::DepartmentAdmin::Permissions
-        def initialize(*)
+    parent_class = Decidim::DepartmentAdmin.conferences_defined? ? Decidim::DepartmentAdmin::Permissions : Object
+    class ParticipatorySpacePermissions < parent_class
+      def initialize(*)
+        if Decidim::DepartmentAdmin.conferences_defined?
           # This are the same permissions as Decidim's conferences space.
           # Right now are the same for admin and public views
           self.class.delegate_chain = [Decidim::Conferences::Permissions]
-          super
         end
-      end
-    else
-      class ParticipatorySpacePermissions
+        super
       end
     end
   end
