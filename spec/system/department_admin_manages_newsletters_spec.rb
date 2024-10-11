@@ -21,9 +21,27 @@ describe "Admin manages newsletters" do
     fill_in_i18n(
       :newsletter_subject,
       "#newsletter-subject-tabs",
-      en: "A fancy newsletter for %{name}",
-      es: "Un correo electrónico muy chulo para %{name}",
-      ca: "Un correu electrònic flipant per a %{name}"
+      **attributes[:subject].except("machine_translations")
+    )
+
+    fill_in_i18n_editor(
+      :newsletter_settings_introduction,
+      "#newsletter-settings--introduction-tabs",
+      en: "Hello %{name}! Relevant content.",
+      es: "Hola, %{name}! Contenido relevante.",
+      ca: "Hola, %{name}! Contingut rellevant."
+    )
+
+    fill_in_i18n(
+      :newsletter_settings_cta_text,
+      "#newsletter-settings--cta_text-tabs",
+      en: "Hello %{name}! Relevant content."
+    )
+
+    fill_in_i18n(
+      :newsletter_settings_cta_url,
+      "#newsletter-settings--cta_url-tabs",
+      en: "Hello %{name}! Relevant content."
     )
 
     fill_in_i18n_editor(
@@ -33,24 +51,24 @@ describe "Admin manages newsletters" do
       es: "Hola, %{name}! Contenido relevante.",
       ca: "Hola, %{name}! Contingut rellevant."
     )
-
-    find("*[type=submit]").click
   end
 
   context "when creating and previewing a newsletter" do
     it "allows a newsletter to be created" do
       visit decidim_admin.newsletters_path
 
-      within ".secondary-nav" do
-        find(".button.new").click
+      find(".button.new").click
+
+      within "#image_text_cta" do
+        click_link_or_button "Use this template"
       end
 
-      within "#basic_only_text .card-footer" do
-        click_link_or_button("Use this template")
-      end
-
-      within "#new_newsletter_" do
+      within ".new_newsletter" do
         fill_newsletter_form
+      end
+
+      within ".new_newsletter" do
+        find("*[type=submit]").click
       end
 
       expect(page).to have_content("Preview")
@@ -126,8 +144,8 @@ describe "Admin manages newsletters" do
             end
           end
 
-          within ".button--double" do
-            accept_confirm { find("*", text: "Deliver").click }
+          within "form.newsletter_deliver .item__edit-sticky" do
+            accept_confirm { click_on("Deliver newsletter") }
           end
 
           wait_redirect
@@ -162,8 +180,8 @@ describe "Admin manages newsletters" do
             end
           end
 
-          within ".button--double" do
-            accept_confirm { find("*", text: "Deliver").click }
+          within "form.newsletter_deliver .item__edit-sticky" do
+            accept_confirm { click_on("Deliver newsletter") }
           end
 
           wait_redirect
@@ -204,8 +222,8 @@ describe "Admin manages newsletters" do
             end
           end
 
-          within ".button--double" do
-            accept_confirm { find("*", text: "Deliver").click }
+          within "form.newsletter_deliver .item__edit-sticky" do
+            accept_confirm { click_on("Deliver newsletter") }
           end
 
           wait_redirect

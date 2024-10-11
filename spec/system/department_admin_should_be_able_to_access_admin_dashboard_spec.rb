@@ -16,7 +16,6 @@ describe "Department admin should be able to access Admin Dashboard" do
 
   it "is able to access the admin Dashboard" do
     expect(page).to have_content("Dashboard")
-    expect(page).to have_content("Welcome to the Admin Panel.")
   end
 
   context "when accessing the dashboard some left menu elements should be accessible" do
@@ -24,7 +23,7 @@ describe "Department admin should be able to access Admin Dashboard" do
       expect(page).to have_content("Processes")
       click_link_or_button "Processes"
       expect(page).to have_current_path "/admin/participatory_processes"
-      expect(page).to have_content("Participatory processes")
+      expect(page).to have_content("New process")
     end
 
     it "is able to access 'Assemblies'" do
@@ -52,7 +51,7 @@ describe "Department admin should be able to access Admin Dashboard" do
       expect(page).to have_content("Conferences")
       click_link_or_button "Conferences"
       expect(page).to have_current_path "/admin/conferences"
-      expect(page).to have_content("New Conference")
+      expect(page).to have_content("New conference")
     end
     # TODO: not supported at the moment
     # it "should be able to access 'Initiatives'"

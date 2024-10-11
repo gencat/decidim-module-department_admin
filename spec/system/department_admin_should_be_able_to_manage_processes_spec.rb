@@ -37,7 +37,7 @@ describe "Admin manages participatory processes", :versioning do
     let(:image2_path) { Decidim::Dev.asset(image2_filename) }
 
     before do
-      click_link_or_button_or_button "New process"
+      click_link_or_button "New process"
     end
 
     it "creates a new participatory process with department admin's area" do
