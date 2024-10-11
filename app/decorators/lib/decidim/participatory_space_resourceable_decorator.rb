@@ -30,4 +30,4 @@ module Lib::Decidim::ParticipatorySpaceResourceableDecorator
   end
 end
 
-::Lib::Decidim::ParticipatorySpaceResourceableDecorator.decorate
+Lib::Decidim::ParticipatorySpaceResourceableDecorator.decorate

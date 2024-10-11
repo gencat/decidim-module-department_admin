@@ -27,4 +27,4 @@ module Decidim::Admin::NewslettersControllerDecorator
   end
 end
 
-::Decidim::Admin::NewslettersControllerDecorator.decorate
+Decidim::Admin::NewslettersControllerDecorator.decorate

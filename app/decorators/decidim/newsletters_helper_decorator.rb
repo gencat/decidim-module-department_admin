@@ -41,4 +41,4 @@ module Decidim::NewslettersHelperDecorator
   # rubocop: enable Metrics/PerceivedComplexity
 end
 
-::Decidim::NewslettersHelperDecorator.decorate
+Decidim::NewslettersHelperDecorator.decorate

@@ -1,28 +1,32 @@
-<div class='department-admin-filter filter row'>
-  <div class='column medium-3'>
-  <span class='dropdown-menu-inverted_label'><%= t('.filter_by') %> :</span>
-    <ul class='dropdown menu dropdown-inverted' data-dropdown-menu data-close-on-click-inside='false'>
-      <li class='is-dropdown-submenu-parent'>
-        <a href='#'>
-        <% if @role.present? %>
-          <%= t("models.user.fields.roles.#{@role}", scope: 'decidim.admin') %>
-        <% else %>
-          <%= t('.filter.all') %>
-        <% end %>
-        </a>
-        <ul class='menu is-dropdown-submenu'>
-          <% Decidim::User::Roles.all.map do |role| %>
-            <li><%= link_to t("models.user.fields.roles.#{role}", scope: 'decidim.admin'), url_for(role: role, q: ransack_params) %></li>
+<% if controller_name == "users" %>
+  <div class='department-admin-filter filter row'>
+    <div>
+      <span class='dropdown-menu-inverted_label'><%= t('.filter_by') %> :</span>
+      <ul class="dropdown menu" data-dropdown-menu data-close-on-click-inside="false">
+        <li class='is-dropdown-submenu-parent'>
+          <a href='#'>
+          <% if @role.present? %>
+            <%= t("models.user.fields.roles.#{@role}", scope: 'decidim.admin') %>
+          <% else %>
+            <%= t('.filter.all') %>
           <% end %>
-          <li><%= link_to t('models.user.fields.roles.space_admin', scope: 'decidim.admin'), url_for(role: 'space_admin', q: ransack_params) %></li>
-          <li><%= link_to t('.filter.all'), url_for(q: ransack_params) %></li>
-        </ul>
-      </li>
-    </ul>
-    <%= t('models.user.fields.search_question', scope: 'decidim.admin') %>
-    <input type='radio' id='processes_filter' name='filter_search' value='by_process_name' <%= @by_process_name ? "checked" : "" %> style='margin-left: 20px'>
-    <label for='processes_filter'><%= t('models.user.fields.search_field_processes', scope: 'decidim.admin') %></label>
-    <input type='radio' id='query_filter' name='filter_search' value='query' <%= params[:filter_search].blank? || params[:filter_search] == "query" ? "checked" : "" %> >
-    <label for='query_filter'><%= t('models.user.fields.search_field_admins', scope: 'decidim.admin') %></label>
+          </a>
+          <ul class='menu is-dropdown-submenu'>
+            <% Decidim::User::Roles.all.map do |role| %>
+              <li><%= link_to t("models.user.fields.roles.#{role}", scope: 'decidim.admin'), url_for(role: role, q: ransack_params) %></li>
+            <% end %>
+            <li><%= link_to t('models.user.fields.roles.space_admin', scope: 'decidim.admin'), url_for(role: 'space_admin', q: ransack_params) %></li>
+            <li><%= link_to t('.filter.all'), url_for(q: ransack_params) %></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="process-or-admins">
+        <%= t('models.user.fields.search_question', scope: 'decidim.admin') %>
+        <input type='radio' id='processes_filter' name='filter_search' value='by_process_name' <%= @by_process_name ? "checked" : "" %> style='margin-left: 20px'>
+        <label for='processes_filter'><%= t('models.user.fields.search_field_processes', scope: 'decidim.admin') %></label>
+        <input type='radio' id='query_filter' name='filter_search' value='query' <%= params[:filter_search].blank? || params[:filter_search] == "query" ? "checked" : "" %> >
+        <label for='query_filter'><%= t('models.user.fields.search_field_admins', scope: 'decidim.admin') %></label>
+      </div>
+    </div>
   </div>
-</div>
+<% end %>

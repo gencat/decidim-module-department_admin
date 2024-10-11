@@ -19,4 +19,4 @@ module Decidim::Assemblies::PermissionsDecorator
   end
 end
 
-::Decidim::Assemblies::PermissionsDecorator.decorate
+Decidim::Assemblies::PermissionsDecorator.decorate

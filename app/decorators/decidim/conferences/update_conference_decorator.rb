@@ -18,4 +18,4 @@ module Decidim::Conferences::UpdateConferenceDecorator
   end
 end
 
-::Decidim::Conferences::UpdateConferenceDecorator.decorate
+Decidim::Conferences::UpdateConferenceDecorator.decorate

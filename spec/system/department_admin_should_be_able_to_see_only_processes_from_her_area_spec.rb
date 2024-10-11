@@ -2,16 +2,16 @@
 
 require "spec_helper"
 
-describe "Admin manages participatory processes", versioning: true, type: :system do
+describe "Admin manages participatory processes", :versioning do
   let(:organization) { create(:organization) }
   let(:area) { create(:area) }
-  let(:department_admin) { create(:department_admin, :confirmed, organization: organization, area: area) }
+  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:) }
 
   let!(:participatory_process_w_area) do
-    create(:participatory_process, organization: organization, area: area)
+    create(:participatory_process, organization:, area:)
   end
   let!(:participatory_process_wo_area) do
-    create(:participatory_process, organization: organization)
+    create(:participatory_process, organization:)
   end
 
   def visit_admin_processes_list
@@ -33,7 +33,7 @@ describe "Admin manages participatory processes", versioning: true, type: :syste
   it "sees only processes in the same area" do
     visit_admin_processes_list
     expect(page).to have_content(participatory_process_w_area.title["en"])
-    expect(page).not_to have_content(participatory_process_wo_area.title["en"])
+    expect(page).to have_no_content(participatory_process_wo_area.title["en"])
   end
 
   context "when department_admin has a user_role in a participatory_process_wo_area" do

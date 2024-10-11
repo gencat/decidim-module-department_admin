@@ -1,15 +1,14 @@
 <% @user = Decidim::User.find_by_id(params[:id]) %>
-<div class="process-title">
-  <div class="process-title-content">
-    <a target="_blank" href="/admin/users?role=space_admin"><%= t("models.user.fields.administrated_spaces", scope: "decidim.admin") %></a>
-  </div>
+<div class="card">
+  <div class="item_show__header">
+      <h1 class="item_show__header-title">
+        <%= @user.name + '(' + @user.email + ')' %>
+      </h1>
+    </div>
+  <a target="_blank" href="/admin/users?role=space_admin"><%= t("models.user.fields.administrated_spaces", scope: "decidim.admin") %></a>
 </div>
 <div class="card">
-  <div class="card-divider">
-    <h2 class="card-title">
-      <%= @user.name + '(' + @user.email + ')' %>
-    </h2>
-  </div>
+  <div class="card-divider"></div>
   <div class="card-section">
     <div class="table-scroll">
       <table class="table-list">

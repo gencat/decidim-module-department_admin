@@ -7,17 +7,17 @@ module Decidim
     describe Permissions do
       let(:area) { create(:area) }
       let!(:user) do
-        create(:department_admin, :confirmed, organization: area.organization, area: area)
+        create(:department_admin, :confirmed, organization: area.organization, area:)
       end
 
       def should_allow_action(scope, action, subject)
-        action = PermissionAction.new(scope: scope, action: action, subject: subject)
+        action = PermissionAction.new(scope:, action:, subject:)
         permissions = DepartmentAdmin::Permissions.new(user, action)
         expect(permissions.permissions).to be_allowed
       end
 
       def should_allow_action_with_ctx(scope, action, subject, ctx)
-        action = PermissionAction.new(scope: scope, action: action, subject: subject)
+        action = PermissionAction.new(scope:, action:, subject:)
         permissions = DepartmentAdmin::Permissions.new(user, action, ctx)
         expect(permissions.permissions).to be_allowed
       end
@@ -65,23 +65,23 @@ module Decidim
 
           context "when acction is allowed and context is process" do
             context "when process has same area as department_admin" do
-              let(:process) { create(:participatory_process, organization: area.organization, area: area) }
-              let(:assembly) { create(:assembly, organization: area.organization, area: area) }
-              let(:conference) { create(:conference, organization: area.organization, area: area) }
+              let(:process) { create(:participatory_process, organization: area.organization, area:) }
+              let(:assembly) { create(:assembly, organization: area.organization, area:) }
+              let(:conference) { create(:conference, organization: area.organization, area:) }
 
               it "allows accepted actions with expected context" do
                 should_allow_action_with_ctx(:admin, :read, :participatory_space, current_participatory_space: process)
-                should_allow_action_with_ctx(:admin, :update, :process, process: process)
+                should_allow_action_with_ctx(:admin, :update, :process, process:)
                 pps = ParticipatoryProcessStep.new(participatory_process: process)
                 should_allow_action_with_ctx(:admin, :update, :process_step, process_step: pps)
                 should_allow_action_with_ctx(:admin, :destroy, :process_step, process_step: pps)
-                should_allow_action_with_ctx(:admin, :update, :assembly, assembly: assembly)
-                should_allow_action_with_ctx(:admin, :update, :conference, conference: conference)
+                should_allow_action_with_ctx(:admin, :update, :assembly, assembly:)
+                should_allow_action_with_ctx(:admin, :update, :conference, conference:)
                 # -> {permission_for?(requested_action, :admin, :read, :newsletter, restricted_rsrc: context[:newsletter])},
               end
 
               context "when meeting has same area as department_admin" do
-                let(:meeting) { create(:meeing, participatory_space: process, area: area) }
+                let(:meeting) { create(:meeing, participatory_space: process, area:) }
 
                 it "allows accepted actions with expected context" do
                   should_allow_action(:admin, :create, :attachment)
@@ -94,7 +94,7 @@ module Decidim
 
               it "does not allow accepted actions with unexpected context" do
                 action = PermissionAction.new(scope: :admin, action: :update, subject: :process)
-                permissions = DepartmentAdmin::Permissions.new(user, action, process: process)
+                permissions = DepartmentAdmin::Permissions.new(user, action, process:)
                 expect { permissions.permissions.allowed? }.to raise_error(Decidim::PermissionAction::PermissionNotSetError)
               end
             end
@@ -118,3 +118,4 @@ module Decidim
     end
   end
 end
+# rubocop:enable RSpec/NoExpectationExample

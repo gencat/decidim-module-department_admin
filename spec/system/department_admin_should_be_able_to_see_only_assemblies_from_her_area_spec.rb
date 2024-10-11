@@ -2,13 +2,13 @@
 
 require "spec_helper"
 
-describe "Admin manages assemblies", versioning: true, type: :system do
+describe "Admin manages assemblies", :versioning do
   let(:organization) { create(:organization) }
   let(:area) { create(:area) }
-  let(:department_admin) { create(:department_admin, :confirmed, organization: organization, area: area) }
+  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:) }
 
-  let!(:assembly_w_area) { create(:assembly, organization: organization, area: area) }
-  let!(:assembly_wo_area) { create(:assembly, organization: organization) }
+  let!(:assembly_w_area) { create(:assembly, organization:, area:) }
+  let!(:assembly_wo_area) { create(:assembly, organization:) }
 
   def visit_admin_assemblies_list
     switch_to_host(organization.host)
@@ -29,7 +29,7 @@ describe "Admin manages assemblies", versioning: true, type: :system do
   it "sees only processes in the same area" do
     visit_admin_assemblies_list
     expect(page).to have_content(assembly_w_area.title["en"])
-    expect(page).not_to have_content(assembly_wo_area.title["en"])
+    expect(page).to have_no_content(assembly_wo_area.title["en"])
   end
 
   context "when department_admin has a user_role in an assembly_wo_area" do

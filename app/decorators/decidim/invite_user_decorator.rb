@@ -53,4 +53,4 @@ module Decidim::InviteUserDecorator
   end
 end
 
-::Decidim::InviteUserDecorator.decorate
+Decidim::InviteUserDecorator.decorate
