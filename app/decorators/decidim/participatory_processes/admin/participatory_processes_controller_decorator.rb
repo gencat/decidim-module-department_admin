@@ -22,4 +22,4 @@ module Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessesControllerD
   end
 end
 
-::Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessesControllerDecorator.decorate
+Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessesControllerDecorator.decorate

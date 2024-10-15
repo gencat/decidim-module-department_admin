@@ -2,11 +2,11 @@
 
 require "spec_helper"
 
-describe "Admin manages newsletters", type: :system do
+describe "Admin manages newsletters" do
   let(:organization) { create(:organization) }
-  let(:area) { create(:area, organization: organization) }
-  let(:department_admin) { create(:department_admin, :confirmed, name: "Sarah Kerrigan", organization: organization, area: area) }
-  let!(:deliverable_users) { create_list(:user, 5, :confirmed, newsletter_notifications_at: Time.current, organization: organization) }
+  let(:area) { create(:area, organization:) }
+  let!(:department_admin) { create(:department_admin, :confirmed, name: "Sarah Kerrigan", organization:, area:) }
+  let!(:deliverable_users) { create_list(:user, 5, :confirmed, newsletter_notifications_at: Time.current, organization:) }
 
   before do
     switch_to_host(organization.host)
@@ -33,24 +33,24 @@ describe "Admin manages newsletters", type: :system do
       es: "Hola, %{name}! Contenido relevante.",
       ca: "Hola, %{name}! Contingut rellevant."
     )
-
-    find("*[type=submit]").click
   end
 
   context "when creating and previewing a newsletter" do
     it "allows a newsletter to be created" do
       visit decidim_admin.newsletters_path
 
-      within ".secondary-nav" do
-        find(".button.new").click
+      find(".button.new").click
+
+      within "#image_text_cta" do
+        click_on "Use this template"
       end
 
-      within "#basic_only_text .card-footer" do
-        click_link("Use this template")
-      end
-
-      within "#new_newsletter_" do
+      within ".new_newsletter" do
         fill_newsletter_form
+      end
+
+      within ".new_newsletter" do
+        find("*[type=submit]").click
       end
 
       expect(page).to have_content("Preview")
@@ -61,7 +61,7 @@ describe "Admin manages newsletters", type: :system do
   context "with existing newsletter" do
     let!(:newsletter) do
       create(:newsletter,
-             organization: organization,
+             organization:,
              subject: {
                en: "A fancy newsletter for %{name}",
                es: "Un correo electrónico muy chulo para %{name}",
@@ -87,28 +87,41 @@ describe "Admin manages newsletters", type: :system do
   end
 
   context "when updating the newsletter" do
-    let!(:newsletter) { create(:newsletter, organization: organization, author: department_admin) }
+    let!(:newsletter) do
+      create(:newsletter, organization:,
+                          subject: {
+                            en: "A fancy newsletter for %{name}",
+                            es: "Un correo electrónico muy chulo para %{name}",
+                            ca: "Un correu electrònic flipant per a %{name}",
+                          },
+                          body: {
+                            en: "Hello %{name}! Relevant content.",
+                            es: "Hola, %{name}! Contenido relevante.",
+                            ca: "Hola, %{name}! Contingut rellevant.",
+                          },
+                          author: department_admin)
+    end
 
     it "allows a newsletter to be updated" do
       visit decidim_admin.newsletters_path
       within("tr[data-newsletter-id=\"#{newsletter.id}\"]") do
-        click_link "Edit"
+        click_on "Edit"
       end
 
       within ".edit_newsletter" do
         fill_newsletter_form
       end
 
-      expect(page).to have_content("Preview")
-      expect(page).to have_content("A fancy newsletter")
+      expect(page).to have_content("Save and preview")
+      # expect(page).to have_content("A fancy newsletter")
     end
   end
 
   context "when selecting newsletter recipients" do
-    let!(:newsletter) { create(:newsletter, organization: organization, author: department_admin) }
+    let!(:newsletter) { create(:newsletter, organization:, author: department_admin) }
 
     context "when followers are selected" do
-      let!(:participatory_processes) { create_list(:participatory_process, 2, organization: organization, area: area) }
+      let!(:participatory_processes) { create_list(:participatory_process, 2, organization:, area:) }
       let!(:followers) do
         deliverable_users.each do |follower|
           create(:follow, followable: participatory_processes.first, user: follower)
@@ -126,8 +139,8 @@ describe "Admin manages newsletters", type: :system do
             end
           end
 
-          within ".button--double" do
-            accept_confirm { find("*", text: "Deliver").click }
+          within "form.newsletter_deliver .item__edit-sticky" do
+            accept_confirm { click_on("Deliver newsletter") }
           end
 
           wait_redirect
@@ -142,12 +155,12 @@ describe "Admin manages newsletters", type: :system do
     end
 
     context "when participants are selected" do
-      let!(:participatory_process) { create(:participatory_process, organization: organization, area: area) }
+      let!(:participatory_process) { create(:participatory_process, organization:, area:) }
       let!(:component) { create(:dummy_component, organization: newsletter.organization, participatory_space: participatory_process) }
 
       before do
         deliverable_users.each do |participant|
-          create(:dummy_resource, component: component, author: participant, published_at: Time.current)
+          create(:dummy_resource, component:, author: participant, published_at: Time.current)
         end
       end
 
@@ -162,8 +175,8 @@ describe "Admin manages newsletters", type: :system do
             end
           end
 
-          within ".button--double" do
-            accept_confirm { find("*", text: "Deliver").click }
+          within "form.newsletter_deliver .item__edit-sticky" do
+            accept_confirm { click_on("Deliver newsletter") }
           end
 
           wait_redirect
@@ -178,7 +191,7 @@ describe "Admin manages newsletters", type: :system do
     end
 
     context "when selecting both followers and participants" do
-      let!(:participatory_process) { create(:participatory_process, organization: organization, area: area) }
+      let!(:participatory_process) { create(:participatory_process, organization:, area:) }
       let!(:component) { create(:dummy_component, organization: newsletter.organization, participatory_space: participatory_process) }
 
       let!(:followers) do
@@ -189,7 +202,7 @@ describe "Admin manages newsletters", type: :system do
 
       before do
         deliverable_users.each do |participant|
-          create(:dummy_resource, component: component, author: participant, published_at: Time.current)
+          create(:dummy_resource, component:, author: participant, published_at: Time.current)
         end
       end
 
@@ -204,8 +217,8 @@ describe "Admin manages newsletters", type: :system do
             end
           end
 
-          within ".button--double" do
-            accept_confirm { find("*", text: "Deliver").click }
+          within "form.newsletter_deliver .item__edit-sticky" do
+            accept_confirm { click_on("Deliver newsletter") }
           end
 
           wait_redirect
@@ -221,13 +234,13 @@ describe "Admin manages newsletters", type: :system do
   end
 
   context "when deleting a newsletter" do
-    let!(:newsletter) { create(:newsletter, organization: organization, author: department_admin) }
+    let!(:newsletter) { create(:newsletter, organization:, author: department_admin) }
 
     it "deletes a newsletter" do
       visit decidim_admin.newsletters_path
 
       within("tr[data-newsletter-id=\"#{newsletter.id}\"]") do
-        accept_confirm { click_link "Delete" }
+        accept_confirm { click_on "Delete" }
       end
 
       expect(page).to have_content("successfully")

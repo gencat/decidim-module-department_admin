@@ -24,4 +24,4 @@ module Decidim::ParticipatoryProcessesWithUserRoleDecorator
   end
 end
 
-::Decidim::ParticipatoryProcessesWithUserRoleDecorator.decorate
+Decidim::ParticipatoryProcessesWithUserRoleDecorator.decorate

@@ -21,4 +21,4 @@ module Decidim::Assemblies::Admin::AssembliesHelperDecorator
   end
 end
 
-::Decidim::Assemblies::Admin::AssembliesHelperDecorator.decorate
+Decidim::Assemblies::Admin::AssembliesHelperDecorator.decorate

@@ -2,10 +2,10 @@
 
 require "spec_helper"
 
-describe "Admin manages conferences", versioning: true, type: :system do
+describe "Admin manages conferences", :versioning do
   let(:organization) { create(:organization) }
-  let(:area) { create(:area, organization: organization) }
-  let(:department_admin) { create(:department_admin, :confirmed, organization: organization, area: area) }
+  let(:area) { create(:area, organization:) }
+  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:) }
 
   before do
     switch_to_host(organization.host)
@@ -21,7 +21,7 @@ describe "Admin manages conferences", versioning: true, type: :system do
 
     before do
       visit decidim_admin_conferences.assemblies_path
-      click_link "New conference"
+      click_on "New conference"
     end
 
     it "creates a new conference" do

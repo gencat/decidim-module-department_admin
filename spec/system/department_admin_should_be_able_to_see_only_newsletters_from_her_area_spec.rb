@@ -2,15 +2,15 @@
 
 require "spec_helper"
 
-describe "Admin manages newsletters", versioning: true, type: :system do
+describe "Admin manages newsletters", :versioning do
   let(:organization) { create(:organization) }
   let(:area) { create(:area) }
-  let(:admin) { create(:user, :admin, :confirmed, organization: organization) }
-  let(:department_admin) { create(:department_admin, :confirmed, organization: organization, area: area) }
+  let(:admin) { create(:user, :admin, :confirmed, organization:) }
+  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:) }
 
   let!(:newsletter_w_area) do
     create(:newsletter,
-           organization: organization,
+           organization:,
            subject: {
              en: "A fancy newsletter for %{name}",
              es: "Un correo electrónico muy chulo para %{name}",
@@ -26,7 +26,7 @@ describe "Admin manages newsletters", versioning: true, type: :system do
 
   let!(:newsletter_wo_area) do
     create(:newsletter,
-           organization: organization,
+           organization:,
            subject: {
              en: "A fancy newsletter for %{name} without area",
              es: "Un correo electrónico muy chulo para %{name} sin area",
@@ -48,6 +48,6 @@ describe "Admin manages newsletters", versioning: true, type: :system do
 
   it "sees only newsletters in the same area" do
     expect(page).to have_content(newsletter_w_area.subject["en"])
-    expect(page).not_to have_content(newsletter_wo_area.subject["en"])
+    expect(page).to have_no_content(newsletter_wo_area.subject["en"])
   end
 end

@@ -7,10 +7,10 @@ module Decidim::Assemblies
     subject { described_class.for(organization, assembly) }
 
     let(:organization) { create(:organization) }
-    let!(:assembly) { create(:assembly, organization: organization) }
-    let!(:assemblies) { create_list(:assembly, 3, organization: organization) }
-    let!(:child_assembly) { create(:assembly, :with_parent, parent: assembly, organization: organization) }
-    let!(:grand_child_assembly) { create(:assembly, :with_parent, parent: child_assembly, organization: organization) }
+    let!(:assembly) { create(:assembly, organization:) }
+    let!(:assemblies) { create_list(:assembly, 3, organization:) }
+    let!(:child_assembly) { create(:assembly, :with_parent, parent: assembly, organization:) }
+    let!(:grand_child_assembly) { create(:assembly, :with_parent, parent: child_assembly, organization:) }
 
     describe "query" do
       context "when current_user is nil" do
@@ -24,10 +24,10 @@ module Decidim::Assemblies
         subject { described_class.for(organization, assembly, current_user) }
 
         let!(:current_user) do
-          create(:department_admin, :confirmed, organization: area.organization, area: area)
+          create(:department_admin, :confirmed, organization: area.organization, area:)
         end
         let(:area) { create(:area) }
-        let!(:assemblies_with_area) { create_list(:assembly, 3, organization: organization, area: area) }
+        let!(:assemblies_with_area) { create_list(:assembly, 3, organization:, area:) }
 
         it "returns assemblies that can be parent with same current user area" do
           expect(subject.count).to eq(3)

@@ -14,4 +14,4 @@ module Decidim::ParticipatoryProcessGroupDecorator
   end
 end
 
-::Decidim::ParticipatoryProcessGroupDecorator.decorate
+Decidim::ParticipatoryProcessGroupDecorator.decorate

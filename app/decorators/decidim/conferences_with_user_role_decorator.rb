@@ -26,4 +26,4 @@ module Decidim::ConferencesWithUserRoleDecorator
   end
 end
 
-::Decidim::ConferencesWithUserRoleDecorator.decorate
+Decidim::ConferencesWithUserRoleDecorator.decorate

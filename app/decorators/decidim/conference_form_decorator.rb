@@ -20,4 +20,4 @@ module Decidim::ConferenceFormDecorator
   end
 end
 
-::Decidim::ConferenceFormDecorator.decorate
+Decidim::ConferenceFormDecorator.decorate

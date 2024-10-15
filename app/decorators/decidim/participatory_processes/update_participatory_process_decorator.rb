@@ -16,4 +16,4 @@ module Decidim::ParticipatoryProcesses::UpdateParticipatoryProcessDecorator
   end
 end
 
-::Decidim::ParticipatoryProcesses::UpdateParticipatoryProcessDecorator.decorate
+Decidim::ParticipatoryProcesses::UpdateParticipatoryProcessDecorator.decorate

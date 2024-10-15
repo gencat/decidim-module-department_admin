@@ -24,4 +24,4 @@ module Decidim::AssembliesWithUserRoleDecorator
   end
 end
 
-::Decidim::AssembliesWithUserRoleDecorator.decorate
+Decidim::AssembliesWithUserRoleDecorator.decorate
