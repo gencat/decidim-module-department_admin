@@ -37,7 +37,7 @@ describe "Admin manages participatory processes", :versioning do
     let(:image2_path) { Decidim::Dev.asset(image2_filename) }
 
     before do
-      click_link_or_button "New process"
+      click_on "New process"
     end
 
     it "creates a new participatory process with department admin's area" do
@@ -88,7 +88,7 @@ describe "Admin manages participatory processes", :versioning do
       expect(page).to have_admin_callout("successfully")
       expect(Decidim::ParticipatoryProcess.last.area).to eq(area)
 
-      within ".container" do
+      within ".card#steps" do
         expect(page).to have_current_path decidim_admin_participatory_processes.participatory_process_steps_path(Decidim::ParticipatoryProcess.last)
         expect(page).to have_content("Phases")
         expect(page).to have_content("Introduction")
@@ -104,9 +104,12 @@ describe "Admin manages participatory processes", :versioning do
     end
 
     it "update a participatory process without images does not delete them" do
-      click_link_or_button translated(participatory_process_3.title)
-      click_submenu_link "Info"
-      click_link_or_button "Update"
+      click_on translated(participatory_process_3.title)
+      within_admin_sidebar_menu do
+        click_on "About this process"
+      end
+
+      click_on "Update"
 
       expect(participatory_process_3.reload.area).to eq(area)
       expect(page).to have_admin_callout("successfully")

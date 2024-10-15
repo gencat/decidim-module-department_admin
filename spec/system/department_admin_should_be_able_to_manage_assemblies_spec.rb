@@ -22,7 +22,7 @@ describe "Admin manages assemblies", :versioning do
 
     before do
       visit decidim_admin_assemblies.assemblies_path
-      click_link_or_button "New assembly"
+      click_on "New assembly"
     end
 
     it "creates a new assembly" do
@@ -58,7 +58,7 @@ describe "Admin manages assemblies", :versioning do
       expect(page).to have_admin_callout("successfully")
       expect(Decidim::Assembly.last.area).to eq(area)
 
-      within ".container" do
+      within ".card#assemblies" do
         # expect(page).to have_current_path decidim_admin_assemblies.assemblies_path(q: { parent_id_eq: parent_assembly&.id })
         expect(page).to have_content(translated(attributes[:title]))
       end
@@ -89,7 +89,7 @@ describe "Admin manages assemblies", :versioning do
       login_as department_admin, scope: :user
       visit decidim_admin_assemblies.assemblies_path
       within "tr", text: translated(parent_assembly.title) do
-        click_link_or_button "Assemblies"
+        click_on "Assemblies"
       end
     end
 

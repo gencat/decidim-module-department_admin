@@ -18,12 +18,15 @@ describe "Admin manages assemblies", :versioning do
 
   it "sees the import button" do
     visit_admin_assemblies_list
-    expect(page).to have_content("Import")
+
+    within_admin_menu do
+      expect(page).to have_content("Import")
+    end
   end
 
   it "sees the export button" do
     visit_admin_assemblies_list
-    expect(page).to have_css(".icon--data-transfer-download")
+    expect(page).to have_css(".action-icon--export")
   end
 
   it "sees only processes in the same area" do

@@ -40,13 +40,13 @@ describe "Admin explores processes" do
   end
 
   def check_column_header_exists(position: 1, content: "")
-    within "#processes .table-scroll table thead th:nth-child(#{position})" do
+    within ".table-scroll table thead th:nth-child(#{position})" do
       expect(page).to have_content(content)
     end
   end
 
   def check_column_data_exists(position: 1, content: "")
-    within "#processes .table-scroll table tbody td:nth-child(#{position})" do
+    within ".table-scroll table tbody td:nth-child(#{position})" do
       expect(page).to have_content(content)
     end
   end

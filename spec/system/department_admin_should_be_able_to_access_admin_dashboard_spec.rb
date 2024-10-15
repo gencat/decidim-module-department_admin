@@ -21,35 +21,35 @@ describe "Department admin should be able to access Admin Dashboard" do
   context "when accessing the dashboard some left menu elements should be accessible" do
     it "is able to access 'Processes'" do
       expect(page).to have_content("Processes")
-      click_link_or_button "Processes"
+      click_on "Processes"
       expect(page).to have_current_path "/admin/participatory_processes"
       expect(page).to have_content("New process")
     end
 
     it "is able to access 'Assemblies'" do
       expect(page).to have_content("Assemblies")
-      click_link_or_button "Assemblies"
+      click_on "Assemblies"
       expect(page).to have_current_path "/admin/assemblies"
       expect(page).to have_content("New assembly")
     end
 
     it "is able to access 'Participants'" do
       expect(page).to have_content("Participants")
-      click_link_or_button "Participants"
+      click_on "Participants"
       expect(page).to have_current_path "/admin/users"
       expect(page).to have_content("New admin")
     end
 
     it "is able to access 'Newsletter'" do
       expect(page).to have_content("Newsletter")
-      click_link_or_button "Newsletter"
+      click_on "Newsletter"
       expect(page).to have_current_path "/admin/newsletters"
       expect(page).to have_content("New newsletter")
     end
 
     it "is able to access 'Conferences'" do
       expect(page).to have_content("Conferences")
-      click_link_or_button "Conferences"
+      click_on "Conferences"
       expect(page).to have_current_path "/admin/conferences"
       expect(page).to have_content("New conference")
     end

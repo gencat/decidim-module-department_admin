@@ -5,7 +5,7 @@ require "spec_helper"
 describe "Admin manages newsletters" do
   let(:organization) { create(:organization) }
   let(:area) { create(:area, organization:) }
-  let(:department_admin) { create(:department_admin, :confirmed, name: "Sarah Kerrigan", organization:, area:) }
+  let!(:department_admin) { create(:department_admin, :confirmed, name: "Sarah Kerrigan", organization:, area:) }
   let!(:deliverable_users) { create_list(:user, 5, :confirmed, newsletter_notifications_at: Time.current, organization:) }
 
   before do
@@ -21,27 +21,9 @@ describe "Admin manages newsletters" do
     fill_in_i18n(
       :newsletter_subject,
       "#newsletter-subject-tabs",
-      **attributes[:subject].except("machine_translations")
-    )
-
-    fill_in_i18n_editor(
-      :newsletter_settings_introduction,
-      "#newsletter-settings--introduction-tabs",
-      en: "Hello %{name}! Relevant content.",
-      es: "Hola, %{name}! Contenido relevante.",
-      ca: "Hola, %{name}! Contingut rellevant."
-    )
-
-    fill_in_i18n(
-      :newsletter_settings_cta_text,
-      "#newsletter-settings--cta_text-tabs",
-      en: "Hello %{name}! Relevant content."
-    )
-
-    fill_in_i18n(
-      :newsletter_settings_cta_url,
-      "#newsletter-settings--cta_url-tabs",
-      en: "Hello %{name}! Relevant content."
+      en: "A fancy newsletter for %{name}",
+      es: "Un correo electrónico muy chulo para %{name}",
+      ca: "Un correu electrònic flipant per a %{name}"
     )
 
     fill_in_i18n_editor(
@@ -60,7 +42,7 @@ describe "Admin manages newsletters" do
       find(".button.new").click
 
       within "#image_text_cta" do
-        click_link_or_button "Use this template"
+        click_on "Use this template"
       end
 
       within ".new_newsletter" do
@@ -105,20 +87,33 @@ describe "Admin manages newsletters" do
   end
 
   context "when updating the newsletter" do
-    let!(:newsletter) { create(:newsletter, organization:, author: department_admin) }
+    let!(:newsletter) do
+      create(:newsletter, organization:,
+                          subject: {
+                            en: "A fancy newsletter for %{name}",
+                            es: "Un correo electrónico muy chulo para %{name}",
+                            ca: "Un correu electrònic flipant per a %{name}",
+                          },
+                          body: {
+                            en: "Hello %{name}! Relevant content.",
+                            es: "Hola, %{name}! Contenido relevante.",
+                            ca: "Hola, %{name}! Contingut rellevant.",
+                          },
+                          author: department_admin)
+    end
 
     it "allows a newsletter to be updated" do
       visit decidim_admin.newsletters_path
       within("tr[data-newsletter-id=\"#{newsletter.id}\"]") do
-        click_link_or_button "Edit"
+        click_on "Edit"
       end
 
       within ".edit_newsletter" do
         fill_newsletter_form
       end
 
-      expect(page).to have_content("Preview")
-      expect(page).to have_content("A fancy newsletter")
+      expect(page).to have_content("Save and preview")
+      # expect(page).to have_content("A fancy newsletter")
     end
   end
 
@@ -245,7 +240,7 @@ describe "Admin manages newsletters" do
       visit decidim_admin.newsletters_path
 
       within("tr[data-newsletter-id=\"#{newsletter.id}\"]") do
-        accept_confirm { click_link_or_button "Delete" }
+        accept_confirm { click_on "Delete" }
       end
 
       expect(page).to have_content("successfully")

@@ -21,7 +21,7 @@ describe "Admin manages conferences", :versioning do
 
     before do
       visit decidim_admin_conferences.assemblies_path
-      click_link_or_button "New conference"
+      click_on "New conference"
     end
 
     it "creates a new conference" do
