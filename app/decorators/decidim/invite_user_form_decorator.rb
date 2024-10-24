@@ -42,4 +42,4 @@ module Decidim::InviteUserFormDecorator
   end
 end
 
-::Decidim::InviteUserFormDecorator.decorate
+Decidim::InviteUserFormDecorator.decorate

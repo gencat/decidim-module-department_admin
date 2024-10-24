@@ -22,4 +22,4 @@ module Decidim::Assemblies::Admin::AssembliesControllerDecorator
   end
 end
 
-::Decidim::Assemblies::Admin::AssembliesControllerDecorator.decorate
+Decidim::Assemblies::Admin::AssembliesControllerDecorator.decorate

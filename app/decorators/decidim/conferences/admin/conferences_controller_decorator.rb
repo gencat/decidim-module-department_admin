@@ -24,4 +24,4 @@ module Decidim::Conferences::Admin::ConferencesControllerDecorator
   end
 end
 
-::Decidim::Conferences::Admin::ConferencesControllerDecorator.decorate
+Decidim::Conferences::Admin::ConferencesControllerDecorator.decorate

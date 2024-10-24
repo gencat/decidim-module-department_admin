@@ -18,4 +18,4 @@ module Decidim::AssembliesDecorator
   end
 end
 
-::Decidim::AssembliesDecorator.decorate
+Decidim::AssembliesDecorator.decorate

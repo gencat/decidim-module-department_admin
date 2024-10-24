@@ -125,4 +125,4 @@ module Decidim::Admin::UsersControllerDecorator
   # rubocop: enable Metrics/PerceivedComplexity
 end
 
-::Decidim::Admin::UsersControllerDecorator.decorate
+Decidim::Admin::UsersControllerDecorator.decorate

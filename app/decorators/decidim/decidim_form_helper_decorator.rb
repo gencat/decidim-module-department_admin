@@ -20,4 +20,4 @@ module Decidim::DecidimFormHelperDecorator
   end
 end
 
-::Decidim::DecidimFormHelperDecorator.decorate
+Decidim::DecidimFormHelperDecorator.decorate

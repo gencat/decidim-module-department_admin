@@ -2,12 +2,12 @@
 
 require "spec_helper"
 
-describe "Admin explores processes", type: :system do
+describe "Admin explores processes" do
   let(:organization) { create(:organization) }
-  let!(:area) { create(:area, organization: organization) }
-  let!(:process) { create(:participatory_process, organization: organization, area: area) }
+  let!(:area) { create(:area, organization:) }
+  let!(:process) { create(:participatory_process, organization:, area:) }
 
-  let!(:admin) { create(:user, :admin, :confirmed, organization: organization) }
+  let!(:admin) { create(:user, :admin, :confirmed, organization:) }
 
   before do
     switch_to_host(organization.host)
@@ -16,7 +16,7 @@ describe "Admin explores processes", type: :system do
 
   describe "when there are admins of all types" do
     let!(:department_admin) do
-      user = create(:user, :confirmed, organization: organization)
+      user = create(:user, :confirmed, organization:)
       user.roles << "department_admin"
       user.areas << area
       user.save!
@@ -40,13 +40,13 @@ describe "Admin explores processes", type: :system do
   end
 
   def check_column_header_exists(position: 1, content: "")
-    within "#processes .card-section .table-scroll table thead th:nth-child(#{position})" do
+    within ".table-scroll table thead th:nth-child(#{position})" do
       expect(page).to have_content(content)
     end
   end
 
   def check_column_data_exists(position: 1, content: "")
-    within "#processes .card-section .table-scroll table tbody td:nth-child(#{position})" do
+    within ".table-scroll table tbody td:nth-child(#{position})" do
       expect(page).to have_content(content)
     end
   end

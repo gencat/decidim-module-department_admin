@@ -16,4 +16,4 @@ module Decidim::Assemblies::CreateAssemblyDecorator
   end
 end
 
-::Decidim::Assemblies::CreateAssemblyDecorator.decorate
+Decidim::Assemblies::CreateAssemblyDecorator.decorate

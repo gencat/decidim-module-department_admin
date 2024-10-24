@@ -21,4 +21,4 @@ module Decidim::Conferences::PermissionsDecorator
   end
 end
 
-::Decidim::Conferences::PermissionsDecorator.decorate
+Decidim::Conferences::PermissionsDecorator.decorate
