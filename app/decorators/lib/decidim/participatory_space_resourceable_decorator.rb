@@ -27,10 +27,10 @@ module Lib::Decidim::ParticipatorySpaceResourceableDecorator
 end
 
 require "decidim/assembly"
-Decidim::Assembly.prepend(::Lib::Decidim::ParticipatorySpaceResourceableDecorator)
+Decidim::Assembly.prepend(Lib::Decidim::ParticipatorySpaceResourceableDecorator)
 require "decidim/participatory_process"
-Decidim::ParticipatoryProcess.prepend(::Lib::Decidim::ParticipatorySpaceResourceableDecorator)
+Decidim::ParticipatoryProcess.prepend(Lib::Decidim::ParticipatorySpaceResourceableDecorator)
 if Decidim::DepartmentAdmin.conferences_defined?
   require "decidim/conference"
-  Decidim::Conference.prepend(::Lib::Decidim::ParticipatorySpaceResourceableDecorator)
+  Decidim::Conference.prepend(Lib::Decidim::ParticipatorySpaceResourceableDecorator)
 end

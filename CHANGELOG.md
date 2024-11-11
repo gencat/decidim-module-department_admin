@@ -3,6 +3,9 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.8.1 (MINOR)
+- Fix: Use prepend instead of overriding to apply Lib::Decidim::ParticipatorySpaceResourceableDecorator.
+
 ## Version 0.8.0 (MINOR)
 - Upgrade Decidim to v0.28
 - Upgrade Ruby to 3.1.1
