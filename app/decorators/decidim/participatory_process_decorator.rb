@@ -18,4 +18,4 @@ module Decidim::ParticipatoryProcessDecorator
   end
 end
 
-::Decidim::ParticipatoryProcessDecorator.decorate
+Decidim::ParticipatoryProcessDecorator.decorate

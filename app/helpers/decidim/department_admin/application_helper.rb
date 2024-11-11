@@ -10,7 +10,7 @@ module Decidim
       # rubocop: disable Rails/HelperInstanceVariable
       def roles_with_title(user)
         roles_with_title = user.roles.collect { |role| [role, ""] }
-        # if user had particiatory processes then add role of process admin
+        # if user had participatory processes then add role of process admin
         user_participatory_processes_filtered(user, current_locale, @search_text).each do |participatory_process|
           roles_with_title << ["process_admin", translated_attribute(participatory_process.title)]
         end

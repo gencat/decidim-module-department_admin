@@ -3,7 +3,7 @@
 require "spec_helper"
 
 module Decidim::Admin
-  describe UsersController, type: :controller do
+  describe UsersController do
     # routes { Decidim::Core::Engine.routes }
     routes { Decidim::Admin::Engine.routes }
 
@@ -17,15 +17,15 @@ module Decidim::Admin
     end
 
     describe "role filter" do
-      let!(:participant) { create(:user, :confirmed, organization: organization) }
-      let!(:department_admin_user) { create(:department_admin, :confirmed, organization: organization) }
-      let!(:user_manager) { create(:user, :confirmed, organization: organization, roles: ["user_manager"]) }
-      let!(:process_admin) { create(:user, :confirmed, organization: organization) }
-      let!(:participatory_process) { create(:participatory_process, organization: organization, title: { en: "A Process space" }) }
-      let!(:process_admin_rel) { Decidim::ParticipatoryProcessUserRole.create(role: "admin", user: process_admin, participatory_process: participatory_process) }
-      let!(:assembly_admin) { create(:user, :confirmed, organization: organization) }
-      let!(:assembly) { create(:assembly, organization: organization, title: { en: "An Assembly space" }) }
-      let!(:assembly_admin_rel) { Decidim::AssemblyUserRole.create(role: "admin", user: assembly_admin, assembly: assembly) }
+      let!(:participant) { create(:user, :confirmed, organization:) }
+      let!(:department_admin_user) { create(:department_admin, :confirmed, organization:) }
+      let!(:user_manager) { create(:user, :confirmed, organization:, roles: ["user_manager"]) }
+      let!(:process_admin) { create(:user, :confirmed, organization:) }
+      let!(:participatory_process) { create(:participatory_process, organization:, title: { en: "A Process space" }) }
+      let!(:process_admin_rel) { Decidim::ParticipatoryProcessUserRole.create(role: "admin", user: process_admin, participatory_process:) }
+      let!(:assembly_admin) { create(:user, :confirmed, organization:) }
+      let!(:assembly) { create(:assembly, organization:, title: { en: "An Assembly space" }) }
+      let!(:assembly_admin_rel) { Decidim::AssemblyUserRole.create(role: "admin", user: assembly_admin, assembly:) }
 
       subject { controller.filtered_collection }
 
@@ -65,7 +65,7 @@ module Decidim::Admin
         end
 
         it "lists only users with role admin" do
-          get :index, params: params
+          get(:index, params:)
 
           expect(subject).to include(admin_user)
           expect(subject).not_to include(department_admin_user, user_manager, process_admin, assembly_admin, participant)
@@ -79,7 +79,7 @@ module Decidim::Admin
         end
 
         it "lists only users with role department_admin" do
-          get :index, params: params
+          get(:index, params:)
 
           expect(subject).to include(department_admin_user)
           expect(subject).not_to include(admin_user, user_manager, process_admin, assembly_admin, participant)
@@ -93,7 +93,7 @@ module Decidim::Admin
         end
 
         it "lists only users with role user_manager" do
-          get :index, params: params
+          get(:index, params:)
 
           expect(subject).to include(user_manager)
           expect(subject).not_to include(admin_user, department_admin_user, process_admin, assembly_admin, participant)
@@ -107,7 +107,7 @@ module Decidim::Admin
         end
 
         it "lists only users with role space_admin" do
-          get :index, params: params
+          get(:index, params:)
 
           expect(subject).to include(process_admin, assembly_admin)
           expect(subject).not_to include(admin_user, department_admin_user, user_manager, participant)

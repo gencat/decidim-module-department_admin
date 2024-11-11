@@ -7,13 +7,13 @@ module Decidim
     describe "call" do
       let(:organization) { create(:organization) }
 
-      let(:current_user) { create(:admin, :confirmed, organization: organization) }
+      let(:current_user) { create(:admin, :confirmed, organization:) }
 
       let(:form_params) do
         {
           name: "user_name",
           email: "user_name@example.org",
-          organization: organization,
+          organization:,
         }
       end
 
@@ -22,7 +22,7 @@ module Decidim
           form_params
         ).with_context(
           current_organization: organization,
-          current_user: current_user
+          current_user:
         )
       end
 

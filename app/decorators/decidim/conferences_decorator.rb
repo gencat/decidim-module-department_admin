@@ -24,4 +24,4 @@ module Decidim::ConferencesDecorator
   end
 end
 
-::Decidim::ConferencesDecorator.decorate
+Decidim::ConferencesDecorator.decorate

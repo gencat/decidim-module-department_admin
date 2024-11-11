@@ -65,7 +65,7 @@ AllCops:
   # If a value is specified for TargetRubyVersion then it is used.
   # Else if .ruby-version exists and it contains an MRI version it is used.
   # Otherwise we fallback to the oldest officially supported Ruby version (2.0).
-  TargetRubyVersion: 3.0.7
+  TargetRubyVersion: 3.1.1
   RSpec:
     Patterns:
       - "(?:^|/)spec/"
@@ -1194,9 +1194,13 @@ RSpec/DescribeClass:
     - spec/gemfiles_spec.rb
     - spec/js_bundles_spec.rb
     - spec/i18n_spec.rb
+    - spec/system/*.rb
     - "**/*/spec/**/*_badge_spec.rb"
     - decidim-core/spec/lib/global_engines_spec.rb
     - "**/tasks/**/*"
+
+RSpec/NoExpectationExample:
+  Enabled: false
 
 RSpec/EmptyExampleGroup:
   Exclude:

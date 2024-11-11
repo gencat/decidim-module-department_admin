@@ -2,10 +2,10 @@
 
 require "spec_helper"
 
-describe "Admin manages assemblies", versioning: true, type: :system do
+describe "Admin manages assemblies", :versioning do
   let(:organization) { create(:organization) }
-  let(:area) { create(:area, organization: organization) }
-  let(:department_admin) { create(:department_admin, :confirmed, organization: organization, area: area) }
+  let(:area) { create(:area, organization:) }
+  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:) }
 
   before do
     switch_to_host(organization.host)
@@ -18,11 +18,11 @@ describe "Admin manages assemblies", versioning: true, type: :system do
 
     let(:image2_filename) { "city2.jpeg" }
     let(:image2_path) { Decidim::Dev.asset(image2_filename) }
-    let(:attributes) { attributes_for(:assembly, organization: organization) }
+    let(:attributes) { attributes_for(:assembly, organization:) }
 
     before do
       visit decidim_admin_assemblies.assemblies_path
-      click_link "New assembly"
+      click_on "New assembly"
     end
 
     it "creates a new assembly" do
@@ -58,7 +58,7 @@ describe "Admin manages assemblies", versioning: true, type: :system do
       expect(page).to have_admin_callout("successfully")
       expect(Decidim::Assembly.last.area).to eq(area)
 
-      within ".container" do
+      within ".card#assemblies" do
         # expect(page).to have_current_path decidim_admin_assemblies.assemblies_path(q: { parent_id_eq: parent_assembly&.id })
         expect(page).to have_content(translated(attributes[:title]))
       end
@@ -67,7 +67,7 @@ describe "Admin manages assemblies", versioning: true, type: :system do
 
   context "when managing parent assemblies" do
     let(:parent_assembly) { nil }
-    let!(:assembly) { create :assembly, organization: organization }
+    let!(:assembly) { create(:assembly, organization:) }
 
     before do
       switch_to_host(organization.host)
@@ -80,16 +80,16 @@ describe "Admin manages assemblies", versioning: true, type: :system do
   end
 
   context "when managing child assemblies" do
-    let!(:parent_assembly) { create :assembly, organization: organization, area: area }
-    let!(:child_assembly) { create :assembly, organization: organization, parent: parent_assembly, area: area }
+    let!(:parent_assembly) { create(:assembly, organization:, area:) }
+    let!(:child_assembly) { create(:assembly, organization:, parent: parent_assembly, area:) }
     let(:assembly) { child_assembly }
 
     before do
       switch_to_host(organization.host)
       login_as department_admin, scope: :user
       visit decidim_admin_assemblies.assemblies_path
-      within find("tr", text: translated(parent_assembly.title)) do
-        click_link "Assemblies"
+      within "tr", text: translated(parent_assembly.title) do
+        click_on "Assemblies"
       end
     end
 

@@ -29,7 +29,7 @@ module Decidim::AreaDecorator
       end
 
       def has_department_admins?
-        Decidim::User.where(organization: organization).any? do |u|
+        Decidim::User.where(organization:).any? do |u|
           u.areas.exists?(id)
         end
       end
@@ -41,4 +41,4 @@ module Decidim::AreaDecorator
   end
 end
 
-::Decidim::AreaDecorator.decorate
+Decidim::AreaDecorator.decorate

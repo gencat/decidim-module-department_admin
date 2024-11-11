@@ -35,4 +35,4 @@ module Decidim::Assemblies::ParentAssembliesForSelectDecorator
   end
 end
 
-::Decidim::Assemblies::ParentAssembliesForSelectDecorator.decorate
+Decidim::Assemblies::ParentAssembliesForSelectDecorator.decorate

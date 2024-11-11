@@ -6,16 +6,16 @@ require "spec_helper"
 # To "downgrade" an admin to department_admin, it must first be removed from admins
 # create a new admin as department_admin.
 #
-describe "Admin invite user", type: :system do
+describe "Admin invite user" do
   let!(:area) { create(:area) }
 
   let(:organization) { create(:organization) }
 
-  let!(:admin) { create(:user, :admin, :confirmed, organization: organization) }
-  let(:user_manager) { create(:user, :user_manager, :confirmed, organization: organization) }
+  let!(:admin) { create(:user, :admin, :confirmed, organization:) }
+  let(:user_manager) { create(:user, :user_manager, :confirmed, organization:) }
 
   let(:department_admin) do
-    user = create(:user, :confirmed, organization: organization)
+    user = create(:user, :confirmed, organization:)
     user.roles << "department_admin"
     user.areas << area
     user.save!
@@ -75,9 +75,9 @@ describe "Admin invite user", type: :system do
     within "form.new_user" do
       fill_in :user_name, with: name
       fill_in :user_email, with: email
-      find("#user_role").find("option[value='department_admin']").select_option
+      find_by_id("user_role").find("option[value='department_admin']").select_option
       expect(page).to have_css("#user_area_id")
-      find("#user_area_id").find("option[value='#{selected_area.id}']").select_option
+      find_by_id("user_area_id").find("option[value='#{selected_area.id}']").select_option
     end
   end
 
@@ -85,7 +85,7 @@ describe "Admin invite user", type: :system do
     within "form.new_user" do
       fill_in :user_name, with: name
       fill_in :user_email, with: email
-      find("#user_role").find("option[value='admin']").select_option
+      find_by_id("user_role").find("option[value='admin']").select_option
     end
   end
 
@@ -99,14 +99,14 @@ describe "Admin invite user", type: :system do
   end
 
   def check_is_admin(email)
-    user = Decidim::User.find_by(email: email).reload
+    user = Decidim::User.find_by(email:).reload
     expect(user).to be_admin
     expect(user.roles).not_to include("department_admin")
     expect(user.areas).to be_empty
   end
 
   def check_is_department_admin(email)
-    user = Decidim::User.find_by(email: email)
+    user = Decidim::User.find_by(email:)
     expect(user.roles).to include("department_admin")
     user
   end

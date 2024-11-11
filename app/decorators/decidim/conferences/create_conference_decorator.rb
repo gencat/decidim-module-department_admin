@@ -26,6 +26,7 @@ module Decidim::Conferences::CreateConferenceDecorator
           slogan: form.slogan,
           slug: form.slug,
           hashtag: form.hashtag,
+          weight: form.weight,
           description: form.description,
           short_description: form.short_description,
           objectives: form.objectives,
@@ -48,4 +49,4 @@ module Decidim::Conferences::CreateConferenceDecorator
   end
 end
 
-::Decidim::Conferences::CreateConferenceDecorator.decorate
+Decidim::Conferences::CreateConferenceDecorator.decorate
