@@ -3,6 +3,9 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.7.2 (PATCH)
+- Fix: Use prepend instead of overriding to apply Lib::Decidim::ParticipatorySpaceResourceableDecorator
+
 ## Version 0.7.1 (PATCH)
 - Fix Zeitwerk errors with decorators
 
