@@ -772,7 +772,7 @@ GEM
       concurrent-ruby (~> 1.0)
     uber (0.1.0)
     unicode-display_width (2.5.0)
-    uri (0.13.0)
+    uri (0.13.1)
     valid_email2 (2.3.1)
       activemodel (>= 3.2)
       mail (~> 2.5)
@@ -839,6 +839,7 @@ DEPENDENCIES
   social-share-button
   spring (~> 2.0)
   spring-watcher-listen (~> 2.0)
+  uri (>= 0.13.1)
   web-console (~> 3.5)
 
 RUBY VERSION
