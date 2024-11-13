@@ -18,6 +18,7 @@ DECIDIM_VERSION = { git: "https://github.com/CodiTramuntana/decidim", branch: "r
 gem "execjs", "~> 2.7.0"
 
 gem "deface"
+gem "uri", ">= 0.13.1"
 
 group :development, :test do
   gem "bootsnap"
