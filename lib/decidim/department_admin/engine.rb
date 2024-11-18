@@ -47,6 +47,7 @@ module Decidim
         # force the concern to be included so that registry is initialized
         # we choose some random class already including it
         require "decidim/participatory_processes/admin/categories_controller"
+        require "decidim/participatory_processes/admin/components_controller"
         artifact = ::Decidim::ParticipatoryProcesses::Admin::Concerns::ParticipatoryProcessAdmin
         ParticipatoryProcessesAdminConcernPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
         register_new_permissions_for(artifact, ParticipatoryProcessesAdminConcernPermissions)
