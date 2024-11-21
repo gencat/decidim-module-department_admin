@@ -10,6 +10,9 @@ Following Semantic Versioning 2.
 - Upgrade Decidim to v0.28
 - Upgrade Ruby to 3.1.1
 
+## Version 0.7.2 (PATCH)
+- Fix: Use prepend instead of overriding to apply Lib::Decidim::ParticipatorySpaceResourceableDecorator
+
 ## Version 0.7.1 (PATCH)
 - Fix Zeitwerk errors with decorators
 
