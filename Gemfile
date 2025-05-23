@@ -6,7 +6,7 @@ ruby RUBY_VERSION
 
 gemspec
 
-DECIDIM_VERSION = { git: "https://github.com/CodiTramuntana/decidim", branch: "release/0.28-stable" }.freeze
+DECIDIM_VERSION = { git: "https://github.com/CodiTramuntana/decidim", branch: "release/0.29-stable" }.freeze
 
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
@@ -27,15 +27,15 @@ group :development, :test do
   gem "faker"
   # Set versions because Property AutoCorrect errors.
   gem "rspec-rails", "~> 6.0.4"
-  gem "rubocop-factory_bot", "2.25.1"
-  gem "rubocop-rspec", "2.26.1"
+  gem "rubocop-factory_bot", "~> 2.26"
+  gem "rubocop-rspec", "~> 3.0"
   gem "social-share-button"
 end
 
 group :development do
   gem "letter_opener_web", "~> 1.3"
   gem "listen", "~> 3.1"
-  gem "spring", "~> 2.0"
-  gem "spring-watcher-listen", "~> 2.0"
+  gem "spring", "~> 4.0"
+  gem "spring-watcher-listen", "~> 2.1"
   gem "web-console", "~> 3.5"
 end
