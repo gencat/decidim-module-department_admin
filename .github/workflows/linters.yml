@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2.0.0
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
@@ -25,7 +25,7 @@ jobs:
           ruby-version: ${{ env.RUBY_VERSION }}
 
       - name: Recover Ruby dependency cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ./vendor/bundle
           key: ${{ runner.OS }}-rubydeps-${{ hashFiles('Gemfile.lock') }}
@@ -38,7 +38,7 @@ jobs:
         run: bundle config set --local path 'vendor/bundle'
 
       - name: Install Ruby deps
-        uses: nick-invision/retry@v2
+        uses: nick-invision/retry@v3
         with:
           timeout_minutes: 10
           max_attempts: 3
