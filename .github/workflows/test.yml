@@ -9,7 +9,7 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 3.2.6
+  RUBY_VERSION: 3.2.9
   NODE_VERSION: 16.9.1
 
 jobs:
