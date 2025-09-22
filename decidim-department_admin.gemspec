@@ -18,11 +18,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,db,config,lib}/**/*", "LICENSE-AGPLv3.txt", "Rakefile", "README.md"]
 
-  DECIDIM_VER = Decidim::DepartmentAdmin::DECIDIM_VER
-  s.add_dependency "decidim-admin", DECIDIM_VER
-  s.add_dependency "decidim-core", DECIDIM_VER
-  s.add_development_dependency "decidim", DECIDIM_VER
-  s.add_development_dependency "decidim-conferences", DECIDIM_VER
-  s.add_development_dependency "decidim-dev", DECIDIM_VER
+  s.add_dependency "decidim-admin", Decidim::DepartmentAdmin::DECIDIM_VER
+  s.add_dependency "decidim-core", Decidim::DepartmentAdmin::DECIDIM_VER
   s.metadata["rubygems_mfa_required"] = "true"
 end

@@ -10,7 +10,7 @@ module Decidim::ParticipatoryProcesses::PermissionsDecorator
 
       # rubocop: disable Lint/UnusedMethodArgument
       def has_manageable_processes?(role: :any)
-        return unless user
+        return false unless user
 
         user.department_admin? || original_has_manageable_processes?
       end
