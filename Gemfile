@@ -35,8 +35,5 @@ end
 
 group :development do
   gem "letter_opener_web", "~> 1.3"
-  gem "listen", "~> 3.1"
-  gem "spring", "~> 4.0"
-  gem "spring-watcher-listen", "~> 2.1"
   gem "web-console", "~> 3.5"
 end

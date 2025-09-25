@@ -827,13 +827,10 @@ DEPENDENCIES
   execjs (~> 2.7.0)
   faker
   letter_opener_web (~> 1.3)
-  listen (~> 3.1)
   rspec-rails (~> 6.0.4)
   rubocop-factory_bot (~> 2.26)
   rubocop-rspec (~> 3.0)
   social-share-button
-  spring (~> 4.0)
-  spring-watcher-listen (~> 2.1)
   web-console (~> 3.5)
 
 RUBY VERSION
