@@ -38,7 +38,7 @@ module Decidim::Admin
         )
       end
 
-      let(:command) { described_class.new(newsletter, form, current_user) }
+      let(:command) { described_class.new(newsletter, form) }
 
       shared_examples_for "selective newsletter" do
         context "when everything is ok" do
