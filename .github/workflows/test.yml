@@ -79,6 +79,9 @@ jobs:
           retry_on: error
           command: bundle install --jobs 4 --retry 3 
 
+      - name: Disable Spring
+        run: echo "DISABLE_SPRING=1" >> $GITHUB_ENV
+
       - name: Generate test_app
         run: |
           bundle exec rake decidim:generate_external_test_app
@@ -87,24 +90,10 @@ jobs:
           RAILS_ENV=test bundle exec rails db:migrate
           sed -ie '/^  class Application < Rails::Application/a config.railties_order = [:main_app, ::Decidim::DepartmentAdmin::Engine, :all]' config/application.rb
 
-      - name: Setup Code Climate test-reporter
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
-
       - name: Run RSpec
         uses: nick-invision/retry@v3
         with:
           timeout_minutes: 10
           max_attempts: 3
           retry_on: error
-          command: CI=1 SIMPLECOV=1 bundle exec rake --backtrace -t
-
-      - name: Publish code coverage
-        run: |
-          cp coverage/coverage.xml cobertura.xml
-          export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
-          ./cc-test-reporter after-build -r "$CC_TEST_REPORTER_ID" -t cobertura
-        env:
-          CC_TEST_REPORTER_ID: 91564b5d6fef4bea80bbc8e50bf97bfadd95bf460fd7d3f563d0f39a57c16cdc
+          command: bundle exec rake --backtrace -t
