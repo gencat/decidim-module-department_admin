@@ -38,7 +38,7 @@ jobs:
         run: bundle config set --local path 'vendor/bundle'
 
       - name: Install Ruby deps
-        uses: nick-invision/retry@v2
+        uses: nick-invision/retry@v3
         with:
           timeout_minutes: 10
           max_attempts: 3
