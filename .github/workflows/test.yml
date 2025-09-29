@@ -42,7 +42,7 @@ jobs:
           ruby-version: ${{ env.RUBY_VERSION }}
 
       - name: Recover Ruby dependency cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ./vendor/bundle
           key: ${{ runner.OS }}-rubydeps-${{ hashFiles('Gemfile.lock') }}
