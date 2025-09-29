@@ -58,8 +58,8 @@ describe "Admin manages assemblies", :versioning do
       expect(page).to have_admin_callout("successfully")
       expect(Decidim::Assembly.last.area).to eq(area)
 
-      within ".card#assemblies" do
-        # expect(page).to have_current_path decidim_admin_assemblies.assemblies_path(q: { parent_id_eq: parent_assembly&.id })
+      within "[data-content]" do
+        expect(page).to have_current_path decidim_admin_assemblies.assemblies_path(q: { parent_id_eq: parent_assembly&.id })
         expect(page).to have_content(translated(attributes[:title]))
       end
     end
@@ -67,7 +67,7 @@ describe "Admin manages assemblies", :versioning do
 
   context "when managing parent assemblies" do
     let(:parent_assembly) { nil }
-    let!(:assembly) { create(:assembly, organization:) }
+    let!(:assembly) { create(:assembly, :with_content_blocks, organization:, blocks_manifests: [:announcement]) }
 
     before do
       switch_to_host(organization.host)

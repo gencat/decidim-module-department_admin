@@ -113,8 +113,12 @@ describe "Admin manages participatory processes", :versioning do
 
       expect(participatory_process_3.reload.area).to eq(area)
       expect(page).to have_admin_callout("successfully")
-      expect(page).to have_css("img[src*='#{participatory_process_3.attached_uploader(:hero_image).path}']")
-      expect(page).to have_css("img[src*='#{participatory_process_3.attached_uploader(:banner_image).path}']")
+
+      hero_blob = participatory_process3.hero_image.blob
+      within %([data-active-uploads] [data-filename="#{hero_blob.filename}"]) do
+        src = page.find("img")["src"]
+        expect(src).to be_blob_url(hero_blob)
+      end
     end
   end
 end
