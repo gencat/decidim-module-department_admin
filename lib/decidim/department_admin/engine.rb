@@ -26,68 +26,70 @@ module Decidim
 
       # rubocop: disable Lint/ConstantDefinitionInBlock
       initializer "department_admin.permissions_registry" do
-        # activate Decidim LayoutHelper for the overriden views
-        ::Decidim::Admin::ApplicationController.helper ::Decidim::LayoutHelper
-        ::Decidim::ApplicationController.helper ::Decidim::LayoutHelper
+        config.to_prepare do
+          # activate Decidim LayoutHelper for the overriden views
+          ::Decidim::Admin::ApplicationController.helper ::Decidim::LayoutHelper
+          ::Decidim::ApplicationController.helper ::Decidim::LayoutHelper
 
-        # avoid webpacker to crash when executing before Decidim is loaded
-        next unless Rails.env.test? || defined? DecidimController
+          # avoid webpacker to crash when executing before Decidim is loaded
+          next unless Rails.env.test? || defined? DecidimController
 
-        # **
-        # Modify decidim-admin permissions registry
-        # **
-        artifact = ::Decidim::Admin::ApplicationController
-        AdminApplicationControllerPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
-        register_new_permissions_for(artifact, AdminApplicationControllerPermissions)
-
-        # **
-        # Modify decidim-particypatory_processes permissions registry
-        # **
-
-        # force the concern to be included so that registry is initialized
-        # we choose some random class already including it
-        require "decidim/participatory_processes/admin/categories_controller"
-        require "decidim/participatory_processes/admin/components_controller"
-        artifact = ::Decidim::ParticipatoryProcesses::Admin::Concerns::ParticipatoryProcessAdmin
-        ParticipatoryProcessesAdminConcernPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
-        register_new_permissions_for(artifact, ParticipatoryProcessesAdminConcernPermissions)
-
-        artifact = Decidim::ParticipatoryProcesses::Admin::ApplicationController
-        ParticipatoryProcessesAdminApplicationControllerPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
-        register_new_permissions_for(artifact, ParticipatoryProcessesAdminApplicationControllerPermissions)
-
-        # public views produce problems with Devise's current_user
-        # require 'decidim/participatory_processes/application_controller'
-        # artifact= 'Decidim::ParticipatoryProcesses::ApplicationController'
-        # chain= ::Decidim.permissions_registry.chain_for(artifact)
-        # chain << ::Decidim::DepartmentAdmin::Permissions
-
-        # **
-        # Modify decidim-assemblies permissions registry
-        # **
-        require "decidim/assemblies/admin/assembly_copies_controller"
-        require "decidim/assemblies/admin/components_controller"
-        artifact = ::Decidim::Assemblies::Admin::Concerns::AssemblyAdmin
-        AssembliesAdminConcernPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
-        register_new_permissions_for(artifact, AssembliesAdminConcernPermissions)
-
-        artifact = Decidim::Assemblies::Admin::ApplicationController
-        AssembliesAdminApplicationControllerPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
-        register_new_permissions_for(artifact, AssembliesAdminApplicationControllerPermissions)
-
-        if Decidim::DepartmentAdmin.conferences_defined?
           # **
-          # Modify decidim-conferences permissions registry
+          # Modify decidim-admin permissions registry
           # **
-          require "decidim/conferences/admin/conference_copies_controller"
-          require "decidim/conferences/admin/components_controller"
-          artifact = ::Decidim::Conferences::Admin::Concerns::ConferenceAdmin
-          ConferencesAdminConcernPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
-          register_new_permissions_for(artifact, ConferencesAdminConcernPermissions)
+          artifact = ::Decidim::Admin::ApplicationController
+          AdminApplicationControllerPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
+          Decidim::DepartmentAdmin::Engine.register_new_permissions_for(artifact, AdminApplicationControllerPermissions)
 
-          artifact = Decidim::Conferences::Admin::ApplicationController
-          ConferencesAdminApplicationControllerPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
-          register_new_permissions_for(artifact, ConferencesAdminApplicationControllerPermissions)
+          # **
+          # Modify decidim-particypatory_processes permissions registry
+          # **
+
+          # force the concern to be included so that registry is initialized
+          # we choose some random class already including it
+          require "decidim/participatory_processes/admin/categories_controller"
+          require "decidim/participatory_processes/admin/components_controller"
+          artifact = ::Decidim::ParticipatoryProcesses::Admin::Concerns::ParticipatoryProcessAdmin
+          ParticipatoryProcessesAdminConcernPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
+          Decidim::DepartmentAdmin::Engine.register_new_permissions_for(artifact, ParticipatoryProcessesAdminConcernPermissions)
+
+          artifact = Decidim::ParticipatoryProcesses::Admin::ApplicationController
+          ParticipatoryProcessesAdminApplicationControllerPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
+          Decidim::DepartmentAdmin::Engine.register_new_permissions_for(artifact, ParticipatoryProcessesAdminApplicationControllerPermissions)
+
+          # public views produce problems with Devise's current_user
+          # require 'decidim/participatory_processes/application_controller'
+          # artifact= 'Decidim::ParticipatoryProcesses::ApplicationController'
+          # chain= ::Decidim.permissions_registry.chain_for(artifact)
+          # chain << ::Decidim::DepartmentAdmin::Permissions
+
+          # **
+          # Modify decidim-assemblies permissions registry
+          # **
+          require "decidim/assemblies/admin/assembly_copies_controller"
+          require "decidim/assemblies/admin/components_controller"
+          artifact = ::Decidim::Assemblies::Admin::Concerns::AssemblyAdmin
+          AssembliesAdminConcernPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
+          Decidim::DepartmentAdmin::Engine.register_new_permissions_for(artifact, AssembliesAdminConcernPermissions)
+
+          artifact = Decidim::Assemblies::Admin::ApplicationController
+          AssembliesAdminApplicationControllerPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
+          Decidim::DepartmentAdmin::Engine.register_new_permissions_for(artifact, AssembliesAdminApplicationControllerPermissions)
+
+          if Decidim::DepartmentAdmin.conferences_defined?
+            # **
+            # Modify decidim-conferences permissions registry
+            # **
+            require "decidim/conferences/admin/conference_copies_controller"
+            require "decidim/conferences/admin/components_controller"
+            artifact = ::Decidim::Conferences::Admin::Concerns::ConferenceAdmin
+            ConferencesAdminConcernPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
+            Decidim::DepartmentAdmin::Engine.register_new_permissions_for(artifact, ConferencesAdminConcernPermissions)
+
+            artifact = Decidim::Conferences::Admin::ApplicationController
+            ConferencesAdminApplicationControllerPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
+            Decidim::DepartmentAdmin::Engine.register_new_permissions_for(artifact, ConferencesAdminApplicationControllerPermissions)
+          end
         end
       end
       # rubocop: enable Lint/ConstantDefinitionInBlock
@@ -115,15 +117,9 @@ module Decidim
         end
       end
 
-      #------------------------------------------------------
-
-      private
-
-      #------------------------------------------------------
-
       # Modifies the permissions registry for the given +artifact+ with +new_permissions_class+.
       # NOTE: Previous permissions are cleared and setted to the +new_permissions_class+ for delegation.
-      def register_new_permissions_for(artifact, new_permissions_class)
+      def self.register_new_permissions_for(artifact, new_permissions_class)
         chain = ::Decidim.permissions_registry.chain_for(artifact)
         # configure old chain, in case new permissions has to delegate
         new_permissions_class.delegate_chain = chain.dup

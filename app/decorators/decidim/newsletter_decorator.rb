@@ -11,7 +11,8 @@ module Decidim::NewsletterDecorator
       # must verify that the `user` has the same `area` as the `resource`.
       def area
         return unless author.areas.any?
-        return author.areas.first if author&.department_admin?
+
+        author.areas.first if author&.department_admin?
       end
     end
   end

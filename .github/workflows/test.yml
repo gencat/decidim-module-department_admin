@@ -9,7 +9,7 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 3.1.1
+  RUBY_VERSION: 3.2.9
   NODE_VERSION: 16.9.1
 
 jobs:
@@ -33,7 +33,7 @@ jobs:
       DATABASE_HOST: localhost
 
     steps:
-      - uses: actions/checkout@v2.0.0
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
@@ -42,7 +42,7 @@ jobs:
           ruby-version: ${{ env.RUBY_VERSION }}
 
       - name: Recover Ruby dependency cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ./vendor/bundle
           key: ${{ runner.OS }}-rubydeps-${{ hashFiles('Gemfile.lock') }}
@@ -72,12 +72,18 @@ jobs:
           chrome-version: 119.0.6045.105
 
       - name: Install Ruby deps
-        uses: nick-invision/retry@v2
+        uses: nick-invision/retry@v3
         with:
           timeout_minutes: 10
           max_attempts: 3
           retry_on: error
           command: bundle install --jobs 4 --retry 3 
+
+      - name: Install imagemagcick
+        run: sudo apt-get install imagemagick
+
+      - name: Disable Spring
+        run: echo "DISABLE_SPRING=1" >> $GITHUB_ENV
 
       - name: Generate test_app
         run: |
@@ -87,24 +93,10 @@ jobs:
           RAILS_ENV=test bundle exec rails db:migrate
           sed -ie '/^  class Application < Rails::Application/a config.railties_order = [:main_app, ::Decidim::DepartmentAdmin::Engine, :all]' config/application.rb
 
-      - name: Setup Code Climate test-reporter
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
-
       - name: Run RSpec
-        uses: nick-invision/retry@v2
+        uses: nick-invision/retry@v3
         with:
           timeout_minutes: 10
           max_attempts: 3
           retry_on: error
-          command: CI=1 SIMPLECOV=1 bundle exec rake --backtrace -t
-
-      - name: Publish code coverage
-        run: |
-          cp coverage/coverage.xml cobertura.xml
-          export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
-          ./cc-test-reporter after-build -r "$CC_TEST_REPORTER_ID" -t cobertura
-        env:
-          CC_TEST_REPORTER_ID: 91564b5d6fef4bea80bbc8e50bf97bfadd95bf460fd7d3f563d0f39a57c16cdc
+          command: bundle exec rake --backtrace -t
