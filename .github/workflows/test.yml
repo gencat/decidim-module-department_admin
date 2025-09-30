@@ -100,12 +100,3 @@ jobs:
           max_attempts: 3
           retry_on: error
           command: bundle exec rake --backtrace -t
-
-      - name: Publish code coverage
-        run: |
-          cp coverage/coverage.xml cobertura.xml
-          export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
-          ./cc-test-reporter after-build -r "$CC_TEST_REPORTER_ID" -t cobertura
-        env:
-          CC_TEST_REPORTER_ID: 91564b5d6fef4bea80bbc8e50bf97bfadd95bf460fd7d3f563d0f39a57c16cdc
-          command: bundle exec rake --backtrace -t
