@@ -9,7 +9,7 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 3.1.1
+  RUBY_VERSION: 3.2.9
   NODE_VERSION: 16.9.1
 
 jobs:
@@ -79,6 +79,12 @@ jobs:
           retry_on: error
           command: bundle install --jobs 4 --retry 3 
 
+      - name: Install imagemagcick
+        run: sudo apt-get install imagemagick
+
+      - name: Disable Spring
+        run: echo "DISABLE_SPRING=1" >> $GITHUB_ENV
+
       - name: Generate test_app
         run: |
           bundle exec rake decidim:generate_external_test_app
@@ -102,3 +108,4 @@ jobs:
           ./cc-test-reporter after-build -r "$CC_TEST_REPORTER_ID" -t cobertura
         env:
           CC_TEST_REPORTER_ID: 91564b5d6fef4bea80bbc8e50bf97bfadd95bf460fd7d3f563d0f39a57c16cdc
+          command: bundle exec rake --backtrace -t

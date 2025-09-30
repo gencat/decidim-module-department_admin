@@ -9,7 +9,7 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 3.1.1
+  RUBY_VERSION: 3.2.9
 
 jobs:
   test-report:
@@ -46,10 +46,3 @@ jobs:
 
       - name: Rubocop
         run: bundle exec rubocop -P
-
-      # erb-lint < 0.0.33 raises a NameError but can't upgrade due to gem dependency incompatibilities
-      # These incompabilities are already solved in decidim v0.24 but it still has to be released
-      # Uncomment the following lines after the upgrade
-      #
-      # - name: Erb linter
-      #   run: bundle exec erblint app/views/**/*.erb

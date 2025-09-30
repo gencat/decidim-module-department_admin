@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe "Admin manages assemblies", :versioning do
+describe "Admin manages assemblies" do
   let(:organization) { create(:organization) }
   let(:area) { create(:area, organization:) }
   let(:department_admin) { create(:department_admin, :confirmed, organization:, area:) }
@@ -18,14 +18,14 @@ describe "Admin manages assemblies", :versioning do
 
     let(:image2_filename) { "city2.jpeg" }
     let(:image2_path) { Decidim::Dev.asset(image2_filename) }
-    let(:attributes) { attributes_for(:assembly, organization:) }
+    let(:attributes) { attributes_for(:assembly, :with_content_blocks, organization:, blocks_manifests: [:announcement]) }
 
     before do
       visit decidim_admin_assemblies.assemblies_path
       click_on "New assembly"
     end
 
-    it "creates a new assembly" do
+    it "creates a new assembly", :versioning do
       within ".new_assembly" do
         fill_in_i18n(:assembly_title, "#assembly-title-tabs", **attributes[:title].except("machine_translations"))
         fill_in_i18n(:assembly_subtitle, "#assembly-subtitle-tabs", **attributes[:subtitle].except("machine_translations"))
@@ -58,7 +58,7 @@ describe "Admin manages assemblies", :versioning do
       expect(page).to have_admin_callout("successfully")
       expect(Decidim::Assembly.last.area).to eq(area)
 
-      within ".card#assemblies" do
+      within "[data-content]" do
         # expect(page).to have_current_path decidim_admin_assemblies.assemblies_path(q: { parent_id_eq: parent_assembly&.id })
         expect(page).to have_content(translated(attributes[:title]))
       end
@@ -67,7 +67,7 @@ describe "Admin manages assemblies", :versioning do
 
   context "when managing parent assemblies" do
     let(:parent_assembly) { nil }
-    let!(:assembly) { create(:assembly, organization:) }
+    let!(:assembly) { create(:assembly, :with_content_blocks, organization:, blocks_manifests: [:announcement]) }
 
     before do
       switch_to_host(organization.host)
