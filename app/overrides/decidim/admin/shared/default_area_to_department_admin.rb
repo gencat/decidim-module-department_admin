@@ -8,7 +8,7 @@ Deface::Override.new(
     <%= form.areas_select :area_id,
           areas_for_select(current_organization),
           { include_blank: t(".select_an_area"), selected: current_user.areas.first&.id },
-          { disabled: true } %>
+          { disabled: current_user.department_admin? } %>
   ERB
 )
 
@@ -20,6 +20,6 @@ Deface::Override.new(
     <%= form.areas_select :area_id,
           areas_for_select(current_organization),
           { include_blank: t(".select_an_area"), selected: current_user.areas.first&.id },
-          { disabled: true } %>
+          { disabled: current_user.department_admin? } %>
   ERB
 )
