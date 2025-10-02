@@ -80,7 +80,7 @@ jobs:
           command: bundle install --jobs 4 --retry 3 
 
       - name: Install imagemagcick
-        run: sudo apt-get install imagemagick
+        run: sudo apt-get update && sudo apt-get install imagemagick
 
       - name: Disable Spring
         run: echo "DISABLE_SPRING=1" >> $GITHUB_ENV
