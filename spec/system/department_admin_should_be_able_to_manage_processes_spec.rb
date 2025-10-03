@@ -40,6 +40,16 @@ describe "Admin manages participatory processes", :versioning do
       click_on "New process"
     end
 
+    it "shows area field as disabled with department admin area pre-selected" do
+      within ".new_participatory_process" do
+        area_select = find("#participatory_process_area_id")
+
+        expect(area_select).to be_present
+        expect(area_select[:disabled]).to eq("true")
+        expect(area_select.value).to eq(area.id.to_s)
+      end
+    end
+
     it "creates a new participatory process with department admin's area" do
       within ".new_participatory_process" do
         fill_in_i18n(
