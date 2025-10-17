@@ -3,6 +3,9 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.10.0 (MINOR)
+- Changes in input area for processes and assemblies admin form. Now this input is setting by default with department admin area.
+
 ## Version 0.9.0 (MINOR)
 - Upgrade Ruby to 3.2.9
 - Upgrade Decidim to v0.29

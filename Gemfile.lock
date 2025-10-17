@@ -181,7 +181,7 @@ GIT
 PATH
   remote: .
   specs:
-    decidim-department_admin (0.9.0)
+    decidim-department_admin (0.10.0)
       decidim-admin (~> 0.29.0)
       decidim-core (~> 0.29.0)
 
@@ -862,7 +862,7 @@ DEPENDENCIES
   web-console (~> 3.5)
 
 RUBY VERSION
-   ruby 3.2.2p53
+   ruby 3.2.9p265
 
 BUNDLED WITH
    2.7.2
