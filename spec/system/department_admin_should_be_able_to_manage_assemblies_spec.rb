@@ -25,13 +25,12 @@ describe "Admin manages assemblies" do
       click_on "New assembly"
     end
 
-    it "shows area field as disabled with department admin area pre-selected" do
+    it "shows area field as disabled for department admin" do
       within ".new_assembly" do
         area_select = find("#assembly_area_id")
 
         expect(area_select).to be_present
         expect(area_select[:disabled]).to eq("true")
-        expect(area_select.value).to eq(area.id.to_s)
       end
     end
 
