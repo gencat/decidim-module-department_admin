@@ -58,7 +58,7 @@ describe "Admin manages participatory processes", :versioning do
           area_select = find("#participatory_process_area_id")
 
           expect(area_select).to be_present
-          expect(area_select[:disabled]).to be_falsey
+          expect(area_select[:disabled]).to eq("false")
         end
       end
     end

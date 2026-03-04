@@ -43,7 +43,7 @@ describe "Admin manages assemblies" do
           area_select = find("#assembly_area_id")
 
           expect(area_select).to be_present
-          expect(area_select[:disabled]).to be_falsey
+          expect(area_select[:disabled]).to eq("false")
         end
       end
     end
