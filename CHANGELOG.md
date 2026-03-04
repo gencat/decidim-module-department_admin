@@ -3,7 +3,7 @@ Following Semantic Versioning 2.
 
 ## next version:
 
-## Version 0.10.1 (MINOR)
+## Version 0.10.1 (PATCH)
 - Fix: Select the existing area_id by default when editing a participatory process if the logged user is an admin
 
 ## Version 0.10.0 (MINOR)
