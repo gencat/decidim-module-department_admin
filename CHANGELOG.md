@@ -4,7 +4,7 @@ Following Semantic Versioning 2.
 ## next version:
 
 ## Version 0.10.1 (MINOR)
-- Fix: Select the existing area_id by default when editing a participatory process.
+- Fix: Select the existing area_id by default when editing a participatory process if the logged user is an admin
 
 ## Version 0.10.0 (MINOR)
 - Changes in input area for processes and assemblies admin form. Now this input is setting by default with department admin area.

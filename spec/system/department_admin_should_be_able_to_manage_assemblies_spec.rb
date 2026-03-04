@@ -34,6 +34,19 @@ describe "Admin manages assemblies" do
       end
     end
 
+    context "when user is a regular admin" do
+      let(:department_admin) { create(:user, :admin, :confirmed, organization:) }
+
+      it "shows area field as enabled" do
+        within ".new_assembly" do
+          area_select = find("#assembly_area_id")
+
+          expect(area_select).to be_present
+          expect(area_select[:disabled]).to be_falsey
+        end
+      end
+    end
+
     it "creates a new assembly", :versioning do
       within ".new_assembly" do
         fill_in_i18n(:assembly_title, "#assembly-title-tabs", **attributes[:title].except("machine_translations"))
