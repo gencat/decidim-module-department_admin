@@ -50,6 +50,19 @@ describe "Admin manages participatory processes", :versioning do
       end
     end
 
+    context "when user is a regular admin" do
+      let(:department_admin) { create(:user, :admin, :confirmed, organization:) }
+
+      it "shows area field as enabled" do
+        within ".new_participatory_process" do
+          area_select = find("#participatory_process_area_id")
+
+          expect(area_select).to be_present
+          expect(area_select[:disabled]).to eq("false")
+        end
+      end
+    end
+
     it "creates a new participatory process with department admin's area" do
       within ".new_participatory_process" do
         fill_in_i18n(
