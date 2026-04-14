@@ -4,6 +4,7 @@ Deface::Override.new(
   virtual_path: "decidim/participatory_processes/admin/participatory_processes/_form",
   name: "disable-area-id-select-in-participatory_processes-form",
   replace: "erb[loud]:contains('form.areas_select :area_id')",
+  original: "a289e81f184835641bff316c64e025548d9cf8df",
   text: <<-ERB
     <%= form.areas_select :area_id,
           areas_for_select(current_organization),
@@ -16,6 +17,7 @@ Deface::Override.new(
   virtual_path: "decidim/assemblies/admin/assemblies/_form",
   name: "disable-area-id-select-in-assemblies-form",
   replace: "erb[loud]:contains('form.areas_select :area_id')",
+  original: "ff3cffc75819bdc1154883fb28d811e51e923e40",
   text: <<-ERB
     <%= form.areas_select :area_id,
           areas_for_select(current_organization),
