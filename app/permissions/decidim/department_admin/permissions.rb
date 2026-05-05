@@ -93,11 +93,11 @@ module Decidim
           -> { same_area_permission_for?(requested_action, :admin, :publish, :component, restricted_rsrc: context[:component]&.participatory_space) },
           -> { same_area_permission_for?(requested_action, :admin, :unpublish, :component, restricted_rsrc: context[:component]&.participatory_space) },
           -> { same_area_permission_for?(requested_action, :admin, :export, :component_data, restricted_rsrc: context[:component]&.participatory_space) },
-          # CATEGORIES
-          -> { permission_for?(requested_action, :admin, :read, :category) },
-          -> { permission_for?(requested_action, :admin, :create, :category) },
-          -> { same_area_permission_for?(requested_action, :admin, :update, :category, restricted_rsrc: context[:category]&.participatory_space) },
-          -> { same_area_permission_for?(requested_action, :admin, :destroy, :category, restricted_rsrc: context[:category]&.participatory_space) },
+          # TAXONOMIES
+          -> { permission_for?(requested_action, :admin, :read, :taxonomy) },
+          -> { permission_for?(requested_action, :admin, :create, :taxonomy) },
+          -> { same_area_permission_for?(requested_action, :admin, :update, :taxonomy, restricted_rsrc: context[:taxonomy]&.participatory_space) },
+          -> { same_area_permission_for?(requested_action, :admin, :destroy, :taxonomy, restricted_rsrc: context[:taxonomy]&.participatory_space) },
           # ATTACHMENT COLLECTIONS
           -> { permission_for?(requested_action, :admin, :read, :attachment_collection) },
           -> { permission_for?(requested_action, :admin, :create, :attachment_collection) },
