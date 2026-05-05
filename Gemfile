@@ -26,10 +26,6 @@ group :development, :test do
   gem "decidim-conferences", DECIDIM_VERSION
   gem "decidim-dev", DECIDIM_VERSION
   gem "faker"
-  # Set versions because Property AutoCorrect errors.
-  gem "rspec-rails", "~> 6.0.4"
-  gem "rubocop-factory_bot", "~> 2.26"
-  gem "rubocop-rspec", "~> 3.0"
   gem "social-share-button"
 end
 
