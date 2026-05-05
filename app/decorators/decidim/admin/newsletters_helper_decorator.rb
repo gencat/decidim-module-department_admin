@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Decidim::NewslettersHelperDecorator
+module Decidim::Admin::NewslettersHelperDecorator
   # rubocop: disable Metrics/CyclomaticComplexity
   # rubocop: disable Metrics/PerceivedComplexity
   def self.decorate
@@ -41,4 +41,4 @@ module Decidim::NewslettersHelperDecorator
   # rubocop: enable Metrics/PerceivedComplexity
 end
 
-Decidim::NewslettersHelperDecorator.decorate
+Decidim::Admin::NewslettersHelperDecorator.decorate

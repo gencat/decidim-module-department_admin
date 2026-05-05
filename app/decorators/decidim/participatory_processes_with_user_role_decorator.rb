@@ -9,10 +9,10 @@ module Decidim::ParticipatoryProcessesWithUserRoleDecorator
     Decidim::ParticipatoryProcessesWithUserRole.class_eval do
       private
 
-      alias_method :process_ids_by_process_user_table, :process_ids
+      alias_method :process_ids_original, :process_ids
 
       def process_ids
-        ids = [process_ids_by_process_user_table]
+        ids = [process_ids_original]
         if user&.department_admin?
           ids << ::Decidim::ParticipatoryProcess
                  .where("decidim_area_id" => user.areas.pluck(:id))

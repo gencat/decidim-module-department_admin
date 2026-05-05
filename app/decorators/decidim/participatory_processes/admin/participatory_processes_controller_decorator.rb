@@ -9,11 +9,11 @@ module Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessesControllerD
     Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessesController.class_eval do
       private
 
-      alias_method :original_organization_processes, :collection
+      alias_method :original_collection, :collection
 
       def collection
         @collection ||= if current_user.admin?
-                          original_organization_processes
+                          original_collection
                         else
                           ::Decidim::ParticipatoryProcessesWithUserRole.for(current_user)
                         end
