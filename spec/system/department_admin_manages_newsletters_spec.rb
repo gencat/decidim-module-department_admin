@@ -113,37 +113,52 @@ describe "Admin manages newsletters" do
       end
 
       expect(page).to have_content("Save and preview")
-      # expect(page).to have_content("A fancy newsletter")
     end
   end
 
-  context "when selecting newsletter recipients" do
+  describe "when selecting newsletter recipients" do
+    let!(:participatory_process) { create(:participatory_process, organization:, skip_injection: true) }
+    let!(:assembly) { create(:assembly, organization:, skip_injection: true) }
+    
     let!(:newsletter) { create(:newsletter, organization:, author: department_admin) }
+    let(:spaces) { [participatory_process, assembly] }
+
+    def select_all
+      spaces.group_by { |space| space.model_name.route_key }.each do |plural_name, grouped_spaces|
+        select_id = "##{plural_name}-spaces-select"
+
+        next unless has_css?(select_id)
+
+        tom_select(select_id, option_id: grouped_spaces.map { |s| s.id.to_s })
+      end
+    end
 
     context "when followers are selected" do
       let!(:participatory_processes) { create_list(:participatory_process, 2, organization:, area:) }
+      let(:spaces) { participatory_processes }
       let!(:followers) do
         deliverable_users.each do |follower|
           create(:follow, followable: participatory_processes.first, user: follower)
         end
       end
+      let(:recipients_count) { followers.size }
 
       it "sends to followers" do
         visit decidim_admin.select_recipients_to_deliver_newsletter_path(newsletter)
         perform_enqueued_jobs do
           within(".newsletter_deliver") do
             check("Send to followers")
-            uncheck("Send to participants")
-            within ".participatory_processes-block" do
-              select translated(participatory_processes.first.title), from: :newsletter_participatory_space_types_participatory_processes__ids
-            end
+            select_all
           end
 
-          within "form.newsletter_deliver .item__edit-sticky" do
-            accept_confirm { click_on("Deliver newsletter") }
+          within "#recipients_count" do
+            expect(page).to have_content(recipients_count)
           end
 
-          wait_redirect
+          click_on("Confirm recipients")
+
+          accept_confirm { click_on("Deliver newsletter") }
+
           expect(page).to have_content("Newsletters")
           expect(page).to have_admin_callout("successfully")
         end
@@ -166,26 +181,30 @@ describe "Admin manages newsletters" do
 
       it "sends to participants" do
         visit decidim_admin.select_recipients_to_deliver_newsletter_path(newsletter)
+        check("Send to participants")
+        
+        expect(find("input[name='newsletter[send_to_participants]']")).to be_checked
+
+        select_all
+
+        expect(page).to have_content("This newsletter will be send to 5 users.")
+
+        click_on("Confirm recipients")
+
+        deliverable_users.each do |user|
+          expect(page).to have_content(user.name)
+          expect(page).to have_content(user.email)
+        end
+
         perform_enqueued_jobs do
-          within(".newsletter_deliver") do
-            uncheck("Send to followers")
-            check("Send to participants")
-            within ".participatory_processes-block" do
-              select translated(component.participatory_space.title), from: :newsletter_participatory_space_types_participatory_processes__ids
-            end
-          end
+          accept_confirm { click_on("Deliver newsletter") }
 
-          within "form.newsletter_deliver .item__edit-sticky" do
-            accept_confirm { click_on("Deliver newsletter") }
-          end
-
-          wait_redirect
           expect(page).to have_content("Newsletters")
           expect(page).to have_admin_callout("successfully")
-          expect(page).to have_content("Has been sent to")
-          within "tbody" do
-            expect(page).to have_content("5 / 5")
-          end
+        end
+
+        within "tbody" do
+          expect(page).to have_content("5 / 5")
         end
       end
     end
@@ -208,20 +227,24 @@ describe "Admin manages newsletters" do
 
       it "sends to participants" do
         visit decidim_admin.select_recipients_to_deliver_newsletter_path(newsletter)
+        check("Send to participants")
+        
+        expect(find("input[name='newsletter[send_to_participants]']")).to be_checked
+
+        select_all
+
+        expect(page).to have_content("This newsletter will be send to 5 users.")
+
+        click_on("Confirm recipients")
+
+        deliverable_users.each do |user|
+          expect(page).to have_content(user.name)
+          expect(page).to have_content(user.email)
+        end
+
         perform_enqueued_jobs do
-          within(".newsletter_deliver") do
-            check("Send to followers")
-            check("Send to participants")
-            within ".participatory_processes-block" do
-              select translated(component.participatory_space.title), from: :newsletter_participatory_space_types_participatory_processes__ids
-            end
-          end
+          accept_confirm { click_on("Deliver newsletter") }
 
-          within "form.newsletter_deliver .item__edit-sticky" do
-            accept_confirm { click_on("Deliver newsletter") }
-          end
-
-          wait_redirect
           expect(page).to have_content("Newsletters")
           expect(page).to have_admin_callout("successfully")
         end

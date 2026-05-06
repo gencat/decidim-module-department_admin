@@ -8,7 +8,7 @@ module Decidim::Conferences::UpdateConferenceDecorator
     Decidim::Conferences::Admin::UpdateConference.class_eval do
       def run_before_hooks
         author = form.current_user
-        form.area_id = author.areas.first.id if author.department_admin?
+        resource.decidim_area_id = author.areas.first.id if author.department_admin?
       end
     end
   end
