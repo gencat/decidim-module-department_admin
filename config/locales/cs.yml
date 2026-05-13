@@ -36,6 +36,7 @@ cs:
       users:
         form:
           area: Oblast
+          department: Oddělení
         index:
           filter:
             all: Vše
@@ -44,3 +45,33 @@ cs:
     components:
       department_admin:
         name: Správce oddělení
+    department_admin:
+      department: Oddělení
+      admin:
+        menu:
+          departments: Oddělení
+        forms:
+          select_a_department: Vyberte oddělení
+        models:
+          department:
+            fields:
+              name: Název
+        departments:
+          index:
+            title: Oddělení
+            no_departments: Zatím nebyla vytvořena žádná oddělení.
+          new:
+            title: Nové oddělení
+            create: Vytvořit
+          edit:
+            title: Upravit oddělení
+            update: Aktualizovat
+          create:
+            success: Oddělení bylo úspěšně vytvořeno.
+            error: Při vytváření oddělení došlo k chybě.
+          update:
+            success: Oddělení bylo úspěšně aktualizováno.
+            error: Při aktualizaci oddělení došlo k chybě.
+          destroy:
+            success: Oddělení bylo úspěšně odstraněno.
+            has_department_admins: Nelze odstranit oddělení, které má přiřazené správce.

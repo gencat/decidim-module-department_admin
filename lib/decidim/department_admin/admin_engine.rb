@@ -10,13 +10,27 @@ module Decidim
       paths["lib/tasks"] = nil
 
       routes do
-        # Add admin engine routes here
-        # resources :department_admin do
-        #   collection do
-        #     resources :exports, only: [:create]
-        #   end
-        # end
-        # root to: "department_admin#index"
+        resources :departments, except: [:show]
+      end
+
+      initializer "department_admin_admin.mount_routes" do
+        Decidim::Core::Engine.routes do
+          mount Decidim::DepartmentAdmin::AdminEngine,
+                at: "/admin/department_admin",
+                as: "decidim_admin_department_admin"
+        end
+      end
+
+      initializer "department_admin.admin_settings_menu" do
+        Decidim.menu :admin_settings_menu do |menu|
+          menu.add_item :departments,
+                        I18n.t("decidim.department_admin.admin.menu.departments"),
+                        decidim_admin_department_admin.departments_path,
+                        position: 1.55,
+                        icon_name: "layout-masonry-line",
+                        if: allowed_to?(:update, :organization, organization: current_organization),
+                        active: is_active_link?(decidim_admin_department_admin.departments_path)
+        end
       end
 
       def load_seed

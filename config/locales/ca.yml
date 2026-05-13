@@ -46,11 +46,14 @@ ca:
       users:
         form:
           area: Àrea
+          department: Departament
         index:
           filter:
             all: Totes
           filter_by: Filtra per
           search: Cerca
+      titles:
+        departments: Departaments
     components:
       department_admin:
         name: Admin de Departament
@@ -59,3 +62,33 @@ ca:
         conferences:
           form:
             select_an_area: Selecciona una Àrea
+    department_admin:
+      department: Departament
+      admin:
+        menu:
+          departments: Departaments
+        forms:
+          select_a_department: Selecciona un departament
+        models:
+          department:
+            fields:
+              name: Nom
+        departments:
+          index:
+            title: Departaments
+            no_departments: Encara no s'han creat departaments.
+          new:
+            title: Nou Departament
+            create: Crear
+          edit:
+            title: Editar Departament
+            update: Actualitzar
+          create:
+            success: Departament creat correctament.
+            error: Hi ha hagut un error en crear el departament.
+          update:
+            success: Departament actualitzat correctament.
+            error: Hi ha hagut un error en actualitzar el departament.
+          destroy:
+            success: Departament eliminat correctament.
+            has_department_admins: No es pot eliminar un departament que té administradores assignades.

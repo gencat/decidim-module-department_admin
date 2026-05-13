@@ -46,6 +46,7 @@ en:
       users:
         form:
           area: Area
+          department: Department
         index:
           filter:
             all: All
@@ -59,3 +60,33 @@ en:
         conferences:
           form:
             select_an_area: Select an area
+    department_admin:
+      department: Department
+      admin:
+        menu:
+          departments: Departments
+        forms:
+          select_a_department: Select a department
+        models:
+          department:
+            fields:
+              name: Name
+        departments:
+          index:
+            title: Departments
+            no_departments: No departments have been created yet.
+          new:
+            title: New Department
+            create: Create
+          edit:
+            title: Edit Department
+            update: Update
+          create:
+            success: Department created successfully.
+            error: There was an error creating the new department.
+          update:
+            success: Department updated successfully.
+            error: There was an error updating the department.
+          destroy:
+            success: Department deleted successfully.
+            has_department_admins: Cannot delete a department that has department admins assigned.

@@ -46,11 +46,14 @@ es:
       users:
         form:
           area: Area
+          department: Departamento
         index:
           filter:
             all: Todas
           filter_by: Filtrado por
           search: Buscar
+      titles:
+        departments: Departamentos
     components:
       department_admin:
         name: Admin de Departamento
@@ -59,3 +62,33 @@ es:
         conferences:
           form:
             select_an_area: Selecciona una Area
+    department_admin:
+      department: Departamento
+      admin:
+        menu:
+          departments: Departamentos
+        forms:
+          select_a_department: Selecciona un departamento
+        models:
+          department:
+            fields:
+              name: Nombre
+        departments:
+          index:
+            title: Departamentos
+            no_departments: Todavía no se han creado departamentos.
+          new:
+            title: Nuevo Departamento
+            create: Crear
+          edit:
+            title: Editar Departamento
+            update: Actualizar
+          create:
+            success: Departamento creado correctamente.
+            error: Ha habido un error al crear el departamento.
+          update:
+            success: Departamento actualizado correctamente.
+            error: Ha habido un error al actualizar el departamento.
+          destroy:
+            success: Departamento eliminado correctamente.
+            has_department_admins: No se puede eliminar un departamento que tiene administradoras asignadas.
