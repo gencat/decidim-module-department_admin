@@ -46,7 +46,7 @@ module Decidim
           enforce_permission_to :update, :department, department: department
           @form = form(DepartmentForm).from_params(params)
 
-          UpdateDepartment.call(department, @form) do
+          UpdateDepartment.call(@form, department) do
             on(:ok) do
               flash[:notice] = I18n.t("departments.update.success", scope: "decidim.department_admin.admin")
               redirect_to decidim_admin_department_admin.departments_path

@@ -11,14 +11,13 @@ module Decidim
 
       belongs_to :organization,
                foreign_key: "decidim_organization_id",
-               class_name: "Decidim::Organization",
-               inverse_of: :departments
+               class_name: "Decidim::Organization"
 
       has_and_belongs_to_many :users,
                               -> { where("'department_admin'=ANY(\"decidim_users\".\"roles\")") },
                               class_name: "Decidim::User",
-                              join_table: :department_admin_user_departments,
-                              foreign_key: :department_admin_department_id,
+                              join_table: :decidim_department_admin_user_departments,
+                              foreign_key: :decidim_department_admin_department_id,
                               association_foreign_key: :decidim_user_id,
                               validate: false
 
@@ -40,7 +39,7 @@ module Decidim
             .participatory_spaces
             .call(organization)
             .any? do |space|
-            space.respond_to?(:department) && space.decidim_department_id == id
+            space.respond_to?(:department) && space.decidim_department_admin_department_id == id
           end
         end
       end
