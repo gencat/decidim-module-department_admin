@@ -4,12 +4,26 @@ module Decidim::ParticipatoryProcesses::CreateParticipatoryProcessDecorator
   # Forces the Area of the user if it is a department_admin user.
   def self.decorate
     Decidim::ParticipatoryProcesses::Admin::CreateParticipatoryProcess.class_eval do
-      alias_method :run_after_hooks_original, :run_after_hooks
+      fetch_form_attributes :organization, :title, :subtitle, :weight, :slug, :hashtag, :description,
+                              :short_description, :promoted, :taxonomizations, :announcement,
+                              :private_space, :developer_group, :local_area, :target,
+                              :participatory_scope, :participatory_structure, :meta_scope, :start_date, :end_date,
+                              :participatory_process_group, :decidim_department_admin_department_id
+
+      protected
 
       def run_after_hooks
-        run_after_hooks_original
+        create_steps
+        add_admins_as_followers
+        link_related_processes
+        Decidim::ContentBlocksCreator.new(resource).create_default!
+
         author = form.current_user
-        resource.update_column(:decidim_area_id, author.areas.first.id) if author.department_admin?
+        if author.department_admin?
+          resource.update_column(:decidim_department_admin_department_id, author.departments.first.id)
+        elsif form.try(:decidim_department_admin_department_id).present?
+          resource.update_column(:decidim_department_admin_department_id, form.decidim_department_admin_department_id)
+        end
       end
     end
   end

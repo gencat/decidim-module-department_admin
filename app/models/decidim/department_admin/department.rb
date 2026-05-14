@@ -30,7 +30,7 @@ module Decidim
       end
 
       def translated_name
-        Decidim::DepartmentPresenter.new(self).translated_name
+        Decidim::DepartmentAdmin::DepartmentPresenter.new(self).translated_name
       end
 
       def has_dependencies?
