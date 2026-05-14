@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 ruby RUBY_VERSION
 
-gemspec
+gem "decidim-department_admin", path: ".."
 
 DECIDIM_VERSION = { git: "https://github.com/CodiTramuntana/decidim", branch: "release/0.30-stable" }.freeze
 

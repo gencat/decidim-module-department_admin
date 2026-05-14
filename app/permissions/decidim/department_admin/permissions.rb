@@ -31,7 +31,9 @@ module Decidim
         # byebug if same_action?(permission_action, :admin, :read, :global_moderation)
 
         current_permission_action = permission_action
-        if permission_action.scope == :admin && user&.department_admin?
+        if permission_action.scope == :admin && user&.admin? && department_permission?(permission_action)
+          current_permission_action.allow!
+        elsif permission_action.scope == :admin && user&.department_admin?
           current_permission_action = apply_department_admin_permissions!
         elsif delegate_chain.present?
           # not admin or not a department_admin, use the standard permissions
@@ -72,43 +74,43 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :enter, :space_area, space_name: :processes) },
           -> { permission_for?(requested_action, :admin, :read, :process_list) },
           -> { permission_for?(requested_action, :admin, :create, :process) },
-          -> { same_area_permission_for?(requested_action, :admin, :preview, :process, restricted_rsrc: context[:process]) },
-          -> { same_area_permission_for?(requested_action, :admin, :update, :process, restricted_rsrc: context[:process]) },
-          -> { same_area_permission_for?(requested_action, :admin, :publish, :process, restricted_rsrc: context[:process]) },
-          -> { same_area_permission_for?(requested_action, :admin, :unpublish, :process, restricted_rsrc: context[:process]) },
+          -> { same_department_permission_for?(requested_action, :admin, :preview, :process, restricted_rsrc: context[:process]) },
+          -> { same_department_permission_for?(requested_action, :admin, :update, :process, restricted_rsrc: context[:process]) },
+          -> { same_department_permission_for?(requested_action, :admin, :publish, :process, restricted_rsrc: context[:process]) },
+          -> { same_department_permission_for?(requested_action, :admin, :unpublish, :process, restricted_rsrc: context[:process]) },
           -> { permission_for?(requested_action, :admin, :import, :process) },
 
           # STEPS
           -> { permission_for?(requested_action, :admin, :read, :process_step) },
           -> { permission_for?(requested_action, :admin, :create, :process_step) },
-          -> { same_area_permission_for?(requested_action, :admin, :update, :process_step, restricted_rsrc: context[:process_step]&.participatory_process) },
-          -> { same_area_permission_for?(requested_action, :admin, :activate, :process_step, restricted_rsrc: context[:process_step]&.participatory_process) },
-          -> { same_area_permission_for?(requested_action, :admin, :destroy, :process_step, restricted_rsrc: context[:process_step]&.participatory_process) },
+          -> { same_department_permission_for?(requested_action, :admin, :update, :process_step, restricted_rsrc: context[:process_step]&.participatory_process) },
+          -> { same_department_permission_for?(requested_action, :admin, :activate, :process_step, restricted_rsrc: context[:process_step]&.participatory_process) },
+          -> { same_department_permission_for?(requested_action, :admin, :destroy, :process_step, restricted_rsrc: context[:process_step]&.participatory_process) },
           # COMPONENTS
           -> { permission_for?(requested_action, :admin, :read, :component) },
           -> { permission_for?(requested_action, :admin, :create, :component) },
-          -> { same_area_permission_for?(requested_action, :admin, :update, :component, restricted_rsrc: context[:component]&.participatory_space) },
-          -> { same_area_permission_for?(requested_action, :admin, :manage, :component, restricted_rsrc: context[:component]&.participatory_space) },
-          -> { same_area_permission_for?(requested_action, :admin, :destroy, :component, restricted_rsrc: context[:component]&.participatory_space) },
-          -> { same_area_permission_for?(requested_action, :admin, :publish, :component, restricted_rsrc: context[:component]&.participatory_space) },
-          -> { same_area_permission_for?(requested_action, :admin, :unpublish, :component, restricted_rsrc: context[:component]&.participatory_space) },
-          -> { same_area_permission_for?(requested_action, :admin, :export, :component_data, restricted_rsrc: context[:component]&.participatory_space) },
+          -> { same_department_permission_for?(requested_action, :admin, :update, :component, restricted_rsrc: context[:component]&.participatory_space) },
+          -> { same_department_permission_for?(requested_action, :admin, :manage, :component, restricted_rsrc: context[:component]&.participatory_space) },
+          -> { same_department_permission_for?(requested_action, :admin, :destroy, :component, restricted_rsrc: context[:component]&.participatory_space) },
+          -> { same_department_permission_for?(requested_action, :admin, :publish, :component, restricted_rsrc: context[:component]&.participatory_space) },
+          -> { same_department_permission_for?(requested_action, :admin, :unpublish, :component, restricted_rsrc: context[:component]&.participatory_space) },
+          -> { same_department_permission_for?(requested_action, :admin, :export, :component_data, restricted_rsrc: context[:component]&.participatory_space) },
           # TAXONOMIES
           -> { permission_for?(requested_action, :admin, :read, :taxonomy) },
           -> { permission_for?(requested_action, :admin, :create, :taxonomy) },
-          -> { same_area_permission_for?(requested_action, :admin, :update, :taxonomy, restricted_rsrc: context[:taxonomy]&.participatory_space) },
-          -> { same_area_permission_for?(requested_action, :admin, :destroy, :taxonomy, restricted_rsrc: context[:taxonomy]&.participatory_space) },
+          -> { same_department_permission_for?(requested_action, :admin, :update, :taxonomy, restricted_rsrc: context[:taxonomy]&.participatory_space) },
+          -> { same_department_permission_for?(requested_action, :admin, :destroy, :taxonomy, restricted_rsrc: context[:taxonomy]&.participatory_space) },
           # ATTACHMENT COLLECTIONS
           -> { permission_for?(requested_action, :admin, :read, :attachment_collection) },
           -> { permission_for?(requested_action, :admin, :create, :attachment_collection) },
-          -> { same_area_permission_for?(requested_action, :admin, :read, :attachment_collection, restricted_rsrc: context[:attachment_collection]&.collection_for) },
-          -> { same_area_permission_for?(requested_action, :admin, :update, :attachment_collection, restricted_rsrc: context[:attachment_collection]&.collection_for) },
-          -> { same_area_permission_for?(requested_action, :admin, :destroy, :attachment_collection, restricted_rsrc: context[:attachment_collection]&.collection_for) },
+          -> { same_department_permission_for?(requested_action, :admin, :read, :attachment_collection, restricted_rsrc: context[:attachment_collection]&.collection_for) },
+          -> { same_department_permission_for?(requested_action, :admin, :update, :attachment_collection, restricted_rsrc: context[:attachment_collection]&.collection_for) },
+          -> { same_department_permission_for?(requested_action, :admin, :destroy, :attachment_collection, restricted_rsrc: context[:attachment_collection]&.collection_for) },
           # ATTACHMENTS
           -> { permission_for?(requested_action, :admin, :read, :attachment) },
           -> { permission_for?(requested_action, :admin, :create, :attachment) },
-          -> { same_area_permission_for?(requested_action, :admin, :update, :attachment, restricted_rsrc: context[:attachment]&.attached_to) },
-          -> { same_area_permission_for?(requested_action, :admin, :destroy, :attachment, restricted_rsrc: context[:attachment]&.attached_to) },
+          -> { same_department_permission_for?(requested_action, :admin, :update, :attachment, restricted_rsrc: context[:attachment]&.attached_to) },
+          -> { same_department_permission_for?(requested_action, :admin, :destroy, :attachment, restricted_rsrc: context[:attachment]&.attached_to) },
           # INVITE PROCESS ADMIN: USER ROLES
           -> { permission_for?(requested_action, :admin, :read, :process_user_role) },
           -> { permission_for?(requested_action, :admin, :create, :process_user_role) },
@@ -117,9 +119,9 @@ module Decidim
           # SPACE PRIVATE USERS
           -> { permission_for?(requested_action, :admin, :read, :space_private_user) },
           -> { permission_for?(requested_action, :admin, :create, :space_private_user) },
-          -> { same_area_permission_for?(requested_action, :admin, :update, :space_private_user, restricted_rsrc: context[:private_user]&.privatable_to) },
-          -> { same_area_permission_for?(requested_action, :admin, :destroy, :space_private_user, restricted_rsrc: context[:private_user]&.privatable_to) },
-          -> { same_area_permission_for?(requested_action, :admin, :invite, :space_private_user, restricted_rsrc: context[:private_user]&.privatable_to) },
+          -> { same_department_permission_for?(requested_action, :admin, :update, :space_private_user, restricted_rsrc: context[:private_user]&.privatable_to) },
+          -> { same_department_permission_for?(requested_action, :admin, :destroy, :space_private_user, restricted_rsrc: context[:private_user]&.privatable_to) },
+          -> { same_department_permission_for?(requested_action, :admin, :invite, :space_private_user, restricted_rsrc: context[:private_user]&.privatable_to) },
           # MODERATIONS
           -> { permission_for?(requested_action, :admin, :read, :moderation) },
           -> { permission_for?(requested_action, :admin, :unreport, :moderation) },
@@ -130,9 +132,9 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :enter, :space_area, space_name: :assemblies) },
           -> { permission_for?(requested_action, :admin, :read, :assembly_list) },
           -> { permission_for?(requested_action, :admin, :create, :assembly) },
-          -> { same_area_permission_for?(requested_action, :admin, :update, :assembly, restricted_rsrc: context[:assembly]) },
-          -> { same_area_permission_for?(requested_action, :admin, :publish, :assembly, restricted_rsrc: context[:assembly]) },
-          -> { same_area_permission_for?(requested_action, :admin, :unpublish, :assembly, restricted_rsrc: context[:assembly]) },
+          -> { same_department_permission_for?(requested_action, :admin, :update, :assembly, restricted_rsrc: context[:assembly]) },
+          -> { same_department_permission_for?(requested_action, :admin, :publish, :assembly, restricted_rsrc: context[:assembly]) },
+          -> { same_department_permission_for?(requested_action, :admin, :unpublish, :assembly, restricted_rsrc: context[:assembly]) },
           -> { permission_for?(requested_action, :admin, :import, :assembly) },
           # Assemly Admin: USER ROLES
           -> { permission_for?(requested_action, :admin, :index, :assembly_user_role) },
@@ -143,7 +145,7 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :destroy, :assembly_user_role) },
 
           # Assembly Members
-          -> { same_area_permission_for?(requested_action, :admin, :read, :assembly_member, restricted_rsrc: context[:assembly]) },
+          -> { same_department_permission_for?(requested_action, :admin, :read, :assembly_member, restricted_rsrc: context[:assembly]) },
           -> { permission_for?(requested_action, :admin, :index, :assembly_member) },
           -> { permission_for?(requested_action, :admin, :create, :assembly_member) },
           -> { permission_for?(requested_action, :admin, :update, :assembly_member) },
@@ -154,10 +156,10 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :index, :newsletter) },
           -> { permission_for?(requested_action, :admin, :read, :newsletter) },
           -> { permission_for?(requested_action, :admin, :create, :newsletter) },
-          -> { same_area_permission_for?(requested_action, :admin, :update, :newsletter, restricted_rsrc: context[:newsletter]) },
-          -> { same_area_permission_for?(requested_action, :admin, :destroy, :newsletter, restricted_rsrc: context[:newsletter]) },
+          -> { same_department_permission_for?(requested_action, :admin, :update, :newsletter, restricted_rsrc: context[:newsletter]) },
+          -> { same_department_permission_for?(requested_action, :admin, :destroy, :newsletter, restricted_rsrc: context[:newsletter]) },
 
-          # CONFERENCES
+          # CONFERENCES (still use area)
           -> { permission_for?(requested_action, :admin, :enter, :space_area, space_name: :conferences) },
           -> { permission_for?(requested_action, :admin, :read, :conference_list) },
           -> { permission_for?(requested_action, :admin, :create, :conference) },
@@ -184,12 +186,18 @@ module Decidim
         default_checks.any?(&:call) || any_configurable_check?(requested_action)
       end
 
+      def department_permission?(requested_action)
+        [:read, :create, :update, :destroy].any? do |action|
+          permission_for?(requested_action, :admin, action, :department)
+        end
+      end
+
       def any_configurable_check?(requested_action)
         configurable_checks.any? do |check|
           check = check.entries.first
           method = check.first
           args = check.last
-          next unless [:permission_for?, :same_area_permission_for].include?(method)
+          next unless [:permission_for?, :same_department_permission_for?, :same_area_permission_for?].include?(method)
 
           send(method, requested_action, *args)
         end
@@ -209,8 +217,23 @@ module Decidim
       end
 
       # Does user have permission for the specified scope/action/subject?
-      # Also check if the resource in the context for with the key defined by `area_restricted_rsrc`
-      # has the same area as current user.
+      # Also check if the resource has the same department as the current user.
+      # Used for processes, assemblies, and newsletters.
+      def same_department_permission_for?(requested_action, scope, action, subject, restricted_rsrc:)
+        if restricted_rsrc.respond_to?(:department) || restricted_rsrc.nil?
+          is = same_action?(requested_action, scope, action, subject)
+          is &&= in_same_department?(restricted_rsrc)
+          is
+        elsif restricted_rsrc.try(:participatory_space).try(:department).present?
+          same_department_permission_for?(requested_action, scope, action, subject, restricted_rsrc: restricted_rsrc.try(:participatory_space))
+        else
+          permission_for?(requested_action, scope, action, subject)
+        end
+      end
+
+      # Does user have permission for the specified scope/action/subject?
+      # Also check if the resource has the same area as the current user.
+      # Used for conferences (which still use areas).
       def same_area_permission_for?(requested_action, scope, action, subject, restricted_rsrc:)
         if restricted_rsrc.respond_to?(:area) || restricted_rsrc.nil?
           is = same_action?(requested_action, scope, action, subject)
@@ -230,6 +253,10 @@ module Decidim
           is &&= (context.try(:[], key) == expected_value)
         end
         is
+      end
+
+      def in_same_department?(resource)
+        user.departments.include? resource&.department
       end
 
       def in_same_area?(resource)

@@ -1,5 +1,16 @@
 ---
 en:
+  activemodel:
+    attributes:
+      assembly:
+        decidim_department_admin_department_id: Department
+      participatory_process:
+        decidim_department_admin_department_id: Department
+  activerecord:
+    models:
+      decidim/department_admin/department:
+        one: Department
+        other: Departments
   decidim:
     admin:
       models:
@@ -55,6 +66,19 @@ en:
     components:
       department_admin:
         name: Department Admin
+    assemblies:
+      admin:
+        assemblies:
+          form:
+            department: Department
+    participatory_processes:
+      admin:
+        participatory_processes:
+          form:
+            department: Department
+      participatory_processes:
+        description:
+          department_name: Department
     conferences:
       admin:
         conferences:

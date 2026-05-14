@@ -185,7 +185,7 @@ GIT
       decidim-core (= 0.30.8)
 
 PATH
-  remote: .
+  remote: ..
   specs:
     decidim-department_admin (0.11.0)
       decidim-admin (~> 0.30.0)

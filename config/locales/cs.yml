@@ -1,5 +1,16 @@
 ---
 cs:
+  activemodel:
+    attributes:
+      assembly:
+        decidim_department_admin_department_id: Oddělení
+      participatory_process:
+        decidim_department_admin_department_id: Oddělení
+  activerecord:
+    models:
+      decidim/department_admin/department:
+        one: Oddělení
+        other: Oddělení
   decidim:
     admin:
       models:
@@ -42,6 +53,19 @@ cs:
             all: Vše
           filter_by: filtrovat podle
           search: Hledat
+    assemblies:
+      admin:
+        assemblies:
+          form:
+            department: Oddělení
+    participatory_processes:
+      admin:
+        participatory_processes:
+          form:
+            department: Oddělení
+      participatory_processes:
+        description:
+          department_name: Oddělení
     components:
       department_admin:
         name: Správce oddělení
