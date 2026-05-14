@@ -119,7 +119,7 @@ describe "Admin manages newsletters" do
   describe "when selecting newsletter recipients" do
     let!(:participatory_process) { create(:participatory_process, organization:, skip_injection: true) }
     let!(:assembly) { create(:assembly, organization:, skip_injection: true) }
-    
+
     let!(:newsletter) { create(:newsletter, organization:, author: department_admin) }
     let(:spaces) { [participatory_process, assembly] }
 
@@ -182,7 +182,7 @@ describe "Admin manages newsletters" do
       it "sends to participants" do
         visit decidim_admin.select_recipients_to_deliver_newsletter_path(newsletter)
         check("Send to participants")
-        
+
         expect(find("input[name='newsletter[send_to_participants]']")).to be_checked
 
         select_all
@@ -226,6 +226,34 @@ describe "Admin manages newsletters" do
       end
 
       it "sends to followers and participants" do
+        visit decidim_admin.select_recipients_to_deliver_newsletter_path(newsletter)
+        check("Send to followers")
+        check("Send to participants")
+
+        select_all
+
+        expect(page).to have_content("This newsletter will be send to 5 users.")
+
+        click_on("Confirm recipients")
+
+        deliverable_users.each do |user|
+          expect(page).to have_content(user.name)
+          expect(page).to have_content(user.email)
+        end
+
+        perform_enqueued_jobs do
+          accept_confirm { click_on("Deliver newsletter") }
+
+          expect(page).to have_content("Newsletters")
+          expect(page).to have_admin_callout("successfully")
+        end
+
+        within "tbody" do
+          expect(page).to have_content("5 / 5")
+        end
+      end
+    end
+  end
 
   context "when deleting a newsletter" do
     let!(:newsletter) { create(:newsletter, organization:, author: department_admin) }

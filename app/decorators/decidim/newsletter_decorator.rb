@@ -19,4 +19,3 @@ module Decidim::NewsletterDecorator
 end
 
 Decidim::NewsletterDecorator.decorate
-

@@ -20,9 +20,7 @@ module Decidim::DecidimFormHelperDecorator
       def departments_for_select(organization)
         author = current_user
 
-        if author&.department_admin? && controller_path.split("/").include?("admin")
-          return author.departments.map { |d| [translated_attribute(d.name), d.id] }
-        end
+        return author.departments.map { |d| [translated_attribute(d.name), d.id] } if author&.department_admin? && controller_path.split("/").include?("admin")
 
         Decidim::DepartmentAdmin::Department
           .where(decidim_organization_id: organization.id)

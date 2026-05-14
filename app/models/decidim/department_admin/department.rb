@@ -10,8 +10,8 @@ module Decidim
       translatable_fields :name
 
       belongs_to :organization,
-               foreign_key: "decidim_organization_id",
-               class_name: "Decidim::Organization"
+                 foreign_key: "decidim_organization_id",
+                 class_name: "Decidim::Organization"
 
       has_and_belongs_to_many :users,
                               -> { where("'department_admin'=ANY(\"decidim_users\".\"roles\")") },

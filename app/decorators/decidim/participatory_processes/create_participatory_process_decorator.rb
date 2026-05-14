@@ -5,10 +5,10 @@ module Decidim::ParticipatoryProcesses::CreateParticipatoryProcessDecorator
   def self.decorate
     Decidim::ParticipatoryProcesses::Admin::CreateParticipatoryProcess.class_eval do
       fetch_form_attributes :organization, :title, :subtitle, :weight, :slug, :hashtag, :description,
-                              :short_description, :promoted, :taxonomizations, :announcement,
-                              :private_space, :developer_group, :local_area, :target,
-                              :participatory_scope, :participatory_structure, :meta_scope, :start_date, :end_date,
-                              :participatory_process_group, :decidim_department_admin_department_id
+                            :short_description, :promoted, :taxonomizations, :announcement,
+                            :private_space, :developer_group, :local_area, :target,
+                            :participatory_scope, :participatory_structure, :meta_scope, :start_date, :end_date,
+                            :participatory_process_group, :decidim_department_admin_department_id
 
       protected
 
@@ -20,9 +20,9 @@ module Decidim::ParticipatoryProcesses::CreateParticipatoryProcessDecorator
 
         author = form.current_user
         if author.department_admin?
-          resource.update_column(:decidim_department_admin_department_id, author.departments.first.id)
+          resource.update(:decidim_department_admin_department_id, author.departments.first.id)
         elsif form.try(:decidim_department_admin_department_id).present?
-          resource.update_column(:decidim_department_admin_department_id, form.decidim_department_admin_department_id)
+          resource.update(:decidim_department_admin_department_id, form.decidim_department_admin_department_id)
         end
       end
     end

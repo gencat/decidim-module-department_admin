@@ -5,7 +5,7 @@ module Decidim
     module Admin
       class DepartmentsController < Decidim::Admin::ApplicationController
         layout "decidim/admin/settings"
-        
+
         add_breadcrumb_item_from_menu :admin_settings_menu
 
         helper_method :department, :organization_departments
@@ -18,6 +18,11 @@ module Decidim
         def new
           enforce_permission_to :create, :department
           @form = form(DepartmentForm).instance
+        end
+
+        def edit
+          enforce_permission_to :update, :department, department: department
+          @form = form(DepartmentForm).from_model(department)
         end
 
         def create
@@ -35,11 +40,6 @@ module Decidim
               render :new
             end
           end
-        end
-
-        def edit
-          enforce_permission_to :update, :department, department: department
-          @form = form(DepartmentForm).from_model(department)
         end
 
         def update

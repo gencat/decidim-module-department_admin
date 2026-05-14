@@ -126,4 +126,3 @@ module Decidim::Admin::UsersControllerDecorator
 end
 
 Decidim::Admin::UsersControllerDecorator.decorate
-

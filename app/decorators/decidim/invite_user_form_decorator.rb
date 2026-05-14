@@ -45,4 +45,3 @@ module Decidim::InviteUserFormDecorator
 end
 
 Decidim::InviteUserFormDecorator.decorate
-
