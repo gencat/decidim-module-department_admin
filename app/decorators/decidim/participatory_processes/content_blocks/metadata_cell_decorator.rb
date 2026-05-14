@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 module Decidim::ParticipatoryProcesses::ContentBlocks::MetadataCellDecorator
-  def self.decorate
-    Decidim::ParticipatoryProcesses::ContentBlocks::MetadataCell.class_eval do
-      private
+  def metadata_items
+    items = super
+    items << "department_name" if resource.decidim_department_admin_department_id.present?
+    items
+  end
 
-      def metadata_items
-        super << "department_name" if resource.decidim_department_admin_department_id.present?
-      end
-    end
+  def self.decorate
+    Decidim::ParticipatoryProcesses::ContentBlocks::MetadataCell.prepend(self)
   end
 end
 

@@ -63,13 +63,13 @@
               <% end %>
             </td>
             <td class="table-list__area">
-              <% if(assembly.area != nil) %>
-                <%= translated_attribute(assembly.area.name)%>
+              <% if(assembly.department != nil) %>
+                <%= translated_attribute(assembly.department.name)%>
               <% end %>
             </td>
             <td class="table-list__area-users">
-              <% if(assembly.area != nil) %>
-                <%= assembly.area.users.map(&:name).join(", ") %>
+              <% if(assembly.department != nil) %>
+                <%= assembly.department.users.map(&:name).join(", ") %>
               <% end %>
             </td>
             <td class="table-list__role">

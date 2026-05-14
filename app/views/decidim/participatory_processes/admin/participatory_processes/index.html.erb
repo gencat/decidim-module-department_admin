@@ -49,13 +49,13 @@
             <% end %>
           </td>
           <td>
-            <% if(process.area != nil) %>
-              <%= translated_attribute(process.area.name)%>
+            <% if(process.department != nil) %>
+              <%= translated_attribute(process.department.name)%>
             <% end %>
           </td>
           <td>
-            <% if(process.area != nil) %>
-              <%= process.area.users.map(&:name).join(", ") %>
+            <% if(process.department != nil) %>
+              <%= process.department.users.map(&:name).join(", ") %>
             <% end %>
           </td>
           <td>
