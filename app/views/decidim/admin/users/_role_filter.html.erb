@@ -1,0 +1,18 @@
+<% if controller_name == "users" %>
+  <div class="flex items-center gap-2 mt-2 text-sm">
+    <label class="font-medium"><%= t("decidim.admin.shared.filters.filter_by") %>:</label>
+    <select class="input input__sm" onchange="window.location.href = this.value">
+      <option value="<%= url_for(q: ransack_params) %>" <%= @role.blank? ? "selected" : "" %>>
+        <%= t("decidim.admin.shared.filters.filter.all") %>
+      </option>
+      <% Decidim::User::Roles.all.map do |role| %>
+        <option value="<%= url_for(role: role, q: ransack_params) %>" <%= @role == role ? "selected" : "" %>>
+          <%= t("models.user.fields.roles.#{role}", scope: "decidim.admin") %>
+        </option>
+      <% end %>
+      <option value="<%= url_for(role: "space_admin", q: ransack_params) %>" <%= @role == "space_admin" ? "selected" : "" %>>
+        <%= t("models.user.fields.roles.space_admin", scope: "decidim.admin") %>
+      </option>
+    </select>
+  </div>
+<% end %>

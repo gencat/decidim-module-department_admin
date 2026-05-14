@@ -13,10 +13,10 @@
         <%= form.select :role, @form.available_roles_for_select, label: t(".role") %>
       </div>
 
-      <div id="area-block" class="row column">
-        <%= form.select :area_id,
-                        @form.available_areas_for_select,
-                        { label: t(".area") },
+      <div id="department-block" class="row column">
+        <%= form.select :decidim_department_admin_department_id,
+                        @form.available_departments_for_select,
+                        { label: t(".department") },
                         { disabled: current_user.roles.include?('department_admin') }
         %>
       </div>
@@ -28,9 +28,10 @@
 $('#user_role').on('change', function(ev) {
   var opt= ev.target
   if(opt.value == 'department_admin') {
-    $('#area-block').show()
+    $('#department-block').show()
   } else {
-    $('#area-block').hide()
+    $('#department-block').hide()
   }
 })
 <% end -%>
+
