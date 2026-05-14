@@ -4,11 +4,11 @@ require "spec_helper"
 
 describe "Admin manages assemblies", :versioning do
   let(:organization) { create(:organization) }
-  let(:area) { create(:area) }
-  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:) }
+  let(:department) { create(:department, organization:) }
+  let(:department_admin) { create(:department_admin, :confirmed, organization:, department:) }
 
-  let!(:assembly_w_area) { create(:assembly, organization:, area:) }
-  let!(:assembly_wo_area) { create(:assembly, organization:) }
+  let!(:assembly_w_department) { create(:assembly, organization:, department:) }
+  let!(:assembly_wo_department) { create(:assembly, organization:) }
 
   def visit_admin_assemblies_list
     switch_to_host(organization.host)
@@ -29,21 +29,21 @@ describe "Admin manages assemblies", :versioning do
     expect(page).to have_css(".action-icon--export")
   end
 
-  it "sees only processes in the same area" do
+  it "sees only assemblies in the same department" do
     visit_admin_assemblies_list
-    expect(page).to have_content(assembly_w_area.title["en"])
-    expect(page).to have_no_content(assembly_wo_area.title["en"])
+    expect(page).to have_content(assembly_w_department.title["en"])
+    expect(page).to have_no_content(assembly_wo_department.title["en"])
   end
 
-  context "when department_admin has a user_role in an assembly_wo_area" do
+  context "when department_admin has a user_role in an assembly_wo_department" do
     let!(:assembly_user_role) do
-      create(:assembly_user_role, user: department_admin, assembly: assembly_wo_area)
+      create(:assembly_user_role, user: department_admin, assembly: assembly_wo_department)
     end
 
     it "sees both assemblies" do
       visit_admin_assemblies_list
-      expect(page).to have_content(assembly_w_area.title["en"])
-      expect(page).to have_content(assembly_wo_area.title["en"])
+      expect(page).to have_content(assembly_w_department.title["en"])
+      expect(page).to have_content(assembly_wo_department.title["en"])
     end
   end
 end

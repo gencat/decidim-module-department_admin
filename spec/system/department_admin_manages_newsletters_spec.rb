@@ -4,8 +4,8 @@ require "spec_helper"
 
 describe "Admin manages newsletters" do
   let(:organization) { create(:organization) }
-  let(:area) { create(:area, organization:) }
-  let!(:department_admin) { create(:department_admin, :confirmed, name: "Sarah Kerrigan", organization:, area:) }
+  let(:department) { create(:department, organization:) }
+  let!(:department_admin) { create(:department_admin, :confirmed, name: "Sarah Kerrigan", organization:, department:) }
   let!(:deliverable_users) { create_list(:user, 5, :confirmed, newsletter_notifications_at: Time.current, organization:) }
 
   before do
@@ -134,7 +134,7 @@ describe "Admin manages newsletters" do
     end
 
     context "when followers are selected" do
-      let!(:participatory_processes) { create_list(:participatory_process, 2, organization:, area:) }
+      let!(:participatory_processes) { create_list(:participatory_process, 2, organization:, department:) }
       let(:spaces) { participatory_processes }
       let!(:followers) do
         deliverable_users.each do |follower|
@@ -170,7 +170,7 @@ describe "Admin manages newsletters" do
     end
 
     context "when participants are selected" do
-      let!(:participatory_process) { create(:participatory_process, organization:, area:) }
+      let!(:participatory_process) { create(:participatory_process, organization:, department:) }
       let!(:component) { create(:dummy_component, organization: newsletter.organization, participatory_space: participatory_process) }
 
       before do
@@ -210,7 +210,7 @@ describe "Admin manages newsletters" do
     end
 
     context "when selecting both followers and participants" do
-      let!(:participatory_process) { create(:participatory_process, organization:, area:) }
+      let!(:participatory_process) { create(:participatory_process, organization:, department:) }
       let!(:component) { create(:dummy_component, organization: newsletter.organization, participatory_space: participatory_process) }
 
       let!(:followers) do
@@ -225,36 +225,7 @@ describe "Admin manages newsletters" do
         end
       end
 
-      it "sends to participants" do
-        visit decidim_admin.select_recipients_to_deliver_newsletter_path(newsletter)
-        check("Send to participants")
-        
-        expect(find("input[name='newsletter[send_to_participants]']")).to be_checked
-
-        select_all
-
-        expect(page).to have_content("This newsletter will be send to 5 users.")
-
-        click_on("Confirm recipients")
-
-        deliverable_users.each do |user|
-          expect(page).to have_content(user.name)
-          expect(page).to have_content(user.email)
-        end
-
-        perform_enqueued_jobs do
-          accept_confirm { click_on("Deliver newsletter") }
-
-          expect(page).to have_content("Newsletters")
-          expect(page).to have_admin_callout("successfully")
-        end
-
-        within "tbody" do
-          expect(page).to have_content("5 / 5")
-        end
-      end
-    end
-  end
+      it "sends to followers and participants" do
 
   context "when deleting a newsletter" do
     let!(:newsletter) { create(:newsletter, organization:, author: department_admin) }

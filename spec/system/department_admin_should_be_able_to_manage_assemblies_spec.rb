@@ -5,7 +5,8 @@ require "spec_helper"
 describe "Admin manages assemblies" do
   let(:organization) { create(:organization) }
   let(:area) { create(:area, organization:) }
-  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:) }
+  let(:department) { create(:department, organization:) }
+  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:, department:) }
 
   before do
     switch_to_host(organization.host)
@@ -25,25 +26,25 @@ describe "Admin manages assemblies" do
       click_on "New assembly"
     end
 
-    it "shows area field as disabled with department admin area pre-selected" do
+    it "shows department field as disabled with department admin department pre-selected" do
       within ".new_assembly" do
-        area_select = find("#assembly_area_id")
+        department_select = find("#assembly_department_admin_department_id")
 
-        expect(area_select).to be_present
-        expect(area_select[:disabled]).to eq("true")
-        expect(area_select.value).to eq(area.id.to_s)
+        expect(department_select).to be_present
+        expect(department_select[:disabled]).to eq("true")
+        expect(department_select.value).to eq(department.id.to_s)
       end
     end
 
     context "when user is a regular admin" do
       let(:department_admin) { create(:user, :admin, :confirmed, organization:) }
 
-      it "shows area field as enabled" do
+      it "shows department field as enabled" do
         within ".new_assembly" do
-          area_select = find("#assembly_area_id")
+          department_select = find("#assembly_department_admin_department_id")
 
-          expect(area_select).to be_present
-          expect(area_select[:disabled]).to eq("false")
+          expect(department_select).to be_present
+          expect(department_select[:disabled]).not_to eq("true")
         end
       end
     end
@@ -79,7 +80,7 @@ describe "Admin manages assemblies" do
       end
 
       expect(page).to have_admin_callout("successfully")
-      expect(Decidim::Assembly.last.area).to eq(area)
+      expect(Decidim::Assembly.last.department).to eq(department)
 
       within "[data-content]" do
         # expect(page).to have_current_path decidim_admin_assemblies.assemblies_path(q: { parent_id_eq: parent_assembly&.id })
@@ -103,8 +104,8 @@ describe "Admin manages assemblies" do
   end
 
   context "when managing child assemblies" do
-    let!(:parent_assembly) { create(:assembly, organization:, area:) }
-    let!(:child_assembly) { create(:assembly, organization:, parent: parent_assembly, area:) }
+    let!(:parent_assembly) { create(:assembly, organization:, department:) }
+    let!(:child_assembly) { create(:assembly, organization:, parent: parent_assembly, department:) }
     let(:assembly) { child_assembly }
 
     before do

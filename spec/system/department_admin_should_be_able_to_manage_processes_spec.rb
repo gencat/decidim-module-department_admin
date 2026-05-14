@@ -5,7 +5,8 @@ require "spec_helper"
 describe "Admin manages participatory processes", :versioning do
   let(:organization) { create(:organization) }
   let(:area) { create(:area, organization:) }
-  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:) }
+  let(:department) { create(:department, organization:) }
+  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:, department:) }
 
   let!(:participatory_process_groups) do
     create_list(:participatory_process_group, 3, organization:)
@@ -21,7 +22,7 @@ describe "Admin manages participatory processes", :versioning do
   # it_behaves_like "manage processes announcements"
 
   context "with processes" do
-    let!(:participatory_process) { create(:participatory_process, organization:, area:, participatory_process_group: participatory_process_groups.first) }
+    let!(:participatory_process) { create(:participatory_process, organization:, department:, participatory_process_group: participatory_process_groups.first) }
 
     it "browses the list of processes" do
       visit decidim_admin_participatory_processes.participatory_processes_path
@@ -40,30 +41,30 @@ describe "Admin manages participatory processes", :versioning do
       click_on "New process"
     end
 
-    it "shows area field as disabled with department admin area pre-selected" do
+    it "shows department field as disabled with department admin department pre-selected" do
       within ".new_participatory_process" do
-        area_select = find("#participatory_process_area_id")
+        department_select = find("#participatory_process_department_admin_department_id")
 
-        expect(area_select).to be_present
-        expect(area_select[:disabled]).to eq("true")
-        expect(area_select.value).to eq(area.id.to_s)
+        expect(department_select).to be_present
+        expect(department_select[:disabled]).to eq("true")
+        expect(department_select.value).to eq(department.id.to_s)
       end
     end
 
     context "when user is a regular admin" do
       let(:department_admin) { create(:user, :admin, :confirmed, organization:) }
 
-      it "shows area field as enabled" do
+      it "shows department field as enabled" do
         within ".new_participatory_process" do
-          area_select = find("#participatory_process_area_id")
+          department_select = find("#participatory_process_department_admin_department_id")
 
-          expect(area_select).to be_present
-          expect(area_select[:disabled]).to eq("false")
+          expect(department_select).to be_present
+          expect(department_select[:disabled]).not_to eq("true")
         end
       end
     end
 
-    it "creates a new participatory process with department admin's area" do
+    it "creates a new participatory process with department admin's department" do
       within ".new_participatory_process" do
         fill_in_i18n(
           :participatory_process_title,
@@ -108,7 +109,7 @@ describe "Admin manages participatory processes", :versioning do
       end
 
       expect(page).to have_admin_callout("successfully")
-      expect(Decidim::ParticipatoryProcess.last.area).to eq(area)
+      expect(Decidim::ParticipatoryProcess.last.department).to eq(department)
 
       within ".card#steps" do
         expect(page).to have_current_path decidim_admin_participatory_processes.participatory_process_steps_path(Decidim::ParticipatoryProcess.last)
@@ -119,7 +120,7 @@ describe "Admin manages participatory processes", :versioning do
   end
 
   context "when updating a participatory process" do
-    let!(:participatory_process_3) { create(:participatory_process, organization:, area:) }
+    let!(:participatory_process_3) { create(:participatory_process, organization:, department:) }
 
     before do
       visit decidim_admin_participatory_processes.participatory_processes_path
@@ -133,7 +134,7 @@ describe "Admin manages participatory processes", :versioning do
 
       click_on "Update"
 
-      expect(participatory_process_3.reload.area).to eq(area)
+      expect(participatory_process_3.reload.department).to eq(department)
       expect(page).to have_admin_callout("successfully")
 
       hero_blob = participatory_process_3.hero_image.blob

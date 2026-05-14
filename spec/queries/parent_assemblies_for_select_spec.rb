@@ -24,14 +24,14 @@ module Decidim::Assemblies
         subject { described_class.for(organization, assembly, current_user) }
 
         let!(:current_user) do
-          create(:department_admin, :confirmed, organization: area.organization, area:)
+          create(:department_admin, :confirmed, organization:, department:)
         end
-        let(:area) { create(:area) }
-        let!(:assemblies_with_area) { create_list(:assembly, 3, organization:, area:) }
+        let(:department) { create(:department, organization:) }
+        let!(:assemblies_with_department) { create_list(:assembly, 3, organization:, department:) }
 
-        it "returns assemblies that can be parent with same current user area" do
+        it "returns assemblies that can be parent with same current user department" do
           expect(subject.count).to eq(3)
-          expect(subject).to match_array(assemblies_with_area)
+          expect(subject).to match_array(assemblies_with_department)
         end
       end
 
