@@ -15,7 +15,7 @@ module Decidim::Admin::NewslettersControllerDecorator
 
         @collection ||= Decidim::Newsletter.where(organization: current_organization)
                                            .joins(author: :departments)
-                                           .where(department_admin_departments: { id: current_user_departments.pluck(:id) })
+                                           .where(decidim_department_admin_departments: { id: current_user_departments.pluck(:id) })
       end
 
       def current_user_departments

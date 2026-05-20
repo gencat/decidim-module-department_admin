@@ -3,8 +3,14 @@
 module Decidim::ParticipatoryProcesses::ContentBlocks::MetadataCellDecorator
   def metadata_items
     items = super
-    items << "department_name" if resource.decidim_department_admin_department_id.present?
+    if resource.decidim_department_admin_department_id.present?
+      items << "department_name" unless items.include?("department_name")
+    end
     items
+  end
+
+  def department_name
+    translated_attribute(resource.department.name) if resource.department
   end
 
   def self.decorate
