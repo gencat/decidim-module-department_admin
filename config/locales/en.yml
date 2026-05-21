@@ -90,7 +90,6 @@ en:
             update: Update
           index:
             no_departments: No departments have been created yet.
-            title: Departments
           new:
             create: Create
             title: New Department

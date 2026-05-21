@@ -75,7 +75,6 @@ cs:
             update: Aktualizovat
           index:
             no_departments: Zatím nebyla vytvořena žádná oddělení.
-            title: Oddělení
           new:
             create: Vytvořit
             title: Nové oddělení

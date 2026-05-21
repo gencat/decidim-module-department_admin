@@ -53,8 +53,9 @@ data:
 # Find translate calls
 search:
   ## Paths or `File.find` patterns to search in:
-  # paths:
-  #  - app/
+  paths:
+   - app/
+   - lib/
 
   ## Root directories for relative keys resolution.
   # relative_roots:
@@ -99,25 +100,24 @@ search:
 
 ## Consider these keys used:
 ignore_unused:
-# - 'activerecord.attributes.*'
-# - '{devise,kaminari,will_paginate}.*'
-# - 'simple_form.{yes,no}'
-# - 'simple_form.{placeholders,hints,labels}.*'
-# - 'simple_form.{error_notification,required}.:'
+- 'activemodel.attributes.assembly.decidim_department_admin_department_id'
+- 'activemodel.attributes.participatory_process.decidim_department_admin_department_id'
+- 'activerecord.models.decidim/department_admin/*'
 - 'decidim.admin.models.user.fields.roles.department_admin'
-- 'decidim.admin.users.form.area'
-- 'decidim.components.department_admin.name'
-- 'decidim.admin.models.user.fields.roles.department_admin'
-- 'decidim.admin.users.form.area'
-- 'decidim.components.department_admin.name'
-- 'decidim.admin.models.user.fields.roles.department_admin'
-- 'decidim.admin.users.form.area'
-- 'decidim.components.department_admin.name'
 - 'decidim.admin.shared.filters.filter.all'
 - 'decidim.admin.shared.filters.filter_by'
+- 'decidim.admin.users.form.area'
+- 'decidim.admin.users.form.department'
 - 'decidim.admin.users.index.filter.all'
 - 'decidim.admin.users.index.filter_by'
 - 'decidim.admin.users.index.search'
+- 'decidim.assemblies.admin.assemblies.form.department'
+- 'decidim.components.department_admin.name'
+- 'decidim.department_admin.admin.forms.select_a_department'
+- 'decidim.department_admin.admin.menu.departments'
+- 'decidim.department_admin.department'
+- 'decidim.participatory_processes.admin.participatory_processes.form.department'
+- 'decidim.participatory_processes.participatory_processes.description.department_name'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:

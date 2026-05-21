@@ -92,7 +92,6 @@ es:
             update: Actualizar
           index:
             no_departments: Todavía no se han creado departamentos.
-            title: Departamentos
           new:
             create: Crear
             title: Nuevo Departamento

@@ -92,7 +92,6 @@ ca:
             update: Actualitzar
           index:
             no_departments: Encara no s'han creat departaments.
-            title: Departaments
           new:
             create: Crear
             title: Nou Departament
