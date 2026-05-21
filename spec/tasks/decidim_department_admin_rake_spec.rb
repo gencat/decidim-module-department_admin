@@ -5,8 +5,8 @@ require "rake"
 
 describe "decidim_department_admin:migrate_areas_to_departments" do
   let(:organization) { create(:organization) }
-  let!(:area1) { create(:area, organization:, name: { "en" => "Urbanism", "ca" => "Urbanisme" }) }
-  let!(:area2) { create(:area, organization:, name: { "en" => "Culture", "ca" => "Cultura" }) }
+  let!(:area_1) { create(:area, organization:, name: { "en" => "Urbanism", "ca" => "Urbanisme" }) }
+  let!(:area_2) { create(:area, organization:, name: { "en" => "Culture", "ca" => "Cultura" }) }
 
   before do
     Decidim::DepartmentAdmin::Engine.load_tasks if Rake::Task.tasks.empty?
@@ -19,11 +19,11 @@ describe "decidim_department_admin:migrate_areas_to_departments" do
 
     expect(Decidim::Area.count).to eq(2)
 
-    dept1 = Decidim::DepartmentAdmin::Department.find_by(decidim_organization_id: organization.id, name: { "en" => "Urbanism", "ca" => "Urbanisme" })
-    expect(dept1).to be_present
+    dept_1 = Decidim::DepartmentAdmin::Department.find_by(decidim_organization_id: organization.id, name: { "en" => "Urbanism", "ca" => "Urbanisme" })
+    expect(dept_1).to be_present
 
-    dept2 = Decidim::DepartmentAdmin::Department.find_by(decidim_organization_id: organization.id, name: { "en" => "Culture", "ca" => "Cultura" })
-    expect(dept2).to be_present
+    dept_2 = Decidim::DepartmentAdmin::Department.find_by(decidim_organization_id: organization.id, name: { "en" => "Culture", "ca" => "Cultura" })
+    expect(dept_2).to be_present
   end
 
   it "does not create duplicate departments when run twice" do

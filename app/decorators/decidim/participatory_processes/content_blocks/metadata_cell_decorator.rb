@@ -3,9 +3,7 @@
 module Decidim::ParticipatoryProcesses::ContentBlocks::MetadataCellDecorator
   def metadata_items
     items = super
-    if resource.decidim_department_admin_department_id.present?
-      items << "department_name" unless items.include?("department_name")
-    end
+    items << "department_name" if resource.decidim_department_admin_department_id.present? && items.exclude?("department_name")
     items
   end
 

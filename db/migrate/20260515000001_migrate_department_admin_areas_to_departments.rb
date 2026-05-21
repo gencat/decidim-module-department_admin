@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Rails/SkipsModelValidations
 class MigrateDepartmentAdminAreasToDepartments < ActiveRecord::Migration[6.1]
   def up
     area_to_dept = build_departments_from_areas
@@ -62,3 +63,4 @@ class MigrateDepartmentAdminAreasToDepartments < ActiveRecord::Migration[6.1]
     end
   end
 end
+# rubocop:enable Rails/SkipsModelValidations
