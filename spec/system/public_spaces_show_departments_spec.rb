@@ -12,10 +12,16 @@ describe "Public participatory spaces show departments" do
 
   it "shows a participatory process department in metadata" do
     process = create(:participatory_process, :published, organization:, department:)
+    create(:content_block,
+           organization:,
+           scope_name: :participatory_process_homepage,
+           manifest_name: :metadata,
+           scoped_resource_id: process.id,
+           published_at: Time.current)
 
     visit decidim_participatory_processes.participatory_process_path(process)
 
-    within ".definition-data__item.department" do
+    within ".participatory-space__metadata-grid" do
       expect(page).to have_content("Department")
       expect(page).to have_content("Urbanism")
     end
@@ -23,10 +29,16 @@ describe "Public participatory spaces show departments" do
 
   it "shows an assembly department in metadata" do
     assembly = create(:assembly, :published, organization:, department:)
+    create(:content_block,
+           organization:,
+           scope_name: :assembly_homepage,
+           manifest_name: :metadata,
+           scoped_resource_id: assembly.id,
+           published_at: Time.current)
 
     visit decidim_assemblies.assembly_path(assembly)
 
-    within ".definition-data__item.department" do
+    within ".participatory-space__metadata-grid" do
       expect(page).to have_content("Department")
       expect(page).to have_content("Urbanism")
     end

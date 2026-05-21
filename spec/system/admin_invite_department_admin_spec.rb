@@ -27,6 +27,22 @@ describe "Admin invite user" do
     visit decidim_admin.new_user_path
   end
 
+  it "department selector is hidden on page load when role is not department_admin" do
+    expect(page).to have_css("#department-block", visible: :hidden)
+  end
+
+  it "department selector is shown after selecting department_admin role" do
+    find_by_id("user_role").find("option[value='department_admin']").select_option
+    expect(page).to have_css("#department-block", visible: :visible)
+  end
+
+  it "department selector is hidden after switching from department_admin to another role" do
+    find_by_id("user_role").find("option[value='department_admin']").select_option
+    expect(page).to have_css("#department-block", visible: :visible)
+    find_by_id("user_role").find("option[value='admin']").select_option
+    expect(page).to have_css("#department-block", visible: :hidden)
+  end
+
   it "admin is able to create department admins" do
     fill_the_form_for_department_admin("Cabello Loco", "my@email.net")
     submit_form
