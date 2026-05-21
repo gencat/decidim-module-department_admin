@@ -54,6 +54,8 @@ ca:
           filter:
             all: Totes
           filter_by: Filtra per
+      titles:
+        departments: Departaments
       users:
         form:
           area: Àrea
@@ -63,16 +65,49 @@ ca:
             all: Totes
           filter_by: Filtra per
           search: Cerca
-      titles:
-        departments: Departaments
-    components:
-      department_admin:
-        name: Admin de Departament
     assemblies:
       admin:
         assemblies:
           form:
             department: Departament
+    components:
+      department_admin:
+        name: Admin de Departament
+    conferences:
+      admin:
+        conferences:
+          form:
+            select_an_area: Selecciona una Àrea
+    department_admin:
+      admin:
+        departments:
+          create:
+            error: Hi ha hagut un error en crear el departament.
+            success: Departament creat correctament.
+          destroy:
+            has_department_admins: No es pot eliminar un departament que té administradores assignades.
+            success: Departament eliminat correctament.
+          edit:
+            title: Editar Departament
+            update: Actualitzar
+          index:
+            no_departments: Encara no s'han creat departaments.
+            title: Departaments
+          new:
+            create: Crear
+            title: Nou Departament
+          update:
+            error: Hi ha hagut un error en actualitzar el departament.
+            success: Departament actualitzat correctament.
+        forms:
+          select_a_department: Selecciona un departament
+        menu:
+          departments: Departaments
+        models:
+          department:
+            fields:
+              name: Nom
+      department: Departament
     participatory_processes:
       admin:
         participatory_processes:
@@ -81,38 +116,3 @@ ca:
       participatory_processes:
         description:
           department_name: Departament
-    conferences:
-      admin:
-        conferences:
-          form:
-            select_an_area: Selecciona una Àrea
-    department_admin:
-      department: Departament
-      admin:
-        menu:
-          departments: Departaments
-        forms:
-          select_a_department: Selecciona un departament
-        models:
-          department:
-            fields:
-              name: Nom
-        departments:
-          index:
-            title: Departaments
-            no_departments: Encara no s'han creat departaments.
-          new:
-            title: Nou Departament
-            create: Crear
-          edit:
-            title: Editar Departament
-            update: Actualitzar
-          create:
-            success: Departament creat correctament.
-            error: Hi ha hagut un error en crear el departament.
-          update:
-            success: Departament actualitzat correctament.
-            error: Hi ha hagut un error en actualitzar el departament.
-          destroy:
-            success: Departament eliminat correctament.
-            has_department_admins: No es pot eliminar un departament que té administradores assignades.

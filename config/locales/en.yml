@@ -63,14 +63,49 @@ en:
             all: All
           filter_by: Filter by
           search: Search
-    components:
-      department_admin:
-        name: Department Admin
     assemblies:
       admin:
         assemblies:
           form:
             department: Department
+    components:
+      department_admin:
+        name: Department Admin
+    conferences:
+      admin:
+        conferences:
+          form:
+            select_an_area: Select an area
+    department_admin:
+      admin:
+        departments:
+          create:
+            error: There was an error creating the new department.
+            success: Department created successfully.
+          destroy:
+            has_department_admins: Cannot delete a department that has department admins assigned.
+            success: Department deleted successfully.
+          edit:
+            title: Edit Department
+            update: Update
+          index:
+            no_departments: No departments have been created yet.
+            title: Departments
+          new:
+            create: Create
+            title: New Department
+          update:
+            error: There was an error updating the department.
+            success: Department updated successfully.
+        forms:
+          select_a_department: Select a department
+        menu:
+          departments: Departments
+        models:
+          department:
+            fields:
+              name: Name
+      department: Department
     participatory_processes:
       admin:
         participatory_processes:
@@ -79,38 +114,3 @@ en:
       participatory_processes:
         description:
           department_name: Department
-    conferences:
-      admin:
-        conferences:
-          form:
-            select_an_area: Select an area
-    department_admin:
-      department: Department
-      admin:
-        menu:
-          departments: Departments
-        forms:
-          select_a_department: Select a department
-        models:
-          department:
-            fields:
-              name: Name
-        departments:
-          index:
-            title: Departments
-            no_departments: No departments have been created yet.
-          new:
-            title: New Department
-            create: Create
-          edit:
-            title: Edit Department
-            update: Update
-          create:
-            success: Department created successfully.
-            error: There was an error creating the new department.
-          update:
-            success: Department updated successfully.
-            error: There was an error updating the department.
-          destroy:
-            success: Department deleted successfully.
-            has_department_admins: Cannot delete a department that has department admins assigned.

@@ -58,6 +58,39 @@ cs:
         assemblies:
           form:
             department: Oddělení
+    components:
+      department_admin:
+        name: Správce oddělení
+    department_admin:
+      admin:
+        departments:
+          create:
+            error: Při vytváření oddělení došlo k chybě.
+            success: Oddělení bylo úspěšně vytvořeno.
+          destroy:
+            has_department_admins: Nelze odstranit oddělení, které má přiřazené správce.
+            success: Oddělení bylo úspěšně odstraněno.
+          edit:
+            title: Upravit oddělení
+            update: Aktualizovat
+          index:
+            no_departments: Zatím nebyla vytvořena žádná oddělení.
+            title: Oddělení
+          new:
+            create: Vytvořit
+            title: Nové oddělení
+          update:
+            error: Při aktualizaci oddělení došlo k chybě.
+            success: Oddělení bylo úspěšně aktualizováno.
+        forms:
+          select_a_department: Vyberte oddělení
+        menu:
+          departments: Oddělení
+        models:
+          department:
+            fields:
+              name: Název
+      department: Oddělení
     participatory_processes:
       admin:
         participatory_processes:
@@ -66,36 +99,3 @@ cs:
       participatory_processes:
         description:
           department_name: Oddělení
-    components:
-      department_admin:
-        name: Správce oddělení
-    department_admin:
-      department: Oddělení
-      admin:
-        menu:
-          departments: Oddělení
-        forms:
-          select_a_department: Vyberte oddělení
-        models:
-          department:
-            fields:
-              name: Název
-        departments:
-          index:
-            title: Oddělení
-            no_departments: Zatím nebyla vytvořena žádná oddělení.
-          new:
-            title: Nové oddělení
-            create: Vytvořit
-          edit:
-            title: Upravit oddělení
-            update: Aktualizovat
-          create:
-            success: Oddělení bylo úspěšně vytvořeno.
-            error: Při vytváření oddělení došlo k chybě.
-          update:
-            success: Oddělení bylo úspěšně aktualizováno.
-            error: Při aktualizaci oddělení došlo k chybě.
-          destroy:
-            success: Oddělení bylo úspěšně odstraněno.
-            has_department_admins: Nelze odstranit oddělení, které má přiřazené správce.
