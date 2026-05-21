@@ -11,6 +11,8 @@ module Decidim
         #
         # Returns nothing.
         def call
+          return broadcast(:has_department_admins) if resource.users.any?
+
           destroy_resource
           broadcast(:ok)
         rescue ActiveRecord::RecordNotDestroyed

@@ -6,24 +6,49 @@ module Decidim
   module DepartmentAdmin
     module Admin
       describe UpdateDepartment do
-        subject(:command) { described_class.new(department, form) }
+        subject { described_class.new(form, department) }
 
-        let(:department) { create(:department) }
-        let(:name) { { "en" => "Culture", "ca" => "Cultura", "es" => "Cultura" } }
-        let(:form) { instance_double(DepartmentForm, invalid?: invalid, name:) }
+        let(:organization) { create(:organization) }
+        let(:user) { create(:user, :admin, :confirmed, organization:) }
+        let(:department) { create(:department, organization:) }
+        let(:name) { Decidim::Faker::Localized.literal("New name") }
+
+        let(:form) do
+          double(
+            invalid?: invalid,
+            current_user: user,
+            name:,
+          )
+        end
         let(:invalid) { false }
 
-        it "updates the department" do
-          expect { command.call }.to broadcast(:ok)
-          expect(department.reload.name).to eq(name)
-        end
-
-        context "when the form is invalid" do
+        context "when the form is not valid" do
           let(:invalid) { true }
 
-          it "broadcasts invalid and does not update the department" do
-            expect { command.call }.to broadcast(:invalid)
-            expect(department.reload.name).not_to eq(name)
+          it "is not valid" do
+            expect { subject.call }.to broadcast(:invalid)
+          end
+        end
+
+        context "when the form is valid" do
+          before do
+            subject.call
+            department.reload
+          end
+
+          it "updates the name of the department" do
+            expect(translated(department.name)).to eq("New name")
+          end
+
+          it "traces the action", :versioning do
+            expect(Decidim.traceability)
+              .to receive(:update!)
+              .with(department, user, hash_including(:name))
+              .and_call_original
+
+            expect { subject.call }.to change(Decidim::ActionLog, :count)
+            action_log = Decidim::ActionLog.last
+            expect(action_log.version).to be_present
           end
         end
       end

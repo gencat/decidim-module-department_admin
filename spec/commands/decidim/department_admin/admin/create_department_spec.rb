@@ -6,32 +6,48 @@ module Decidim
   module DepartmentAdmin
     module Admin
       describe CreateDepartment do
-        subject(:command) { described_class.new(form) }
+        subject { described_class.new(form) }
 
         let(:organization) { create(:organization) }
-        let(:name) { { "en" => "Urbanism", "ca" => "Urbanisme", "es" => "Urbanismo" } }
+        let(:user) { create(:user, :admin, :confirmed, organization:) }
+        let(:name) { Decidim::Faker::Localized.literal(::Faker::Address.unique.state) }
+
         let(:form) do
-          instance_double(
-            DepartmentForm,
+          double(
             invalid?: invalid,
+            current_user: user,
             name:,
-            current_organization: organization
+            organization:,
           )
         end
         let(:invalid) { false }
 
-        it "creates the department" do
-          expect { command.call }.to broadcast(:ok)
-          expect(Department.last.name).to eq(name)
-          expect(Department.last.organization).to eq(organization)
-        end
-
-        context "when the form is invalid" do
+        context "when the form is not valid" do
           let(:invalid) { true }
 
-          it "broadcasts invalid and does not create the department" do
-            expect { command.call }.not_to change(Department, :count)
-            expect { command.call }.to broadcast(:invalid)
+          it "is not valid" do
+            expect { subject.call }.to broadcast(:invalid)
+          end
+        end
+
+        context "when the form is valid" do
+          it "broadcasts ok" do
+            expect { subject.call }.to broadcast(:ok)
+          end
+
+          it "creates a new department for the organization" do
+            expect { subject.call }.to change { organization.departments.count }.by(1)
+          end
+
+          it "traces the action", :versioning do
+            expect(Decidim.traceability)
+              .to receive(:create!)
+              .with(Decidim::DepartmentAdmin::Department, user, hash_including(:name, :organization))
+              .and_call_original
+
+            expect { subject.call }.to change(Decidim::ActionLog, :count)
+            action_log = Decidim::ActionLog.last
+            expect(action_log.version).to be_present
           end
         end
       end

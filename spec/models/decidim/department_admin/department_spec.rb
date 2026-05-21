@@ -5,15 +5,17 @@ require "spec_helper"
 module Decidim
   module DepartmentAdmin
     describe Department do
-      subject(:department) { create(:department) }
+      subject(:department) { create(:department, organization:) }
 
-      it "is valid" do
-        expect(department).to be_valid
-      end
+      let(:organization) { create(:organization) }
 
-      context "when department admins are assigned" do
-        before do
-          create(:department_admin, :confirmed, organization: department.organization, department:)
+      context "when depending participatory process exist" do
+        let!(:department_admin) do
+          user = create(:user, :confirmed, organization: department.organization)
+          user.roles << "department_admin"
+          user.departments << department
+          user.save!
+          user
         end
 
         it "can not be deleted" do

@@ -23,7 +23,7 @@ module Decidim
 
       validates :name, presence: true, uniqueness: { scope: :organization }
 
-      before_destroy :abort_if_dependencies
+      before_destroy :abort_if_dependencies, :abort_if_department_admins
 
       def self.log_presenter_class_for(_log)
         Decidim::AdminLog::DepartmentPresenter
@@ -47,6 +47,10 @@ module Decidim
       # used on before_destroy
       def abort_if_dependencies
         throw(:abort) if has_dependencies?
+      end
+
+      def abort_if_department_admins
+        throw(:abort) if users.any?
       end
     end
   end

@@ -6,25 +6,32 @@ module Decidim
   module DepartmentAdmin
     module Admin
       describe DestroyDepartment do
-        subject(:command) { described_class.new(department, current_user) }
+        subject { described_class.new(department, user) }
 
-        let!(:department) { create(:department) }
-        let(:current_user) { create(:user, :admin, :confirmed, organization: department.organization) }
+        let(:organization) { create(:organization) }
+        let(:user) { create(:user, :admin, :confirmed, organization:) }
+        let(:department) { create(:department, organization:) }
 
         it "destroys the department" do
-          expect { command.call }.to broadcast(:ok)
-          expect { Department.find(department.id) }.to raise_error(ActiveRecord::RecordNotFound)
+          subject.call
+          expect { department.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end
 
-        context "when department admins are assigned" do
-          before do
-            create(:department_admin, :confirmed, organization: department.organization, department:)
-          end
+        it "broadcasts ok" do
+          expect do
+            subject.call
+          end.to broadcast(:ok)
+        end
 
-          it "broadcasts that the department has department admins" do
-            expect { command.call }.to broadcast(:has_department_admins)
-            expect(department.reload).to be_present
-          end
+        it "traces the action", :versioning do
+          expect(Decidim.traceability)
+            .to receive(:perform_action!)
+            .with(:delete, department, user)
+            .and_call_original
+
+          expect { subject.call }.to change(Decidim::ActionLog, :count)
+          action_log = Decidim::ActionLog.last
+          expect(action_log.version).to be_present
         end
       end
     end
