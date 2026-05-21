@@ -5,8 +5,8 @@ require "rake"
 
 describe "decidim_department_admin:migrate_areas_to_departments" do
   let(:organization) { create(:organization) }
-  let!(:area_1) { create(:area, organization:, name: { "en" => "Urbanism", "ca" => "Urbanisme" }) }
-  let!(:area_2) { create(:area, organization:, name: { "en" => "Culture", "ca" => "Cultura" }) }
+  let!(:urbanism_area) { create(:area, organization:, name: { "en" => "Urbanism", "ca" => "Urbanisme" }) }
+  let!(:culture_area) { create(:area, organization:, name: { "en" => "Culture", "ca" => "Cultura" }) }
 
   before do
     Decidim::DepartmentAdmin::Engine.load_tasks if Rake::Task.tasks.empty?
