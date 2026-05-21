@@ -22,7 +22,7 @@ describe "Public participatory spaces show departments" do
     visit decidim_participatory_processes.participatory_process_path(process)
 
     within ".participatory-space__metadata-grid" do
-      expect(page).to have_content("Department")
+      expect(page).to have_content("DEPARTMENT")
       expect(page).to have_content("Urbanism")
     end
   end
@@ -39,7 +39,7 @@ describe "Public participatory spaces show departments" do
     visit decidim_assemblies.assembly_path(assembly)
 
     within ".participatory-space__metadata-grid" do
-      expect(page).to have_content("Department")
+      expect(page).to have_content("DEPARTMENT")
       expect(page).to have_content("Urbanism")
     end
   end

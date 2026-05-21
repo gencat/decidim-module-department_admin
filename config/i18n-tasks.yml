@@ -117,6 +117,7 @@ ignore_unused:
 - 'decidim.department_admin.admin.menu.departments'
 - 'decidim.department_admin.department'
 - 'decidim.participatory_processes.admin.participatory_processes.form.department'
+- 'decidim.assemblies.assemblies.description.department_name'
 - 'decidim.participatory_processes.participatory_processes.description.department_name'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:

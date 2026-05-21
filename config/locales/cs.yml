@@ -44,6 +44,8 @@ cs:
             spaces: Proces / Pravidlo / Shromáždění
             title: Název
             type: Typ
+      titles:
+        departments: Oddělení
       users:
         form:
           area: Oblast
@@ -58,6 +60,9 @@ cs:
         assemblies:
           form:
             department: Oddělení
+      assemblies:
+        description:
+          department_name: Oddělení
     components:
       department_admin:
         name: Správce oddělení

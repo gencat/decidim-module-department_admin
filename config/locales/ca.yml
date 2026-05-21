@@ -70,6 +70,9 @@ ca:
         assemblies:
           form:
             department: Departament
+      assemblies:
+        description:
+          department_name: Departament
     components:
       department_admin:
         name: Admin de Departament

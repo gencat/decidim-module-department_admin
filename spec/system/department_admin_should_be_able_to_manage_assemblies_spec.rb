@@ -7,6 +7,7 @@ describe "Admin manages assemblies" do
   let(:area) { create(:area, organization:) }
   let(:department) { create(:department, organization:) }
   let(:department_admin) { create(:department_admin, :confirmed, organization:, area:, department:) }
+  let(:last_assembly) { Decidim::Assembly.last }
 
   before do
     switch_to_host(organization.host)
@@ -28,7 +29,7 @@ describe "Admin manages assemblies" do
 
     it "shows department field as disabled with department admin department pre-selected" do
       within ".new_assembly" do
-        department_select = find("#assembly_department_admin_department_id")
+        department_select = find("#assembly_decidim_department_admin_department_id")
 
         expect(department_select).to be_present
         expect(department_select[:disabled]).to eq("true")
@@ -41,7 +42,7 @@ describe "Admin manages assemblies" do
 
       it "shows department field as enabled" do
         within ".new_assembly" do
-          department_select = find("#assembly_department_admin_department_id")
+          department_select = find("#assembly_decidim_department_admin_department_id")
 
           expect(department_select).to be_present
           expect(department_select[:disabled]).not_to eq("true")
@@ -83,8 +84,7 @@ describe "Admin manages assemblies" do
       expect(Decidim::Assembly.last.department).to eq(department)
 
       within "[data-content]" do
-        # expect(page).to have_current_path decidim_admin_assemblies.assemblies_path(q: { parent_id_eq: parent_assembly&.id })
-        expect(page).to have_content(translated(attributes[:title]))
+        expect(page).to have_current_path decidim_admin_assemblies.components_path(last_assembly)
       end
     end
   end

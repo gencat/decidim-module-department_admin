@@ -5,7 +5,7 @@ require "spec_helper"
 describe "Admin manages participatory processes", :versioning do
   let(:organization) { create(:organization) }
   let(:area) { create(:area, organization:) }
-  let(:department) { create(:department, organization:) }
+  let!(:department) { create(:department, organization:) }
   let(:department_admin) { create(:department_admin, :confirmed, organization:, area:, department:) }
 
   let!(:participatory_process_groups) do
@@ -43,7 +43,7 @@ describe "Admin manages participatory processes", :versioning do
 
     it "shows department field as disabled with department admin department pre-selected" do
       within ".new_participatory_process" do
-        department_select = find("#participatory_process_department_admin_department_id")
+        department_select = find("#participatory_process_decidim_department_admin_department_id")
 
         expect(department_select).to be_present
         expect(department_select[:disabled]).to eq("true")
@@ -56,7 +56,7 @@ describe "Admin manages participatory processes", :versioning do
 
       it "shows department field as enabled" do
         within ".new_participatory_process" do
-          department_select = find("#participatory_process_department_admin_department_id")
+          department_select = find("#participatory_process_decidim_department_admin_department_id")
 
           expect(department_select).to be_present
           expect(department_select[:disabled]).not_to eq("true")

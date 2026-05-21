@@ -14,9 +14,9 @@ module Decidim::Assemblies::UpdateAssemblyDecorator
       def run_before_hooks
         author = form.current_user
         if author.department_admin?
-          resource.decidim_department_admin_department_id = author.departments.first.id
-        elsif form.try(:decidim_department_admin_department_id).present?
-          resource.decidim_department_admin_department_id = form.decidim_department_admin_department_id
+          form.decidim_department_admin_department_id = author.departments.first.id
+        elsif form.try(:decidim_department_admin_department_id).blank?
+          form.decidim_department_admin_department_id = resource.decidim_department_admin_department_id
         end
       end
     end

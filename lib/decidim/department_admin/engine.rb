@@ -24,6 +24,14 @@ module Decidim
         Decidim.register_assets_path File.expand_path("app/packs", root)
       end
 
+      initializer "department_admin.prepend_view_paths" do
+        config.to_prepare do
+          ActionController::Base.prepend_view_path(
+            File.join(Decidim::DepartmentAdmin::Engine.root, "app", "views")
+          )
+        end
+      end
+
       # rubocop: disable Lint/ConstantDefinitionInBlock
       initializer "department_admin.permissions_registry" do
         config.to_prepare do

@@ -7,6 +7,8 @@ module Decidim
     describe Permissions do
       let(:organization) { create(:organization) }
       let(:department) { create(:department, organization: organization) }
+      let(:area) { create(:area, organization: organization) }
+      let(:area_type) { create(:area_type, organization: organization) }
       let!(:user) do
         create(:department_admin, :confirmed, organization: organization, department: department)
       end
@@ -64,11 +66,11 @@ module Decidim
             end
           end
 
-          context "when acction is allowed and context is process" do
+          context "when action is allowed and context is process" do
             context "when process and assembly have same department as department_admin" do
               let(:process) { create(:participatory_process, organization: organization, department: department) }
               let(:assembly) { create(:assembly, organization: organization, department: department) }
-              let(:conference) { create(:conference, organization: organization, department: department) }
+              let(:conference) { create(:conference, organization: organization, area: area) }
 
               it "allows accepted actions with expected context" do
                 should_allow_action_with_ctx(:admin, :read, :participatory_space, current_participatory_space: process)

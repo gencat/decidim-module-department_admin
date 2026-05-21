@@ -54,6 +54,8 @@ en:
           filter:
             all: All
           filter_by: Filter by
+      titles:
+        departments: Departments
       users:
         form:
           area: Area
@@ -68,6 +70,9 @@ en:
         assemblies:
           form:
             department: Department
+      assemblies:
+        description:
+          department_name: Department
     components:
       department_admin:
         name: Department Admin
