@@ -50,4 +50,18 @@ describe "Admin manages participatory processes", :versioning do
       expect(page).to have_content(participatory_process_wo_department.title["en"])
     end
   end
+
+  context "when there are several processes in the department with different weights" do
+    let(:participatory_process_w_department) { create(:participatory_process, organization:, department:, weight: 4, title: { "en" => "Process Z" }) }
+    let!(:process_c) { create(:participatory_process, organization:, department:, weight: 3, title: { "en" => "Process C" }) }
+    let!(:process_a) { create(:participatory_process, organization:, department:, weight: 1, title: { "en" => "Process A" }) }
+    let!(:process_b) { create(:participatory_process, organization:, department:, weight: 2, title: { "en" => "Process B" }) }
+
+    it "lists them ordered by weight, same as a regular admin would see them" do
+      visit_admin_processes_list
+
+      titles = page.all(".table-list tbody tr td:first-child a").map(&:text)
+      expect(titles).to eq(["Process A", "Process B", "Process C", "Process Z"])
+    end
+  end
 end

@@ -15,7 +15,7 @@ module Decidim::ParticipatoryProcesses::Admin::ParticipatoryProcessesControllerD
         @collection ||= if current_user.admin?
                           original_collection
                         else
-                          ::Decidim::ParticipatoryProcessesWithUserRole.for(current_user)
+                          ::Decidim::ParticipatoryProcessesWithUserRole.for(current_user).order(weight: :asc)
                         end
       end
     end

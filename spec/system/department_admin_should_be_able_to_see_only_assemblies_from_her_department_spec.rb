@@ -46,4 +46,18 @@ describe "Admin manages assemblies", :versioning do
       expect(page).to have_content(assembly_wo_department.title["en"])
     end
   end
+
+  context "when there are several assemblies in the department with different weights" do
+    let(:assembly_w_department) { create(:assembly, organization:, department:, weight: 4, title: { "en" => "Assembly Z" }) }
+    let!(:assembly_c) { create(:assembly, organization:, department:, weight: 3, title: { "en" => "Assembly C" }) }
+    let!(:assembly_a) { create(:assembly, organization:, department:, weight: 1, title: { "en" => "Assembly A" }) }
+    let!(:assembly_b) { create(:assembly, organization:, department:, weight: 2, title: { "en" => "Assembly B" }) }
+
+    it "lists them ordered by weight, same as a regular admin would see them" do
+      visit_admin_assemblies_list
+
+      titles = page.all(".table-list tbody .table-list__title-ellipsis a").map(&:text)
+      expect(titles).to eq(["Assembly A", "Assembly B", "Assembly C", "Assembly Z"])
+    end
+  end
 end

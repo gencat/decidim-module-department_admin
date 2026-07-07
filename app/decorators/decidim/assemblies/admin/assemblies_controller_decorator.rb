@@ -13,7 +13,7 @@ module Decidim::Assemblies::Admin::AssembliesControllerDecorator
 
       def collection
         if current_user.department_admin?
-          ::Decidim::Assemblies::AssembliesWithUserRole.for(current_user)
+          ::Decidim::Assemblies::AssembliesWithUserRole.for(current_user).order(weight: :asc)
         else
           original_organization_assemblies
         end
