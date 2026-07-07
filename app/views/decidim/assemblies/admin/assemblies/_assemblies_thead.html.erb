@@ -4,6 +4,9 @@
     <%= sort_link(query, :title, t("models.assembly.fields.title", scope: "decidim.admin")) %>
   </th>
   <th>
+    <%= sort_link(query, :created_at, t("models.assembly.fields.created_at", scope: "decidim.admin"), default_order: :desc) %>
+  </th>
+  <th>
   <%= sort_link(query, :area_name, t("models.assembly.fields.department", scope: "decidim.admin")) %>
   </th>
   <th>
