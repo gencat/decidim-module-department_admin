@@ -13,7 +13,7 @@ module Decidim::ParticipatoryProcessesWithUserRoleDecorator
 
       def process_ids
         ids = [process_ids_original]
-        if user&.department_admin?
+        if user&.department_admin? && role == :any
           ids << ::Decidim::ParticipatoryProcess
                  .where(decidim_department_admin_department_id: user.departments.pluck(:id))
         end

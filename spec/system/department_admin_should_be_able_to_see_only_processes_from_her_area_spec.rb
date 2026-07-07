@@ -33,6 +33,14 @@ describe "Admin manages participatory processes", :versioning do
     expect(page).to have_css(".action-icon--export")
   end
 
+  it "can actually export a process in their own department" do
+    visit_admin_processes_list
+    within "tr", text: participatory_process_w_department.title["en"] do
+      find(".action-icon--export").click
+    end
+    expect(page).to have_content("Your export is currently in progress")
+  end
+
   it "sees only processes in the same department" do
     visit_admin_processes_list
     expect(page).to have_content(participatory_process_w_department.title["en"])

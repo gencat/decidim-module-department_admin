@@ -29,6 +29,14 @@ describe "Admin manages assemblies", :versioning do
     expect(page).to have_css(".action-icon--export")
   end
 
+  it "can actually export an assembly in their own department" do
+    visit_admin_assemblies_list
+    within "tr", text: assembly_w_department.title["en"] do
+      find(".action-icon--export").click
+    end
+    expect(page).to have_content("Your export is currently in progress")
+  end
+
   it "sees only assemblies in the same department" do
     visit_admin_assemblies_list
     expect(page).to have_content(assembly_w_department.title["en"])

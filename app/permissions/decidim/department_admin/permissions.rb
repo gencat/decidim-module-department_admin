@@ -135,6 +135,7 @@ module Decidim
           -> { same_department_permission_for?(requested_action, :admin, :update, :assembly, restricted_rsrc: context[:assembly]) },
           -> { same_department_permission_for?(requested_action, :admin, :publish, :assembly, restricted_rsrc: context[:assembly]) },
           -> { same_department_permission_for?(requested_action, :admin, :unpublish, :assembly, restricted_rsrc: context[:assembly]) },
+          -> { same_department_permission_for?(requested_action, :admin, :export, :assembly, restricted_rsrc: context[:assembly]) },
           -> { permission_for?(requested_action, :admin, :import, :assembly) },
           # Assemly Admin: USER ROLES
           -> { permission_for?(requested_action, :admin, :index, :assembly_user_role) },
@@ -172,6 +173,9 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :update, :conference_user_role) },
           -> { permission_for?(requested_action, :admin, :invite, :conference_user_role) },
           -> { permission_for?(requested_action, :admin, :destroy, :conference_user_role) },
+
+          # EXPORT SPACE (shared controller action used by processes, assemblies and conferences)
+          -> { same_department_permission_for?(requested_action, :admin, :create, :export_space, restricted_rsrc: context[:participatory_space]) },
 
           # USERS ADMINISTRATORS
           -> { permission_for?(requested_action, :admin, :enter, :space_area, space_name: :users) },

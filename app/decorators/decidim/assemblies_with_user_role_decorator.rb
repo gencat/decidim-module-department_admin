@@ -13,7 +13,7 @@ module Decidim::AssembliesWithUserRoleDecorator
 
       def assembly_ids
         ids = [assembly_ids_original]
-        if user&.department_admin?
+        if user&.department_admin? && role == :any
           ids << ::Decidim::Assembly
                  .where(decidim_department_admin_department_id: user.departments.pluck(:id)).pluck(:id)
         end
