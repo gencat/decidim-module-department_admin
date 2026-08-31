@@ -113,7 +113,7 @@ describe "Admin manages assemblies" do
       login_as department_admin, scope: :user
       visit decidim_admin_assemblies.assemblies_path
       within "tr", text: translated(parent_assembly.title) do
-        click_on "Assemblies"
+        find("a[data-arrow-down]").click
       end
     end
 
