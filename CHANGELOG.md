@@ -3,6 +3,11 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.11.0 (MINOR)
+- Upgrade Decidim to v0.30
+- Upgrade Ruby to 3.3.4
+- Upgrade Node to 18.17.1
+
 ## Version 0.10.2 (MINOR)
 - Add original hashes to overrides without original hash.
 

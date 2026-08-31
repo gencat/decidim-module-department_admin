@@ -5,9 +5,12 @@ require "spec_helper"
 module Decidim
   module DepartmentAdmin
     describe Permissions do
-      let(:area) { create(:area) }
+      let(:organization) { create(:organization) }
+      let(:department) { create(:department, organization: organization) }
+      let(:area) { create(:area, organization: organization) }
+      let(:area_type) { create(:area_type, organization: organization) }
       let!(:user) do
-        create(:department_admin, :confirmed, organization: area.organization, area:)
+        create(:department_admin, :confirmed, organization: organization, department: department)
       end
 
       def should_allow_action(scope, action, subject)
@@ -63,11 +66,11 @@ module Decidim
             end
           end
 
-          context "when acction is allowed and context is process" do
-            context "when process has same area as department_admin" do
-              let(:process) { create(:participatory_process, organization: area.organization, area:) }
-              let(:assembly) { create(:assembly, organization: area.organization, area:) }
-              let(:conference) { create(:conference, organization: area.organization, area:) }
+          context "when action is allowed and context is process" do
+            context "when process and assembly have same department as department_admin" do
+              let(:process) { create(:participatory_process, organization: organization, department: department) }
+              let(:assembly) { create(:assembly, organization: organization, department: department) }
+              let(:conference) { create(:conference, organization: organization, area: area) }
 
               it "allows accepted actions with expected context" do
                 should_allow_action_with_ctx(:admin, :read, :participatory_space, current_participatory_space: process)
@@ -80,8 +83,8 @@ module Decidim
                 # -> {permission_for?(requested_action, :admin, :read, :newsletter, restricted_rsrc: context[:newsletter])},
               end
 
-              context "when meeting has same area as department_admin" do
-                let(:meeting) { create(:meeing, participatory_space: process, area:) }
+              context "when meeting has same department as department_admin" do
+                let(:meeting) { create(:meeting, participatory_space: process, department:) }
 
                 it "allows accepted actions with expected context" do
                   should_allow_action(:admin, :create, :attachment)
@@ -89,8 +92,8 @@ module Decidim
               end
             end
 
-            context "when process has different area as department_admin" do
-              let(:process) { create(:participatory_process, organization: area.organization) }
+            context "when process has different department than department_admin" do
+              let(:process) { create(:participatory_process, organization: organization) }
 
               it "does not allow accepted actions with unexpected context" do
                 action = PermissionAction.new(scope: :admin, action: :update, subject: :process)
@@ -118,4 +121,3 @@ module Decidim
     end
   end
 end
-# rubocop:enable RSpec/NoExpectationExample

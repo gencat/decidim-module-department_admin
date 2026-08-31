@@ -2,7 +2,7 @@
 
 module Decidim::Assemblies::ParentAssembliesForSelectDecorator
   # This decorator adds current_user as an argument to be able to check
-  # it's department in the query and filter the assemblies by area.
+  # its department in the query and filter the assemblies by department.
   def self.decorate
     Decidim::Assemblies::ParentAssembliesForSelect.class_eval do
       # Syntactic sugar to initialize the class and return the queried objects.
@@ -22,7 +22,7 @@ module Decidim::Assemblies::ParentAssembliesForSelectDecorator
       # Returns an ActiveRecord::Relation.
       def query
         available_assemblies = if @current_user.present? && @current_user.department_admin?
-                                 Decidim::Assembly.where(area: @current_user.areas).where.not(id: @assembly)
+                                 Decidim::Assembly.where(department: @current_user.departments).where.not(id: @assembly)
                                else
                                  Decidim::Assembly.where(organization: @organization).where.not(id: @assembly)
                                end

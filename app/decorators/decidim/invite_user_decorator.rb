@@ -2,14 +2,14 @@
 
 module Decidim::InviteUserDecorator
   #
-  # This decorator overwrites how InviteUser performs the invitation by associating the area to the user.
+  # This decorator overwrites how InviteUser performs the invitation by associating the department to the user.
   #
   def self.decorate
     Decidim::InviteUser.class_eval do
       alias_method :original_update_user, :update_user
 
       def update_user
-        add_selected_area_to(user)
+        add_selected_department_to(user)
         clear_department_admin_role if admin_role?
         original_update_user
       end
@@ -18,12 +18,12 @@ module Decidim::InviteUserDecorator
         @user = Decidim::User.new(
           name: form.name,
           email: form.email.downcase,
-          nickname: Decidim::UserBaseEntity.nicknamize(form.name, organization: form.organization),
+          nickname: Decidim::UserBaseEntity.nicknamize(form.name, form.organization.id),
           organization: form.organization,
           admin: admin_role?,
           roles: admin_role? ? [] : [form.role].compact
         )
-        add_selected_area_to(@user)
+        add_selected_department_to(@user)
         @user.invite!(
           form.invited_by,
           invitation_instructions: form.invitation_instructions
@@ -32,12 +32,12 @@ module Decidim::InviteUserDecorator
 
       private #---------------------------------------------------------
 
-      def add_selected_area_to(user)
+      def add_selected_department_to(user)
         if current_user.department_admin?
-          user.areas << current_user.areas.first
-        elsif form.selected_area.present?
-          user.areas.clear
-          user.areas << form.selected_area
+          user.departments << current_user.departments.first
+        elsif form.selected_department.present?
+          user.departments.clear
+          user.departments << form.selected_department
         end
       end
 
@@ -46,7 +46,7 @@ module Decidim::InviteUserDecorator
       end
 
       def clear_department_admin_role
-        user.areas.clear
+        user.departments.clear
         user.roles.delete("department_admin")
       end
     end

@@ -4,9 +4,9 @@ source "https://rubygems.org"
 
 ruby RUBY_VERSION
 
-gemspec
+gem "decidim-department_admin", path: ".."
 
-DECIDIM_VERSION = { git: "https://github.com/CodiTramuntana/decidim", branch: "release/0.29-stable" }.freeze
+DECIDIM_VERSION = { git: "https://github.com/CodiTramuntana/decidim", branch: "release/0.30-stable" }.freeze
 
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
@@ -26,10 +26,6 @@ group :development, :test do
   gem "decidim-conferences", DECIDIM_VERSION
   gem "decidim-dev", DECIDIM_VERSION
   gem "faker"
-  # Set versions because Property AutoCorrect errors.
-  gem "rspec-rails", "~> 6.0.4"
-  gem "rubocop-factory_bot", "~> 2.26"
-  gem "rubocop-rspec", "~> 3.0"
   gem "social-share-button"
 end
 

@@ -1,5 +1,16 @@
 ---
 en:
+  activemodel:
+    attributes:
+      assembly:
+        decidim_department_admin_department_id: Department
+      participatory_process:
+        decidim_department_admin_department_id: Department
+  activerecord:
+    models:
+      decidim/department_admin/department:
+        one: Department
+        other: Departments
   decidim:
     admin:
       models:
@@ -43,14 +54,25 @@ en:
           filter:
             all: All
           filter_by: Filter by
+      titles:
+        departments: Departments
       users:
         form:
           area: Area
+          department: Department
         index:
           filter:
             all: All
           filter_by: Filter by
           search: Search
+    assemblies:
+      admin:
+        assemblies:
+          form:
+            department: Department
+      assemblies:
+        description:
+          department_name: Department
     components:
       department_admin:
         name: Department Admin
@@ -59,3 +81,40 @@ en:
         conferences:
           form:
             select_an_area: Select an area
+    department_admin:
+      admin:
+        departments:
+          create:
+            error: There was an error creating the new department.
+            success: Department created successfully.
+          destroy:
+            has_department_admins: Cannot delete a department that has department admins assigned.
+            success: Department deleted successfully.
+          edit:
+            title: Edit Department
+            update: Update
+          index:
+            no_departments: No departments have been created yet.
+          new:
+            create: Create
+            title: New Department
+          update:
+            error: There was an error updating the department.
+            success: Department updated successfully.
+        forms:
+          select_a_department: Select a department
+        menu:
+          departments: Departments
+        models:
+          department:
+            fields:
+              name: Name
+      department: Department
+    participatory_processes:
+      admin:
+        participatory_processes:
+          form:
+            department: Department
+      participatory_processes:
+        description:
+          department_name: Department

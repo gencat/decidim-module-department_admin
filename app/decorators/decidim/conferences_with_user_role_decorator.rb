@@ -11,15 +11,11 @@ module Decidim::ConferencesWithUserRoleDecorator
     Decidim::Conferences::ConferencesWithUserRole.class_eval do
       private
 
-      alias_method :conference_ids_by_conferences_user_table, :conference_ids
+      alias_method :conference_ids_original, :conference_ids
 
       def conference_ids
-        ids = [conference_ids_by_conferences_user_table]
-        if user&.department_admin?
-          ids << ::Decidim::Conference
-                 .where("decidim_area_id" => user.areas.pluck(:id)).pluck(:id)
-        end
-
+        ids = [conference_ids_original]
+        ids << ::Decidim::Conference.pluck(:id) if user&.department_admin?
         ::Decidim::Conference.where(id: ids.flatten.uniq)
       end
     end

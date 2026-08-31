@@ -1,5 +1,16 @@
 ---
 cs:
+  activemodel:
+    attributes:
+      assembly:
+        decidim_department_admin_department_id: Oddělení
+      participatory_process:
+        decidim_department_admin_department_id: Oddělení
+  activerecord:
+    models:
+      decidim/department_admin/department:
+        one: Oddělení
+        other: Oddělení
   decidim:
     admin:
       models:
@@ -33,14 +44,62 @@ cs:
             spaces: Proces / Pravidlo / Shromáždění
             title: Název
             type: Typ
+      titles:
+        departments: Oddělení
       users:
         form:
           area: Oblast
+          department: Oddělení
         index:
           filter:
             all: Vše
           filter_by: filtrovat podle
           search: Hledat
+    assemblies:
+      admin:
+        assemblies:
+          form:
+            department: Oddělení
+      assemblies:
+        description:
+          department_name: Oddělení
     components:
       department_admin:
         name: Správce oddělení
+    department_admin:
+      admin:
+        departments:
+          create:
+            error: Při vytváření oddělení došlo k chybě.
+            success: Oddělení bylo úspěšně vytvořeno.
+          destroy:
+            has_department_admins: Nelze odstranit oddělení, které má přiřazené správce.
+            success: Oddělení bylo úspěšně odstraněno.
+          edit:
+            title: Upravit oddělení
+            update: Aktualizovat
+          index:
+            no_departments: Zatím nebyla vytvořena žádná oddělení.
+          new:
+            create: Vytvořit
+            title: Nové oddělení
+          update:
+            error: Při aktualizaci oddělení došlo k chybě.
+            success: Oddělení bylo úspěšně aktualizováno.
+        forms:
+          select_a_department: Vyberte oddělení
+        menu:
+          departments: Oddělení
+        models:
+          department:
+            fields:
+              name: Název
+      department: Oddělení
+    participatory_processes:
+      admin:
+        participatory_processes:
+          form:
+            department: Oddělení
+      participatory_processes:
+        description:
+          department_name: Oddělení

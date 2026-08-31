@@ -1,16 +1,24 @@
 # frozen_string_literal: true
 
 module Decidim::ParticipatoryProcesses::UpdateParticipatoryProcessDecorator
-  # Intercepts the `call` method and forces the Area of the user if it is a
-  # department_admin user.
+  # Forces the Area of the user if it is a department_admin user.
   def self.decorate
     Decidim::ParticipatoryProcesses::Admin::UpdateParticipatoryProcess.class_eval do
-      alias_method :original_call, :call
+      fetch_form_attributes :title, :subtitle, :weight, :slug, :hashtag, :promoted, :description,
+                            :short_description, :taxonomizations,
+                            :private_space, :developer_group, :local_area, :target, :participatory_scope,
+                            :participatory_structure, :meta_scope, :start_date, :end_date, :participatory_process_group,
+                            :announcement, :decidim_department_admin_department_id
 
-      def call
+      protected
+
+      def run_before_hooks
         author = form.current_user
-        form.area_id = author.areas.first.id if author.department_admin?
-        original_call
+        if author.department_admin?
+          form.decidim_department_admin_department_id = author.departments.first.id
+        elsif form.try(:decidim_department_admin_department_id).blank?
+          form.decidim_department_admin_department_id = resource.decidim_department_admin_department_id
+        end
       end
     end
   end

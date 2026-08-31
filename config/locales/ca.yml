@@ -1,5 +1,16 @@
 ---
 ca:
+  activemodel:
+    attributes:
+      assembly:
+        decidim_department_admin_department_id: Departament
+      participatory_process:
+        decidim_department_admin_department_id: Departament
+  activerecord:
+    models:
+      decidim/department_admin/department:
+        one: Departament
+        other: Departaments
   decidim:
     admin:
       models:
@@ -43,14 +54,25 @@ ca:
           filter:
             all: Totes
           filter_by: Filtra per
+      titles:
+        departments: Departaments
       users:
         form:
           area: Àrea
+          department: Departament
         index:
           filter:
             all: Totes
           filter_by: Filtra per
           search: Cerca
+    assemblies:
+      admin:
+        assemblies:
+          form:
+            department: Departament
+      assemblies:
+        description:
+          department_name: Departament
     components:
       department_admin:
         name: Admin de Departament
@@ -59,3 +81,40 @@ ca:
         conferences:
           form:
             select_an_area: Selecciona una Àrea
+    department_admin:
+      admin:
+        departments:
+          create:
+            error: Hi ha hagut un error en crear el departament.
+            success: Departament creat correctament.
+          destroy:
+            has_department_admins: No es pot eliminar un departament que té administradores assignades.
+            success: Departament eliminat correctament.
+          edit:
+            title: Editar Departament
+            update: Actualitzar
+          index:
+            no_departments: Encara no s'han creat departaments.
+          new:
+            create: Crear
+            title: Nou Departament
+          update:
+            error: Hi ha hagut un error en actualitzar el departament.
+            success: Departament actualitzat correctament.
+        forms:
+          select_a_department: Selecciona un departament
+        menu:
+          departments: Departaments
+        models:
+          department:
+            fields:
+              name: Nom
+      department: Departament
+    participatory_processes:
+      admin:
+        participatory_processes:
+          form:
+            department: Departament
+      participatory_processes:
+        description:
+          department_name: Departament

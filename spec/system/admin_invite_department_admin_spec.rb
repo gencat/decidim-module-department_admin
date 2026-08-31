@@ -7,9 +7,8 @@ require "spec_helper"
 # create a new admin as department_admin.
 #
 describe "Admin invite user" do
-  let!(:area) { create(:area) }
-
   let(:organization) { create(:organization) }
+  let!(:department) { create(:department, organization:) }
 
   let!(:admin) { create(:user, :admin, :confirmed, organization:) }
   let(:user_manager) { create(:user, :user_manager, :confirmed, organization:) }
@@ -17,7 +16,7 @@ describe "Admin invite user" do
   let(:department_admin) do
     user = create(:user, :confirmed, organization:)
     user.roles << "department_admin"
-    user.areas << area
+    user.departments << department
     user.save!
     user
   end
@@ -28,12 +27,28 @@ describe "Admin invite user" do
     visit decidim_admin.new_user_path
   end
 
+  it "department selector is hidden on page load when role is not department_admin" do
+    expect(page).to have_css("#department-block", visible: :hidden)
+  end
+
+  it "department selector is shown after selecting department_admin role" do
+    find_by_id("user_role").find("option[value='department_admin']").select_option
+    expect(page).to have_css("#department-block", visible: :visible)
+  end
+
+  it "department selector is hidden after switching from department_admin to another role" do
+    find_by_id("user_role").find("option[value='department_admin']").select_option
+    expect(page).to have_css("#department-block", visible: :visible)
+    find_by_id("user_role").find("option[value='admin']").select_option
+    expect(page).to have_css("#department-block", visible: :hidden)
+  end
+
   it "admin is able to create department admins" do
     fill_the_form_for_department_admin("Cabello Loco", "my@email.net")
     submit_form
     check_succeess
     user = check_is_department_admin("my@email.net")
-    check_assigned_area(user, area)
+    check_assigned_department(user, department)
   end
 
   it "admin is able to add department_admin role to existing user" do
@@ -41,11 +56,11 @@ describe "Admin invite user" do
     submit_form
     check_succeess
     check_is_department_admin(user_manager.email)
-    check_assigned_area(user_manager, area)
+    check_assigned_department(user_manager, department)
   end
 
   context "when departments are reorganized" do
-    let!(:new_area) { create(:area) }
+    let!(:new_department) { create(:department, organization:) }
 
     before do
       department_admin
@@ -53,11 +68,11 @@ describe "Admin invite user" do
     end
 
     it "admin is able to change department_admin's area/department" do
-      fill_the_form_for_department_admin(department_admin.name, department_admin.email, new_area)
+      fill_the_form_for_department_admin(department_admin.name, department_admin.email, new_department)
       submit_form
       check_succeess
       check_is_department_admin(department_admin.email)
-      check_assigned_area(department_admin, new_area)
+      check_assigned_department(department_admin, new_department)
     end
   end
 
@@ -71,17 +86,17 @@ describe "Admin invite user" do
     end
   end
 
-  def fill_the_form_for_department_admin(name, email, selected_area = area)
+  def fill_the_form_for_department_admin(name, email, selected_department = department)
     within "form.new_user" do
       fill_in :user_name, with: name
       fill_in :user_email, with: email
       find_by_id("user_role").find("option[value='department_admin']").select_option
-      expect(page).to have_css("#user_area_id")
-      find_by_id("user_area_id").find("option[value='#{selected_area.id}']").select_option
+      expect(page).to have_css("#user_department_id")
+      find_by_id("user_department_id").find("option[value='#{selected_department.id}']").select_option
     end
   end
 
-  def fill_the_form_for_admin(name, email, _selected_area = area)
+  def fill_the_form_for_admin(name, email)
     within "form.new_user" do
       fill_in :user_name, with: name
       fill_in :user_email, with: email
@@ -102,7 +117,7 @@ describe "Admin invite user" do
     user = Decidim::User.find_by(email:).reload
     expect(user).to be_admin
     expect(user.roles).not_to include("department_admin")
-    expect(user.areas).to be_empty
+    expect(user.departments).to be_empty
   end
 
   def check_is_department_admin(email)
@@ -111,8 +126,9 @@ describe "Admin invite user" do
     user
   end
 
-  def check_assigned_area(user, area)
-    expect(user.areas.last).to eq(area)
-    expect(user.areas.size).to eq(1)
+  def check_assigned_department(user, department)
+    user.reload
+    expect(user.departments.last).to eq(department)
+    expect(user.departments.size).to eq(1)
   end
 end

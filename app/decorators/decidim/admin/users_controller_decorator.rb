@@ -8,7 +8,7 @@ module Decidim::Admin::UsersControllerDecorator
   # rubocop: disable Metrics/CyclomaticComplexity
   # rubocop: disable Metrics/PerceivedComplexity
   def self.decorate
-    # Sort Admins by role and area
+    # Sort Admins by role and department
     ::Decidim::Admin::UsersController.class_eval do
       alias_method :original_collection, :collection
 
@@ -32,9 +32,9 @@ module Decidim::Admin::UsersControllerDecorator
                        ::Decidim::Admin::UserAdminFilter.for(original_collection, @search_text, @role, current_organization)
                      end
           if current_user.department_admin?
-            filtered.joins(:areas)
+            filtered.joins(:departments)
                     .where("'department_admin' = ANY(roles)")
-                    .where("decidim_areas.id": current_user.areas.pluck(:id))
+                    .where("decidim_department_admin_departments.id": current_user.departments.pluck(:id))
           else
             filtered
           end
@@ -45,7 +45,7 @@ module Decidim::Admin::UsersControllerDecorator
       def filtered_collection
         @filtered_collection ||= begin
           users = @by_process_name ? collection : query.result
-          sorted_users = users.uniq.sort { |u_1, u_2| "#{u_1.active_role}||#{u_1.areas.first&.name}" <=> "#{u_2.active_role}||#{u_2.areas.first&.name}" }
+          sorted_users = users.uniq.sort { |u_1, u_2| "#{u_1.active_role}||#{u_1.departments.first&.name}" <=> "#{u_2.active_role}||#{u_2.departments.first&.name}" }
           paginate(Kaminari.paginate_array(sorted_users))
         end
       end
@@ -65,15 +65,15 @@ module Decidim::Admin::UsersControllerDecorator
 
           @spaces.push("title" => process_title,
                        "type" => type,
-                       "area" => process.area.nil? ? "" : process.area&.name&.[](locale),
+                       "area" => process.department.nil? ? "" : process.department.name[locale],
                        "created_at" => process.created_at,
                        "private" => process.private_space?,
                        "published" => process.published?)
         end
 
         @user.assemblies.each do |assembly|
-          area_name = if assembly.area && assembly.area.name
-                        assembly.area.name[locale]
+          area_name = if assembly.department && assembly.department.name
+                        assembly.department.name[locale]
                       else
                         ""
                       end
