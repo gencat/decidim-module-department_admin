@@ -13,6 +13,13 @@ module Decidim::UserDecorator
                               association_foreign_key: :decidim_area_id,
                               validate: false
 
+      has_and_belongs_to_many :departments,
+                              class_name: "Decidim::DepartmentAdmin::Department",
+                              join_table: :decidim_department_admin_user_departments,
+                              foreign_key: :decidim_user_id,
+                              association_foreign_key: :decidim_department_admin_department_id,
+                              validate: false
+
       has_and_belongs_to_many :participatory_processes,
                               join_table: :decidim_participatory_process_user_roles,
                               foreign_key: :decidim_user_id,

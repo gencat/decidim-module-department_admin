@@ -14,6 +14,11 @@ module Decidim::AssembliesDecorator
                               foreign_key: :decidim_assembly_id,
                               association_foreign_key: :decidim_user_id,
                               validate: false
+
+      belongs_to :department,
+                 class_name: "Decidim::DepartmentAdmin::Department",
+                 foreign_key: :decidim_department_admin_department_id,
+                 optional: true
     end
   end
 end

@@ -11,8 +11,8 @@ module Decidim::Admin
                organization:,
                author: current_user)
       end
-      let(:area) { create(:area, organization:) }
-      let(:current_user) { create(:department_admin, :confirmed, organization:, area:) }
+      let(:department) { create(:department, organization:) }
+      let(:current_user) { create(:department_admin, :confirmed, organization:, department:) }
       let(:send_to_all_users) { false }
       let(:send_to_followers) { false }
       let(:send_to_participants) { false }
@@ -73,7 +73,7 @@ module Decidim::Admin
       end
 
       context "when the user is a department admin" do
-        let!(:participatory_process) { create(:participatory_process, organization:, area:) }
+        let!(:participatory_process) { create(:participatory_process, organization:, department:) }
         let!(:component) { create(:dummy_component, organization: newsletter.organization, participatory_space: participatory_process) }
 
         context "when no spaces selected" do

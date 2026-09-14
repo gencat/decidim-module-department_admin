@@ -16,6 +16,16 @@ module Decidim::DecidimFormHelperDecorator
 
         original_areas_for_select(organization)
       end
+
+      def departments_for_select(organization)
+        author = current_user
+
+        return author.departments.map { |d| [translated_attribute(d.name), d.id] } if author&.department_admin? && controller_path.split("/").include?("admin")
+
+        Decidim::DepartmentAdmin::Department
+          .where(decidim_organization_id: organization.id)
+          .map { |d| [translated_attribute(d.name), d.id] }
+      end
     end
   end
 end

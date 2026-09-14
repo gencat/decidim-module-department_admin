@@ -41,7 +41,7 @@
               <td><%= user.email %></td>
               <td>
                 <% if user.department_admin? %>
-                  <%= translated_attribute(user.areas.first&.name) %>
+                  <%= translated_attribute(user.departments.first&.name) %>
                 <% end %>
               </td>
               <td>
