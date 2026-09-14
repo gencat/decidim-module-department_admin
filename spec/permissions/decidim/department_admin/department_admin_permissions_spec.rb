@@ -70,7 +70,8 @@ module Decidim
             context "when process and assembly have same department as department_admin" do
               let(:process) { create(:participatory_process, organization: organization, department: department) }
               let(:assembly) { create(:assembly, organization: organization, department: department) }
-              let(:conference) { create(:conference, organization: organization, area: area) }
+              let(:other_department) { create(:department, organization: organization) }
+              let(:conference) { create(:conference, organization: organization, department: other_department) }
 
               it "allows accepted actions with expected context" do
                 should_allow_action_with_ctx(:admin, :read, :participatory_space, current_participatory_space: process)

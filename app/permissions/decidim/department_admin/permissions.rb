@@ -160,7 +160,7 @@ module Decidim
           -> { same_department_permission_for?(requested_action, :admin, :update, :newsletter, restricted_rsrc: context[:newsletter]) },
           -> { same_department_permission_for?(requested_action, :admin, :destroy, :newsletter, restricted_rsrc: context[:newsletter]) },
 
-          # CONFERENCES (use area for categorization, no area restriction for department_admins)
+          # CONFERENCES (use department for categorization, no department restriction for department_admins)
           -> { permission_for?(requested_action, :admin, :enter, :space_area, space_name: :conferences) },
           -> { permission_for?(requested_action, :admin, :read, :conference_list) },
           -> { permission_for?(requested_action, :admin, :create, :conference) },

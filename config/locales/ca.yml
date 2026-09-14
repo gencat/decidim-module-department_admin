@@ -76,31 +76,26 @@ ca:
     components:
       department_admin:
         name: Admin de Departament
-    conferences:
-      admin:
-        conferences:
-          form:
-            select_an_area: Selecciona una Àrea
     department_admin:
       admin:
         departments:
           create:
             error: Hi ha hagut un error en crear el departament.
-            success: Departament creat correctament.
+            success: El departament s'ha creat correctament.
           destroy:
             has_department_admins: No es pot eliminar un departament que té administradores assignades.
-            success: Departament eliminat correctament.
+            success: El departament s'ha eliminat correctament.
           edit:
-            title: Editar Departament
-            update: Actualitzar
+            title: Edita Departament
+            update: Actualitza
           index:
             no_departments: Encara no s'han creat departaments.
           new:
-            create: Crear
+            create: Crea
             title: Nou Departament
           update:
             error: Hi ha hagut un error en actualitzar el departament.
-            success: Departament actualitzat correctament.
+            success: El departament s'ha actualitzat correctament.
         forms:
           select_a_department: Selecciona un departament
         menu:

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Decidim::ParticipatoryProcesses::UpdateParticipatoryProcessDecorator
-  # Forces the Area of the user if it is a department_admin user.
+  # Forces the Department of the user if it is a department_admin user.
   def self.decorate
     Decidim::ParticipatoryProcesses::Admin::UpdateParticipatoryProcess.class_eval do
       fetch_form_attributes :title, :subtitle, :weight, :slug, :hashtag, :promoted, :description,

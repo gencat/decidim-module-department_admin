@@ -8,7 +8,7 @@ module Decidim::Conferences::CreateConferenceDecorator
       fetch_form_attributes :organization, :title, :slogan, :slug, :weight, :hashtag, :description,
                             :short_description, :objectives, :location, :taxonomizations, :start_date, :end_date,
                             :promoted, :show_statistics, :registrations_enabled, :available_slots, :registration_terms,
-                            :area
+                            :decidim_department_admin_department_id
     end
   end
 end

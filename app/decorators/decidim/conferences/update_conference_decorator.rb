@@ -2,7 +2,7 @@
 
 module Decidim::Conferences::UpdateConferenceDecorator
   def self.decorate
-    # intentionally empty: department_admins can update any conference without area restriction
+    # intentionally empty: department_admins can update any conference without department restriction
   end
 end
 

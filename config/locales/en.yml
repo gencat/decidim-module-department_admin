@@ -76,11 +76,6 @@ en:
     components:
       department_admin:
         name: Department Admin
-    conferences:
-      admin:
-        conferences:
-          form:
-            select_an_area: Select an area
     department_admin:
       admin:
         departments:

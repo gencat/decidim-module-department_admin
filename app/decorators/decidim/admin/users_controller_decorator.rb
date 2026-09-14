@@ -91,7 +91,7 @@ module Decidim::Admin::UsersControllerDecorator
 
         if Decidim::DepartmentAdmin.conferences_defined?
           @user.conferences.each do |conference|
-            area_name = conference.area&.name.try(:[], locale) || ""
+            area_name = conference.department&.name.try(:[], locale) || ""
 
             conference_title = conference.title[locale]
             conference_title = conference.title["ca"] if conference_title.blank?
