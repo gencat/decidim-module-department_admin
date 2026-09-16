@@ -1,5 +1,16 @@
 ---
 ca:
+  activemodel:
+    attributes:
+      assembly:
+        decidim_department_admin_department_id: Departament
+      participatory_process:
+        decidim_department_admin_department_id: Departament
+  activerecord:
+    models:
+      decidim/department_admin/department:
+        one: Departament
+        other: Departaments
   decidim:
     admin:
       models:
@@ -43,19 +54,62 @@ ca:
           filter:
             all: Totes
           filter_by: Filtra per
+      titles:
+        departments: Departaments
       users:
         form:
           area: Àrea
+          department: Departament
         index:
           filter:
             all: Totes
           filter_by: Filtra per
           search: Cerca
+    assemblies:
+      admin:
+        assemblies:
+          form:
+            department: Departament
+      assemblies:
+        description:
+          department_name: Departament
     components:
       department_admin:
         name: Admin de Departament
-    conferences:
+    department_admin:
       admin:
-        conferences:
+        departments:
+          create:
+            error: Hi ha hagut un error en crear el departament.
+            success: El departament s'ha creat correctament.
+          destroy:
+            has_department_admins: No es pot eliminar un departament que té administradores assignades.
+            success: El departament s'ha eliminat correctament.
+          edit:
+            title: Edita Departament
+            update: Actualitza
+          index:
+            no_departments: Encara no s'han creat departaments.
+          new:
+            create: Crea
+            title: Nou Departament
+          update:
+            error: Hi ha hagut un error en actualitzar el departament.
+            success: El departament s'ha actualitzat correctament.
+        forms:
+          select_a_department: Selecciona un departament
+        menu:
+          departments: Departaments
+        models:
+          department:
+            fields:
+              name: Nom
+      department: Departament
+    participatory_processes:
+      admin:
+        participatory_processes:
           form:
-            select_an_area: Selecciona una Àrea
+            department: Departament
+      participatory_processes:
+        description:
+          department_name: Departament

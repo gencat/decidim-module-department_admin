@@ -3,7 +3,7 @@
 require_dependency "decidim/admin/newsletters_controller"
 
 module Decidim::Admin::NewslettersControllerDecorator
-  # Sort Admins by role and area
+  # Sort Admins by role and department
   def self.decorate
     ::Decidim::Admin::NewslettersController.class_eval do
       alias_method :original_collection, :collection
@@ -14,14 +14,14 @@ module Decidim::Admin::NewslettersControllerDecorator
         return original_collection unless current_user.department_admin?
 
         @collection ||= Decidim::Newsletter.where(organization: current_organization)
-                                           .joins(author: :areas)
-                                           .where(department_admin_areas: { decidim_area_id: current_user_areas.pluck(:id) })
+                                           .joins(author: :departments)
+                                           .where(decidim_department_admin_departments: { id: current_user_departments.pluck(:id) })
       end
 
-      def current_user_areas
+      def current_user_departments
         return unless current_user.department_admin?
 
-        current_user.areas
+        current_user.departments
       end
     end
   end

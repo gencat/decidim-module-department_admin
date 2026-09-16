@@ -4,11 +4,11 @@ require "spec_helper"
 
 describe "Admin manages newsletters", :versioning do
   let(:organization) { create(:organization) }
-  let(:area) { create(:area) }
   let(:admin) { create(:user, :admin, :confirmed, organization:) }
-  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:) }
+  let(:department) { create(:department, organization:) }
+  let(:department_admin) { create(:department_admin, :confirmed, organization:, department:) }
 
-  let!(:newsletter_w_area) do
+  let!(:newsletter_w_department) do
     create(:newsletter,
            organization:,
            subject: {
@@ -24,13 +24,13 @@ describe "Admin manages newsletters", :versioning do
            author: department_admin)
   end
 
-  let!(:newsletter_wo_area) do
+  let!(:newsletter_wo_department) do
     create(:newsletter,
            organization:,
            subject: {
-             en: "A fancy newsletter for %{name} without area",
-             es: "Un correo electrónico muy chulo para %{name} sin area",
-             ca: "Un correu electrònic flipant per a %{name} sense area",
+             en: "A fancy newsletter for %{name} without department",
+             es: "Un correo electrónico muy chulo para %{name} sin departamento",
+             ca: "Un correu electrònic flipant per a %{name} sense departament",
            },
            body: {
              en: "Hello %{name}! Relevant content.",
@@ -46,8 +46,8 @@ describe "Admin manages newsletters", :versioning do
     visit decidim_admin.newsletters_path
   end
 
-  it "sees only newsletters in the same area" do
-    expect(page).to have_content(newsletter_w_area.subject["en"])
-    expect(page).to have_no_content(newsletter_wo_area.subject["en"])
+  it "sees only newsletters in the same department" do
+    expect(page).to have_content(newsletter_w_department.subject["en"])
+    expect(page).to have_no_content(newsletter_wo_department.subject["en"])
   end
 end

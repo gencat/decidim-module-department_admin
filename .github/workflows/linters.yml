@@ -9,7 +9,7 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 3.2.9
+  RUBY_VERSION: 3.3.4
 
 jobs:
   test-report:

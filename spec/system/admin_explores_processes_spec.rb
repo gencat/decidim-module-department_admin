@@ -4,8 +4,8 @@ require "spec_helper"
 
 describe "Admin explores processes" do
   let(:organization) { create(:organization) }
-  let!(:area) { create(:area, organization:) }
-  let!(:process) { create(:participatory_process, organization:, area:) }
+  let!(:department) { create(:department, organization:) }
+  let!(:process) { create(:participatory_process, organization:, department:) }
 
   let!(:admin) { create(:user, :admin, :confirmed, organization:) }
 
@@ -18,7 +18,7 @@ describe "Admin explores processes" do
     let!(:department_admin) do
       user = create(:user, :confirmed, organization:)
       user.roles << "department_admin"
-      user.areas << area
+      user.departments << department
       user.save!
       user
     end
@@ -28,9 +28,9 @@ describe "Admin explores processes" do
         visit decidim_admin_participatory_processes.participatory_processes_path
       end
 
-      it "renders a new column for the process department (aka area)" do
+      it "renders a new column for the process department" do
         check_column_header_exists(position: 2, content: "Department/Area")
-        check_column_data_exists(position: 2, content: area.name["en"])
+        check_column_data_exists(position: 2, content: department.name["en"])
         check_column_data_exists(position: 3, content: department_admin.name)
       end
 

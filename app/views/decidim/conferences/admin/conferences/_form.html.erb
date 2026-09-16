@@ -70,10 +70,10 @@
     </div>
 
     <div class="row column">
-      <%= form.areas_select :area_id,
-                            areas_for_select(current_organization),
-                            selected: current_participatory_space.try(:decidim_area_id),
-                            include_blank: t(".select_an_area") %>
+      <%= form.select :decidim_department_admin_department_id,
+                      departments_for_select(current_organization),
+                      selected: current_participatory_space.try(:decidim_department_admin_department_id),
+                      include_blank: t("decidim.department_admin.admin.forms.select_a_department") %>
     </div>
 
     <div class="row column">

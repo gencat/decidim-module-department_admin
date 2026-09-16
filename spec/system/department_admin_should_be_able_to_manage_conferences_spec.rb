@@ -4,8 +4,8 @@ require "spec_helper"
 
 describe "Admin manages conferences", :versioning do
   let(:organization) { create(:organization) }
-  let(:area) { create(:area, organization:) }
-  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:) }
+  let(:department) { create(:department, organization:) }
+  let(:department_admin) { create(:department_admin, :confirmed, organization:, department:) }
 
   before do
     switch_to_host(organization.host)
@@ -64,7 +64,7 @@ describe "Admin manages conferences", :versioning do
       end
 
       expect(page).to have_admin_callout("successfully")
-      expect(Decidim::Conference.last.area).to eq(area)
+      expect(Decidim::Conference.last.department).to eq(department)
 
       within ".container" do
         expect(page).to have_content("My conference")

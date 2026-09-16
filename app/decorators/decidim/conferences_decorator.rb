@@ -9,9 +9,9 @@ module Decidim::ConferencesDecorator
 
     require_dependency "decidim/conference"
     Decidim::Conference.class_eval do
-      belongs_to :area,
-                 foreign_key: "decidim_area_id",
-                 class_name: "Decidim::Area",
+      belongs_to :department,
+                 class_name: "Decidim::DepartmentAdmin::Department",
+                 foreign_key: :decidim_department_admin_department_id,
                  optional: true
 
       has_and_belongs_to_many :users_with_any_role,

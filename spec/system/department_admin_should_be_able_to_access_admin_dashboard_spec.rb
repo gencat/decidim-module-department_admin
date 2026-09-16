@@ -5,8 +5,9 @@ require "spec_helper"
 describe "Department admin should be able to access Admin Dashboard" do
   let(:organization) { create(:organization) }
   let(:area) { create(:area) }
-  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:, accepted_tos_version: Time.current) }
-  let!(:process) { create(:participatory_process, :published, organization:, area:) }
+  let(:department) { create(:department, organization:) }
+  let(:department_admin) { create(:department_admin, :confirmed, organization:, area:, department:, accepted_tos_version: Time.current) }
+  let!(:process) { create(:participatory_process, :published, organization:, department:) }
 
   before do
     switch_to_host(organization.host)
