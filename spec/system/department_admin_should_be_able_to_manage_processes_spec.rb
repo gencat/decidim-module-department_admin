@@ -133,6 +133,35 @@ describe "Admin manages participatory processes", :versioning do
     end
   end
 
+  context "when viewing the process admin menu" do
+    let!(:participatory_process) { create(:participatory_process, organization:, department:, private_space:) }
+
+    before do
+      visit decidim_admin_participatory_processes.edit_participatory_process_path(participatory_process)
+    end
+
+    context "when the process is private" do
+      let(:private_space) { true }
+
+      it "shows the members menu item" do
+        within_admin_sidebar_menu do
+          expect(page).to have_link("Members")
+        end
+      end
+    end
+
+    context "when the process is not private" do
+      let(:private_space) { false }
+
+      it "does not show the members menu item" do
+        within_admin_sidebar_menu do
+          expect(page).to have_link("About this process")
+          expect(page).to have_no_link("Members")
+        end
+      end
+    end
+  end
+
   context "when updating a participatory process" do
     let!(:participatory_process_3) { create(:participatory_process, organization:, department:) }
 

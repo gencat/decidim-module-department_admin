@@ -120,4 +120,33 @@ describe "Admin manages assemblies" do
     # it_behaves_like "manage assemblies"
     it_behaves_like "creating an assembly"
   end
+
+  context "when viewing the assembly admin menu" do
+    let!(:assembly) { create(:assembly, organization:, department:, private_space:) }
+
+    before do
+      visit decidim_admin_assemblies.edit_assembly_path(assembly)
+    end
+
+    context "when the assembly is private" do
+      let(:private_space) { true }
+
+      it "shows the members menu item" do
+        within_admin_sidebar_menu do
+          expect(page).to have_link("Members")
+        end
+      end
+    end
+
+    context "when the assembly is not private" do
+      let(:private_space) { false }
+
+      it "does not show the members menu item" do
+        within_admin_sidebar_menu do
+          expect(page).to have_link("About this assembly")
+          expect(page).to have_no_link("Members")
+        end
+      end
+    end
+  end
 end
