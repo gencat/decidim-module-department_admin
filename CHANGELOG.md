@@ -3,6 +3,11 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.11.1 (PATCH)
+- Fix: Department admins can access the process admins (user roles) section.
+- Fix: Show the "Members" / "Private participants" menu item to department admins only when the process or assembly is private.
+- Fix: Department admins can filter and sort processes and assemblies in the admin by private/public, published/unpublished and process group.
+
 ## Version 0.11.0 (MINOR)
 - Upgrade Decidim to v0.30
 - Upgrade Ruby to 3.3.4
