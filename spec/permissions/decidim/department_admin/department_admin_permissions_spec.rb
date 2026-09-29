@@ -44,6 +44,12 @@ module Decidim
             should_allow_action(:admin, :create, :conference)
           end
 
+          it "allows managing process user roles" do
+            [:index, :read, :create, :update, :invite, :destroy].each do |action|
+              should_allow_action(:admin, action, :process_user_role)
+            end
+          end
+
           it "does not allow non accepted actions" do
             action = PermissionAction.new(scope: :admin, action: :write, subject: :admin_dashboard)
             permissions = DepartmentAdmin::Permissions.new(user, action)

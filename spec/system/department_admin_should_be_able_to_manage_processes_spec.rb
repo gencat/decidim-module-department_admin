@@ -119,6 +119,20 @@ describe "Admin manages participatory processes", :versioning do
     end
   end
 
+  context "when accessing the process admins" do
+    let!(:participatory_process) { create(:participatory_process, organization:, department:) }
+    let!(:process_admin) { create(:process_admin, participatory_process:) }
+
+    it "lists the process user roles" do
+      visit decidim_admin_participatory_processes.participatory_process_user_roles_path(participatory_process)
+
+      expect(page).to have_no_content("You are not authorized to perform this action")
+      within "#process_admins" do
+        expect(page).to have_content(process_admin.email)
+      end
+    end
+  end
+
   context "when updating a participatory process" do
     let!(:participatory_process_3) { create(:participatory_process, organization:, department:) }
 
