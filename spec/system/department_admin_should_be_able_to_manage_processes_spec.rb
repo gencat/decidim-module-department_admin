@@ -119,6 +119,54 @@ describe "Admin manages participatory processes", :versioning do
     end
   end
 
+  context "when filtering processes" do
+    let!(:private_published_process) do
+      create(:participatory_process, :private, :published, organization:, department:, participatory_process_group: participatory_process_groups.first)
+    end
+    let!(:public_unpublished_process) do
+      create(:participatory_process, :unpublished, organization:, department:, participatory_process_group: participatory_process_groups.last)
+    end
+
+    def visit_filtered(query)
+      visit decidim_admin_participatory_processes.participatory_processes_path(q: query)
+    end
+
+    it "filters by private" do
+      visit_filtered(private_space_eq: true)
+
+      expect(page).to have_content(translated(private_published_process.title))
+      expect(page).to have_no_content(translated(public_unpublished_process.title))
+    end
+
+    it "filters by public" do
+      visit_filtered(private_space_eq: false)
+
+      expect(page).to have_content(translated(public_unpublished_process.title))
+      expect(page).to have_no_content(translated(private_published_process.title))
+    end
+
+    it "filters by published" do
+      visit_filtered(published_at_null: false)
+
+      expect(page).to have_content(translated(private_published_process.title))
+      expect(page).to have_no_content(translated(public_unpublished_process.title))
+    end
+
+    it "filters by unpublished" do
+      visit_filtered(published_at_null: true)
+
+      expect(page).to have_content(translated(public_unpublished_process.title))
+      expect(page).to have_no_content(translated(private_published_process.title))
+    end
+
+    it "filters by process group" do
+      visit_filtered(decidim_participatory_process_group_id_eq: participatory_process_groups.last.id)
+
+      expect(page).to have_content(translated(public_unpublished_process.title))
+      expect(page).to have_no_content(translated(private_published_process.title))
+    end
+  end
+
   context "when accessing the process admins" do
     let!(:participatory_process) { create(:participatory_process, organization:, department:) }
     let!(:process_admin) { create(:process_admin, participatory_process:) }

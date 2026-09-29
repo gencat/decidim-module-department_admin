@@ -121,6 +121,43 @@ describe "Admin manages assemblies" do
     it_behaves_like "creating an assembly"
   end
 
+  context "when filtering assemblies" do
+    let!(:private_published_assembly) { create(:assembly, :private, :published, organization:, department:) }
+    let!(:public_unpublished_assembly) { create(:assembly, :public, :unpublished, organization:, department:) }
+
+    def visit_filtered(query)
+      visit decidim_admin_assemblies.assemblies_path(q: query)
+    end
+
+    it "filters by private" do
+      visit_filtered(private_space_eq: true)
+
+      expect(page).to have_content(translated(private_published_assembly.title))
+      expect(page).to have_no_content(translated(public_unpublished_assembly.title))
+    end
+
+    it "filters by public" do
+      visit_filtered(private_space_eq: false)
+
+      expect(page).to have_content(translated(public_unpublished_assembly.title))
+      expect(page).to have_no_content(translated(private_published_assembly.title))
+    end
+
+    it "filters by published" do
+      visit_filtered(published_at_null: false)
+
+      expect(page).to have_content(translated(private_published_assembly.title))
+      expect(page).to have_no_content(translated(public_unpublished_assembly.title))
+    end
+
+    it "filters by unpublished" do
+      visit_filtered(published_at_null: true)
+
+      expect(page).to have_content(translated(public_unpublished_assembly.title))
+      expect(page).to have_no_content(translated(private_published_assembly.title))
+    end
+  end
+
   context "when viewing the assembly admin menu" do
     let!(:assembly) { create(:assembly, organization:, department:, private_space:) }
 
