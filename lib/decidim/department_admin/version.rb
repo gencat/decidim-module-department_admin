@@ -5,7 +5,7 @@ module Decidim
   module DepartmentAdmin
     # see CHANGELOG.md
     def self.version
-      "0.11.0"
+      "0.11.1"
     end
 
     DECIDIM_VER = "~> 0.30.0"

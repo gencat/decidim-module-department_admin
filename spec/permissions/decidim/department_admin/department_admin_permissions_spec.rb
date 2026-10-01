@@ -44,6 +44,35 @@ module Decidim
             should_allow_action(:admin, :create, :conference)
           end
 
+          context "when reading space private users" do
+            let(:private_process) { create(:participatory_process, :private, organization:, department:) }
+            let(:public_process) { create(:participatory_process, organization:, department:) }
+            let(:private_assembly) { create(:assembly, :private, organization:, department:) }
+            let(:public_assembly) { create(:assembly, :public, organization:, department:) }
+
+            def read_private_users_permission(space)
+              action = PermissionAction.new(scope: :admin, action: :read, subject: :space_private_user)
+              DepartmentAdmin::Permissions.new(user, action, current_participatory_space: space).permissions
+            end
+
+            it "allows it when the space is private" do
+              should_allow_action_with_ctx(:admin, :read, :space_private_user, current_participatory_space: private_process)
+              should_allow_action_with_ctx(:admin, :read, :space_private_user, current_participatory_space: private_assembly)
+            end
+
+            it "does not allow it when the space is not private" do
+              [public_process, public_assembly].each do |space|
+                expect { read_private_users_permission(space).allowed? }.to raise_error(Decidim::PermissionAction::PermissionNotSetError)
+              end
+            end
+          end
+
+          it "allows managing process user roles" do
+            [:index, :read, :create, :update, :invite, :destroy].each do |action|
+              should_allow_action(:admin, action, :process_user_role)
+            end
+          end
+
           it "does not allow non accepted actions" do
             action = PermissionAction.new(scope: :admin, action: :write, subject: :admin_dashboard)
             permissions = DepartmentAdmin::Permissions.new(user, action)

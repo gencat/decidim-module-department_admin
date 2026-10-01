@@ -112,12 +112,14 @@ module Decidim
           -> { same_department_permission_for?(requested_action, :admin, :update, :attachment, restricted_rsrc: context[:attachment]&.attached_to) },
           -> { same_department_permission_for?(requested_action, :admin, :destroy, :attachment, restricted_rsrc: context[:attachment]&.attached_to) },
           # INVITE PROCESS ADMIN: USER ROLES
+          -> { permission_for?(requested_action, :admin, :index, :process_user_role) },
           -> { permission_for?(requested_action, :admin, :read, :process_user_role) },
           -> { permission_for?(requested_action, :admin, :create, :process_user_role) },
           -> { permission_for?(requested_action, :admin, :update, :process_user_role) },
+          -> { permission_for?(requested_action, :admin, :invite, :process_user_role) },
           -> { permission_for?(requested_action, :admin, :destroy, :process_user_role) },
           # SPACE PRIVATE USERS
-          -> { permission_for?(requested_action, :admin, :read, :space_private_user) },
+          -> { permission_for?(requested_action, :admin, :read, :space_private_user) && current_space_private? },
           -> { permission_for?(requested_action, :admin, :create, :space_private_user) },
           -> { same_department_permission_for?(requested_action, :admin, :update, :space_private_user, restricted_rsrc: context[:private_user]&.privatable_to) },
           -> { same_department_permission_for?(requested_action, :admin, :destroy, :space_private_user, restricted_rsrc: context[:private_user]&.privatable_to) },
@@ -213,6 +215,11 @@ module Decidim
         has ||= permission_for?(permission_action, :public, :read, :participatory_space)
         has &&= ALLOWED_SPACES.include?(context[:current_participatory_space].class.name)
         has
+      end
+
+      # Private users (members) only make sense in private spaces, as in Decidim's own space permissions.
+      def current_space_private?
+        context[:current_participatory_space].try(:private_space?) == true
       end
 
       # Does user have permission for the specified scope/action/subject?
