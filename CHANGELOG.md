@@ -3,6 +3,10 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.12.1 (MINOR)
+- Upgrade Decidim to v0.31
+- Upgrade Node to 22.23.4
+
 ## Version 0.11.1 (PATCH)
 - Fix: Department admins can access the process admins (user roles) section.
 - Fix: Show the "Members" / "Private participants" menu item to department admins only when the process or assembly is private.
