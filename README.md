@@ -55,7 +55,7 @@ Beware that this module overrides many core features of Decidim. Thus, modified 
 
 Most of the times the overrides and modifications will be found in `app/decorators`.
 
-Changes to Decidim views are done with [Deface](https://github.com/spree/deface) overrides in `app/overrides`, instead of copying the whole view. For example, the department select in the spaces forms and the department columns in the admin lists of processes and conferences.
+Changes to Decidim views are done with [Deface](https://github.com/spree/deface) overrides in `app/overrides`, instead of copying the whole view. For example, the department select in the spaces forms and the department columns in the admin lists of processes, assemblies and conferences.
 
 ## How it works
 Although some other artifacts exist, the key places to search for in this module are 3:
