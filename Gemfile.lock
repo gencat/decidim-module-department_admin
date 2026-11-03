@@ -158,6 +158,11 @@ GIT
       decidim-core (= 0.31.8)
     decidim-generators (0.31.8)
       decidim-core (= 0.31.8)
+    decidim-initiatives (0.31.8)
+      decidim-admin (= 0.31.8)
+      decidim-comments (= 0.31.8)
+      decidim-core (= 0.31.8)
+      decidim-verifications (= 0.31.8)
     decidim-meetings (0.31.8)
       decidim-core (= 0.31.8)
       decidim-forms (= 0.31.8)
@@ -1005,6 +1010,7 @@ DEPENDENCIES
   decidim-conferences!
   decidim-department_admin!
   decidim-dev!
+  decidim-initiatives!
   deface
   execjs (~> 2.7.0)
   faker
@@ -1080,6 +1086,7 @@ CHECKSUMS
   decidim-dev (0.31.8)
   decidim-forms (0.31.8)
   decidim-generators (0.31.8)
+  decidim-initiatives (0.31.8)
   decidim-meetings (0.31.8)
   decidim-pages (0.31.8)
   decidim-participatory_processes (0.31.8)

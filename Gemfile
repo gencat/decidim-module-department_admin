@@ -25,6 +25,7 @@ group :development, :test do
   gem "decidim", DECIDIM_VERSION
   gem "decidim-conferences", DECIDIM_VERSION
   gem "decidim-dev", DECIDIM_VERSION
+  gem "decidim-initiatives", DECIDIM_VERSION
   gem "faker"
   gem "social-share-button"
 end
