@@ -11,9 +11,7 @@ module Decidim
         attr_reader :delegate_chain, :configurable_checks
       end
 
-      def delegate_chain
-        self.class.delegate_chain
-      end
+      delegate :delegate_chain, to: :class
 
       # Applications with custom modules can configure their checks in an initializer.
       # The checks will be executed in `has_permissions?`, and the syntax should be like:
