@@ -168,6 +168,18 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :create, :conference) },
           -> { permission_for?(requested_action, :admin, :preview, :conference) },
           -> { permission_for?(requested_action, :admin, :update, :conference) },
+          # Conference trash: the core shows the trash link only to users who can read conferences
+          -> { permission_for?(requested_action, :admin, :read, :conference) },
+          -> { permission_for?(requested_action, :admin, :soft_delete, :conference) },
+          -> { permission_for?(requested_action, :admin, :restore, :conference) },
+          -> { permission_for?(requested_action, :admin, :manage_trash, :conference) },
+          -> { permission_for?(requested_action, :admin, :publish, :conference) },
+          -> { permission_for?(requested_action, :admin, :send_diplomas, :conference) },
+          # Conference registrations
+          -> { permission_for?(requested_action, :admin, :read_conference_registrations, :conference) },
+          -> { permission_for?(requested_action, :admin, :export_conference_registrations, :conference) },
+          -> { permission_for?(requested_action, :admin, :read, :conference_registration) },
+          -> { permission_for?(requested_action, :admin, :confirm, :conference_registration) },
           # Conference Admin: USER ROLES
           -> { permission_for?(requested_action, :admin, :index, :conference_user_role) },
           -> { permission_for?(requested_action, :admin, :read, :conference_user_role) },

@@ -7,7 +7,7 @@ The module currently only affects the following participatory spaces and admin b
 - Participatory Processes: administer processes with the same area as the user's one.
 - Assemblies: administer assemblies with the same area as the user's one.
 - Newsletters: send newsletters to participants in the spaces with the same area as user's one.
-- Conferences: administer conferences with the same area as the user's one.
+- Conferences: administer all conferences, with the same permissions as an admin. Conferences can be assigned to a department, but this is only used to classify them and does not restrict access.
 
 ## Usage
 
