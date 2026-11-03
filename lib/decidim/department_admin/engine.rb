@@ -53,10 +53,6 @@ module Decidim
           # Modify decidim-participatory_processes permissions registry
           # **
 
-          # force the concern to be included so that registry is initialized
-          # we choose some random class already including it
-          require "decidim/admin/taxonomies_controller"
-          require "decidim/participatory_processes/admin/components_controller"
           artifact = ::Decidim::ParticipatoryProcesses::Admin::Concerns::ParticipatoryProcessAdmin
           ParticipatoryProcessesAdminConcernPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
           Decidim::DepartmentAdmin::Engine.register_new_permissions_for(artifact, ParticipatoryProcessesAdminConcernPermissions)
@@ -74,8 +70,6 @@ module Decidim
           # **
           # Modify decidim-assemblies permissions registry
           # **
-          require "decidim/assemblies/admin/assembly_copies_controller"
-          require "decidim/assemblies/admin/components_controller"
           artifact = ::Decidim::Assemblies::Admin::Concerns::AssemblyAdmin
           AssembliesAdminConcernPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
           Decidim::DepartmentAdmin::Engine.register_new_permissions_for(artifact, AssembliesAdminConcernPermissions)
@@ -88,8 +82,6 @@ module Decidim
             # **
             # Modify decidim-conferences permissions registry
             # **
-            require "decidim/conferences/admin/conference_copies_controller"
-            require "decidim/conferences/admin/components_controller"
             artifact = ::Decidim::Conferences::Admin::Concerns::ConferenceAdmin
             ConferencesAdminConcernPermissions = Class.new(::Decidim::DepartmentAdmin::Permissions)
             Decidim::DepartmentAdmin::Engine.register_new_permissions_for(artifact, ConferencesAdminConcernPermissions)
