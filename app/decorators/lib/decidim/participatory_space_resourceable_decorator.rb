@@ -14,8 +14,8 @@ module Lib::Decidim::ParticipatorySpaceResourceableDecorator
       Decidim::ParticipatorySpaceRoleConfig::ParticipatorySpaceAdmin.new(user)
     when :department_admin
       Decidim::ParticipatorySpaceRoleConfig::DepartmentAdmin.new(user)
-    when :valuator
-      Decidim::ParticipatorySpaceRoleConfig::Valuator.new(user)
+    when :evaluator
+      Decidim::ParticipatorySpaceRoleConfig::Evaluator.new(user)
     when :moderator
       Decidim::ParticipatorySpaceRoleConfig::Moderator.new(user)
     when :collaborator
