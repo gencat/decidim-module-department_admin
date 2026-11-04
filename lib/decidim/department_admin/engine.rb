@@ -14,6 +14,12 @@ module Decidim
         Decidim::DepartmentAdmin::Engine.root, "app", "decorators", "{**}"
       )
 
+      # Deface loads app/overrides by itself. Deface 1.9 does not tell Zeitwerk to ignore
+      # this folder on Rails >= 7, so eager loading (CI) expects constants that don't exist.
+      initializer "department_admin.ignore_deface_overrides", before: :set_autoload_paths do
+        Rails.autoloaders.main.ignore(root.join("app/overrides"))
+      end
+
       routes do
         # Add engine routes here
         # resources :department_admin
