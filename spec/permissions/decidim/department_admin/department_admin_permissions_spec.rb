@@ -42,6 +42,16 @@ module Decidim
             should_allow_action(:admin, :read, :conference_list)
             should_allow_action(:admin, :read, :conference_user_role)
             should_allow_action(:admin, :create, :conference)
+            should_allow_action(:admin, :read, :conference)
+            should_allow_action(:admin, :soft_delete, :conference)
+            should_allow_action(:admin, :restore, :conference)
+            should_allow_action(:admin, :manage_trash, :conference)
+            should_allow_action(:admin, :publish, :conference)
+            should_allow_action(:admin, :send_diplomas, :conference)
+            should_allow_action(:admin, :read_conference_registrations, :conference)
+            should_allow_action(:admin, :export_conference_registrations, :conference)
+            should_allow_action(:admin, :read, :conference_registration)
+            should_allow_action(:admin, :confirm, :conference_registration)
           end
 
           context "when reading space private users" do
