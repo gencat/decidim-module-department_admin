@@ -15,6 +15,9 @@ ca:
         other: Departaments
   decidim:
     admin:
+      filters:
+        decidim_department_admin_department_id_eq:
+          label: Departament
       models:
         assembly:
           fields:
