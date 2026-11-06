@@ -2,6 +2,7 @@
 Following Semantic Versioning 2.
 
 ## next version:
+- Add a "Department" option to the "Filter" dropdown of the participatory processes and assemblies admin lists. Organization admins get all the departments of the organization and department admins only their own ones. The option is hidden when there are no departments available.
 
 ## Version 0.12.1 (MINOR)
 - Upgrade Decidim to v0.31

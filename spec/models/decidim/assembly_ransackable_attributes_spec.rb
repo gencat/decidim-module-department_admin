@@ -19,4 +19,22 @@ describe Decidim::Assembly do
       expect(described_class.ransackable_attributes).not_to include(*admin_attributes)
     end
   end
+
+  describe "department attribute" do
+    let(:admin) { create(:user, :admin, :confirmed, organization:) }
+    let(:department_attribute) { "decidim_department_admin_department_id" }
+
+    it "is included for organization admins" do
+      expect(described_class.ransackable_attributes(admin)).to include(department_attribute)
+    end
+
+    it "is included for department admins" do
+      expect(described_class.ransackable_attributes(department_admin)).to include(department_attribute)
+    end
+
+    it "is not included for regular users nor visitors" do
+      expect(described_class.ransackable_attributes(user)).not_to include(department_attribute)
+      expect(described_class.ransackable_attributes).not_to include(department_attribute)
+    end
+  end
 end

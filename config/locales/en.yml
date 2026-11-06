@@ -15,6 +15,9 @@ en:
         other: Departments
   decidim:
     admin:
+      filters:
+        decidim_department_admin_department_id_eq:
+          label: Department
       models:
         assembly:
           fields:

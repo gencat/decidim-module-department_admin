@@ -15,6 +15,9 @@ es:
         other: Departamentos
   decidim:
     admin:
+      filters:
+        decidim_department_admin_department_id_eq:
+          label: Departamento
       models:
         assembly:
           fields:

@@ -103,6 +103,7 @@ ignore_unused:
 - 'activemodel.attributes.conference.decidim_department_admin_department_id'
 - 'activemodel.attributes.participatory_process.decidim_department_admin_department_id'
 - 'activerecord.models.decidim/department_admin/*'
+- 'decidim.admin.filters.decidim_department_admin_department_id_eq.label'
 - 'decidim.admin.models.assembly.fields.assembly_role'
 - 'decidim.admin.models.assembly.fields.department'
 - 'decidim.admin.models.assembly.fields.department_role'
