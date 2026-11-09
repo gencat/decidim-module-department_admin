@@ -133,6 +133,28 @@ module Decidim
             end
           end
 
+          context "with the actions menu of processes and assemblies" do
+            let(:process) { create(:participatory_process, organization:, department:) }
+            let(:assembly) { create(:assembly, organization:, department:) }
+            let(:other_process) { create(:participatory_process, organization:) }
+
+            it "allows to share, duplicate and preview" do
+              should_allow_action_with_ctx(:admin, :read, :share_token, current_participatory_space: process)
+              should_allow_action_with_ctx(:admin, :read, :share_token, current_participatory_space: assembly)
+              should_allow_action_with_ctx(:admin, :create, :share_token, current_participatory_space: process)
+              should_allow_action_with_ctx(:admin, :update, :share_token, current_participatory_space: process)
+              should_allow_action_with_ctx(:admin, :destroy, :share_token, current_participatory_space: process)
+              should_allow_action_with_ctx(:admin, :preview, :assembly, assembly:)
+              should_allow_action(:admin, :copy, :assembly)
+            end
+
+            it "does not allow to share spaces of other departments" do
+              permission_action = PermissionAction.new(scope: :admin, action: :read, subject: :share_token)
+              permissions = DepartmentAdmin::Permissions.new(user, permission_action, current_participatory_space: other_process)
+              expect { permissions.permissions.allowed? }.to raise_error(Decidim::PermissionAction::PermissionNotSetError)
+            end
+          end
+
           context "when managing the trash" do
             let(:process) { create(:participatory_process, :unpublished, organization:, department:) }
             let(:assembly) { create(:assembly, :unpublished, organization:, department:) }
