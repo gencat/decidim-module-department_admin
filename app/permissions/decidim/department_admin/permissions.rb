@@ -95,6 +95,13 @@ module Decidim
           -> { same_department_permission_for?(requested_action, :admin, :publish, :component, restricted_rsrc: context[:component]&.participatory_space) },
           -> { same_department_permission_for?(requested_action, :admin, :unpublish, :component, restricted_rsrc: context[:component]&.participatory_space) },
           -> { same_department_permission_for?(requested_action, :admin, :export, :component_data, restricted_rsrc: context[:component]&.participatory_space) },
+          # TRASH (soft delete, restore and trash listing)
+          -> { permission_for?(requested_action, :admin, :manage_trash, :process) },
+          -> { trash_permission_for?(requested_action, :process) },
+          -> { permission_for?(requested_action, :admin, :manage_trash, :assembly) },
+          -> { trash_permission_for?(requested_action, :assembly) },
+          -> { same_department_permission_for?(requested_action, :admin, :manage_trash, :component, restricted_rsrc: context[:current_participatory_space]) },
+          -> { trash_permission_for?(requested_action, :component) },
           # TAXONOMIES
           -> { permission_for?(requested_action, :admin, :read, :taxonomy) },
           -> { permission_for?(requested_action, :admin, :create, :taxonomy) },
@@ -168,6 +175,8 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :create, :conference) },
           -> { permission_for?(requested_action, :admin, :preview, :conference) },
           -> { permission_for?(requested_action, :admin, :update, :conference) },
+          -> { permission_for?(requested_action, :admin, :manage_trash, :conference) },
+          -> { trash_permission_for?(requested_action, :conference, same_department: false) },
           # Conference Admin: USER ROLES
           -> { permission_for?(requested_action, :admin, :index, :conference_user_role) },
           -> { permission_for?(requested_action, :admin, :read, :conference_user_role) },
@@ -215,6 +224,29 @@ module Decidim
         has ||= permission_for?(permission_action, :public, :read, :participatory_space)
         has &&= ALLOWED_SPACES.include?(context[:current_participatory_space].class.name)
         has
+      end
+
+      # Soft delete only non deleted resources and restore only deleted ones, as Decidim::Admin::Permissions does.
+      # Conferences are not restricted by department, so they pass `same_department: false`.
+      def trash_permission_for?(requested_action, subject, same_department: true)
+        resource = context[:trashable_deleted_resource]
+        return false unless resource.respond_to?(:deleted?)
+
+        allowed_for = lambda do |action|
+          if same_department
+            same_department_permission_for?(requested_action, :admin, action, subject, restricted_rsrc: resource)
+          else
+            permission_for?(requested_action, :admin, action, subject)
+          end
+        end
+
+        if allowed_for.call(:soft_delete)
+          !resource.deleted?
+        elsif allowed_for.call(:restore)
+          resource.deleted?
+        else
+          false
+        end
       end
 
       # Private users (members) only make sense in private spaces, as in Decidim's own space permissions.

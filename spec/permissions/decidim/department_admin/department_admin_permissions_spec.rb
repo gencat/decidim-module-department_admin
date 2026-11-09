@@ -133,6 +133,54 @@ module Decidim
             end
           end
 
+          context "when managing the trash" do
+            let(:process) { create(:participatory_process, :unpublished, organization:, department:) }
+            let(:assembly) { create(:assembly, :unpublished, organization:, department:) }
+            let(:component) { create(:component, :unpublished, participatory_space: process) }
+            let(:deleted_process) { create(:participatory_process, :unpublished, organization:, department:, deleted_at: Time.current) }
+            let(:other_process) { create(:participatory_process, :unpublished, organization:) }
+
+            def permission_not_set?(action, subject, ctx)
+              permission_action = PermissionAction.new(scope: :admin, action:, subject:)
+              permissions = DepartmentAdmin::Permissions.new(user, permission_action, ctx)
+              expect { permissions.permissions.allowed? }.to raise_error(Decidim::PermissionAction::PermissionNotSetError)
+            end
+
+            it "allows to soft delete and see the trash of spaces and components of their department" do
+              should_allow_action(:admin, :manage_trash, :process)
+              should_allow_action(:admin, :manage_trash, :assembly)
+              should_allow_action_with_ctx(:admin, :manage_trash, :component, current_participatory_space: process)
+              should_allow_action_with_ctx(:admin, :soft_delete, :process, trashable_deleted_resource: process)
+              should_allow_action_with_ctx(:admin, :soft_delete, :assembly, trashable_deleted_resource: assembly)
+              should_allow_action_with_ctx(:admin, :soft_delete, :component, trashable_deleted_resource: component)
+              should_allow_action_with_ctx(:admin, :restore, :process, trashable_deleted_resource: deleted_process)
+            end
+
+            context "with conferences" do
+              let(:other_department) { create(:department, organization:) }
+              let(:conference) { create(:conference, :unpublished, organization:, department: other_department) }
+              let(:deleted_conference) { create(:conference, :unpublished, organization:, department: other_department, deleted_at: Time.current) }
+
+              it "allows to soft delete and restore conferences of any department" do
+                should_allow_action(:admin, :manage_trash, :conference)
+                should_allow_action_with_ctx(:admin, :soft_delete, :conference, trashable_deleted_resource: conference)
+                should_allow_action_with_ctx(:admin, :restore, :conference, trashable_deleted_resource: deleted_conference)
+                permission_not_set?(:soft_delete, :conference, trashable_deleted_resource: deleted_conference)
+                permission_not_set?(:restore, :conference, trashable_deleted_resource: conference)
+              end
+            end
+
+            it "does not allow to soft delete deleted resources nor restore non deleted ones" do
+              permission_not_set?(:soft_delete, :process, trashable_deleted_resource: deleted_process)
+              permission_not_set?(:restore, :process, trashable_deleted_resource: process)
+            end
+
+            it "does not allow to soft delete spaces from other departments" do
+              permission_not_set?(:soft_delete, :process, trashable_deleted_resource: other_process)
+              permission_not_set?(:manage_trash, :component, current_participatory_space: other_process)
+            end
+          end
+
           # context "when acction is allowed and context is component" do
           # context "when component has same area as department_admin" do
           # TODO: complete the test implementation

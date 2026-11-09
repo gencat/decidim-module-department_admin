@@ -3,6 +3,9 @@ Following Semantic Versioning 2.
 
 ## next version:
 
+## Version 0.11.2 (PATCH)
+- Fix: Department admins can soft delete, restore and manage the trash of unpublished processes, assemblies and components of their department, and of conferences.
+
 ## Version 0.11.1 (PATCH)
 - Fix: Department admins can access the process admins (user roles) section.
 - Fix: Show the "Members" / "Private participants" menu item to department admins only when the process or assembly is private.
