@@ -15,10 +15,12 @@ module Decidim::ParticipatoryProcessesWithUserRoleDecorator
         ids = [process_ids_original]
         if user&.department_admin? && role == :any
           ids << ::Decidim::ParticipatoryProcess
+                 .with_deleted
                  .where(decidim_department_admin_department_id: user.departments.pluck(:id))
+                 .pluck(:id)
         end
 
-        ::Decidim::ParticipatoryProcess.where(id: ids.flatten.uniq)
+        ids.flatten.uniq
       end
     end
   end
