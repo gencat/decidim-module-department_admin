@@ -15,8 +15,8 @@ module Decidim::ConferencesWithUserRoleDecorator
 
       def conference_ids
         ids = [conference_ids_original]
-        ids << ::Decidim::Conference.pluck(:id) if user&.department_admin?
-        ::Decidim::Conference.where(id: ids.flatten.uniq)
+        ids << ::Decidim::Conference.with_deleted.pluck(:id) if user&.department_admin?
+        ids.flatten.uniq
       end
     end
   end

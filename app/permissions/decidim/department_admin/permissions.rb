@@ -96,8 +96,14 @@ module Decidim
           -> { same_department_permission_for?(requested_action, :admin, :unpublish, :component, restricted_rsrc: context[:component]&.participatory_space) },
           -> { same_department_permission_for?(requested_action, :admin, :export, :component_data, restricted_rsrc: context[:component]&.participatory_space) },
           # TRASH (soft delete, restore and trash listing)
+          # The processes view checks the `:process` subject but the controller enforces `:participatory_process`.
           -> { permission_for?(requested_action, :admin, :manage_trash, :process) },
+          -> { permission_for?(requested_action, :admin, :manage_trash, :participatory_process) },
           -> { trash_permission_for?(requested_action, :process) },
+          -> { trash_permission_for?(requested_action, :participatory_process) },
+          -> { trash_link_permission_for?(requested_action, :process) },
+          -> { trash_link_permission_for?(requested_action, :assembly) },
+          -> { trash_link_permission_for?(requested_action, :conference) },
           -> { permission_for?(requested_action, :admin, :manage_trash, :assembly) },
           -> { trash_permission_for?(requested_action, :assembly) },
           -> { same_department_permission_for?(requested_action, :admin, :manage_trash, :component, restricted_rsrc: context[:current_participatory_space]) },
@@ -247,6 +253,16 @@ module Decidim
         else
           false
         end
+      end
+
+      # The "View deleted ..." link in the spaces index checks `:read` with the listed collection as
+      # `trashable_deleted_resource`. Only allowed for that case, not to read any single space.
+      # The trash listing is already filtered by the user's departments.
+      def trash_link_permission_for?(requested_action, subject)
+        return false unless permission_for?(requested_action, :admin, :read, subject)
+
+        resource = context[:trashable_deleted_resource]
+        resource.is_a?(ActiveRecord::Relation) || resource.is_a?(Array)
       end
 
       # Private users (members) only make sense in private spaces, as in Decidim's own space permissions.

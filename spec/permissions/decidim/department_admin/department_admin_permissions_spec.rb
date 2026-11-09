@@ -156,6 +156,13 @@ module Decidim
               should_allow_action_with_ctx(:admin, :restore, :process, trashable_deleted_resource: deleted_process)
             end
 
+            it "allows the subject used by the processes controller" do
+              should_allow_action(:admin, :manage_trash, :participatory_process)
+              should_allow_action_with_ctx(:admin, :soft_delete, :participatory_process, trashable_deleted_resource: process)
+              should_allow_action_with_ctx(:admin, :restore, :participatory_process, trashable_deleted_resource: deleted_process)
+              permission_not_set?(:soft_delete, :participatory_process, trashable_deleted_resource: other_process)
+            end
+
             context "with conferences" do
               let(:other_department) { create(:department, organization:) }
               let(:conference) { create(:conference, :unpublished, organization:, department: other_department) }
@@ -168,6 +175,16 @@ module Decidim
                 permission_not_set?(:soft_delete, :conference, trashable_deleted_resource: deleted_conference)
                 permission_not_set?(:restore, :conference, trashable_deleted_resource: conference)
               end
+            end
+
+            it "shows the link to the deleted spaces in the index" do
+              should_allow_action_with_ctx(:admin, :read, :process, trashable_deleted_resource: Decidim::ParticipatoryProcess.all)
+              should_allow_action_with_ctx(:admin, :read, :assembly, trashable_deleted_resource: Decidim::Assembly.all)
+              should_allow_action_with_ctx(:admin, :read, :conference, trashable_deleted_resource: Decidim::Conference.all)
+            end
+
+            it "does not allow to read a single space through the trash link check" do
+              permission_not_set?(:read, :process, trashable_deleted_resource: other_process)
             end
 
             it "does not allow to soft delete deleted resources nor restore non deleted ones" do
