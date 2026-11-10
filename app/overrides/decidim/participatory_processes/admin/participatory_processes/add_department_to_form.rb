@@ -5,7 +5,7 @@ Deface::Override.new(
   name: "add-department-select-to-participatory-process-form",
   insert_after: "#accordion-taxonomies",
   text: <<-ERB
-    <div class="card" data-component="accordion" id="accordion-department">
+    <div class="card" data-controller="accordion" id="accordion-department">
       <div class="card-divider">
         <button class="card-divider-button" data-open="true" data-controls="panel-department" type="button">
           <%= icon "arrow-right-s-line" %>
