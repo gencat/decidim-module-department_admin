@@ -13,6 +13,9 @@ cs:
         other: Oddělení
   decidim:
     admin:
+      filters:
+        decidim_department_admin_department_id_eq:
+          label: Oddělení
       models:
         assembly:
           fields:
