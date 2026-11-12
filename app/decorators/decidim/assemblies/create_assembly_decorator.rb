@@ -4,7 +4,7 @@ module Decidim::Assemblies::CreateAssemblyDecorator
   # Forces the Department of the user if it is a department_admin user.
   def self.decorate
     Decidim::Assemblies::Admin::CreateAssembly.class_eval do
-      fetch_form_attributes :title, :subtitle, :weight, :slug, :hashtag, :description, :short_description,
+      fetch_form_attributes :title, :subtitle, :weight, :slug, :description, :short_description,
                             :promoted, :taxonomizations, :parent, :announcement, :organization,
                             :private_space, :developer_group, :local_area, :target, :participatory_scope,
                             :participatory_structure, :meta_scope, :purpose_of_action,

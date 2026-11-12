@@ -4,6 +4,8 @@ es:
     attributes:
       assembly:
         decidim_department_admin_department_id: Departamento
+      conference:
+        decidim_department_admin_department_id: Departamento
       participatory_process:
         decidim_department_admin_department_id: Departamento
   activerecord:
@@ -76,6 +78,11 @@ es:
     components:
       department_admin:
         name: Admin de Departamento
+    conferences:
+      admin:
+        conferences:
+          form:
+            department: Departamento
     department_admin:
       admin:
         departments:
