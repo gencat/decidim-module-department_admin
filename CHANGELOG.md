@@ -3,7 +3,7 @@ Following Semantic Versioning 2.
 
 ## next version:
 
-## Version 0.12.1 (MINOR)
+## Version 0.12.0 (MINOR)
 - Upgrade Decidim to v0.31
 - Upgrade Node to 22.23.4
 

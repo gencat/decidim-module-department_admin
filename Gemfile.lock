@@ -196,7 +196,7 @@ GIT
 PATH
   remote: ..
   specs:
-    decidim-department_admin (0.12.1)
+    decidim-department_admin (0.12.0)
       decidim-admin (~> 0.31.0)
       decidim-core (~> 0.31.0)
 
@@ -1082,7 +1082,7 @@ CHECKSUMS
   decidim-conferences (0.31.8)
   decidim-core (0.31.8)
   decidim-debates (0.31.8)
-  decidim-department_admin (0.12.1)
+  decidim-department_admin (0.12.0)
   decidim-dev (0.31.8)
   decidim-forms (0.31.8)
   decidim-generators (0.31.8)
