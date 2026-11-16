@@ -4,7 +4,7 @@ module Decidim::ParticipatoryProcesses::CreateParticipatoryProcessDecorator
   # Forces the Department of the user if it is a department_admin user.
   def self.decorate
     Decidim::ParticipatoryProcesses::Admin::CreateParticipatoryProcess.class_eval do
-      fetch_form_attributes :organization, :title, :subtitle, :weight, :slug, :hashtag, :description,
+      fetch_form_attributes :organization, :title, :subtitle, :weight, :slug, :description,
                             :short_description, :promoted, :taxonomizations, :announcement,
                             :private_space, :developer_group, :local_area, :target,
                             :participatory_scope, :participatory_structure, :meta_scope, :start_date, :end_date,

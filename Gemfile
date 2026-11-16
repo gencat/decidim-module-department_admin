@@ -6,7 +6,7 @@ ruby RUBY_VERSION
 
 gem "decidim-department_admin", path: ".."
 
-DECIDIM_VERSION = { git: "https://github.com/CodiTramuntana/decidim", branch: "release/0.30-stable" }.freeze
+DECIDIM_VERSION = { git: "https://github.com/CodiTramuntana/decidim", branch: "release/0.31-stable" }.freeze
 
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
@@ -25,6 +25,7 @@ group :development, :test do
   gem "decidim", DECIDIM_VERSION
   gem "decidim-conferences", DECIDIM_VERSION
   gem "decidim-dev", DECIDIM_VERSION
+  gem "decidim-initiatives", DECIDIM_VERSION
   gem "faker"
   gem "social-share-button"
 end

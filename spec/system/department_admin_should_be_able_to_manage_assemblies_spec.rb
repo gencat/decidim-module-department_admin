@@ -69,7 +69,6 @@ describe "Admin manages assemblies" do
         fill_in_i18n(:assembly_target, "#assembly-target-tabs", **attributes[:target].except("machine_translations"))
 
         fill_in :assembly_slug, with: "slug"
-        fill_in :assembly_hashtag, with: "#hashtag"
         fill_in :assembly_weight, with: 1
       end
 

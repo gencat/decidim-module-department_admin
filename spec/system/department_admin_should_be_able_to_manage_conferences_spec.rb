@@ -56,7 +56,6 @@ describe "Admin manages conferences", :versioning do
         )
 
         fill_in :conference_slug, with: "slug"
-        fill_in :conference_hashtag, with: "#hashtag"
         attach_file :conference_hero_image, image1_path
         attach_file :conference_banner_image, image2_path
 

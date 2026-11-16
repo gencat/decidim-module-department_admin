@@ -71,7 +71,6 @@ search:
     - app/assets/images
     - app/assets/fonts
     - app/assets/videos
-    - app/views/decidim/admin/users/_form.html.erb
 
   ## Alternatively, the only files or `File.fnmatch patterns` to search in `paths`:
   ## If specified, this settings takes priority over `exclude`, but `exclude` still applies.
@@ -101,8 +100,18 @@ search:
 ## Consider these keys used:
 ignore_unused:
 - 'activemodel.attributes.assembly.decidim_department_admin_department_id'
+- 'activemodel.attributes.conference.decidim_department_admin_department_id'
 - 'activemodel.attributes.participatory_process.decidim_department_admin_department_id'
 - 'activerecord.models.decidim/department_admin/*'
+- 'decidim.admin.models.assembly.fields.assembly_role'
+- 'decidim.admin.models.assembly.fields.department'
+- 'decidim.admin.models.assembly.fields.department_role'
+- 'decidim.admin.models.conference.fields.conference_role'
+- 'decidim.admin.models.conference.fields.department'
+- 'decidim.admin.models.conference.fields.department_role'
+- 'decidim.admin.models.participatory_process.fields.department'
+- 'decidim.admin.models.participatory_process.fields.department_role'
+- 'decidim.admin.models.participatory_process.fields.process_role'
 - 'decidim.admin.models.user.fields.roles.department_admin'
 - 'decidim.admin.shared.filters.filter.all'
 - 'decidim.admin.shared.filters.filter_by'
@@ -112,6 +121,7 @@ ignore_unused:
 - 'decidim.admin.users.index.filter_by'
 - 'decidim.admin.users.index.search'
 - 'decidim.assemblies.admin.assemblies.form.department'
+- 'decidim.conferences.admin.conferences.form.department'
 - 'decidim.components.department_admin.name'
 - 'decidim.department_admin.admin.forms.select_a_department'
 - 'decidim.department_admin.admin.menu.departments'

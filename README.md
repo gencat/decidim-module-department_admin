@@ -7,7 +7,7 @@ The module currently only affects the following participatory spaces and admin b
 - Participatory Processes: administer processes with the same area as the user's one.
 - Assemblies: administer assemblies with the same area as the user's one.
 - Newsletters: send newsletters to participants in the spaces with the same area as user's one.
-- Conferences: administer conferences with the same area as the user's one.
+- Conferences: administer all conferences, with the same permissions as an admin. Conferences can be assigned to a department, but this is only used to classify them and does not restrict access.
 
 ## Usage
 
@@ -55,6 +55,8 @@ Beware that this module overrides many core features of Decidim. Thus, modified 
 
 Most of the times the overrides and modifications will be found in `app/decorators`.
 
+Changes to Decidim views are done with [Deface](https://github.com/spree/deface) overrides in `app/overrides`, instead of copying the whole view. For example, the department select in the spaces forms and the department columns in the admin lists of processes, assemblies and conferences.
+
 ## How it works
 Although some other artifacts exist, the key places to search for in this module are 3:
 - lib/decidim/department_admin/engine.rb
@@ -81,16 +83,9 @@ All decorator artifacts are extensions or modifications to the standard Decidim 
 
 #### Temporal fix: added & in case role_name check.
 
-Currently, in the file:
-- lib/decidim/participatory_space_resourceable.rb
-we have overridden `user_role_config_for` method, in role_name case check.
+`app/decorators/lib/decidim/participatory_space_resourceable_decorator.rb` overrides `user_role_config_for` to use `role_name&.to_sym`.
 
-The reason for this, is that this method is called from `user_role_config` in `Decidim::Admin::UserRolesHelper` file, with second param `role_name` that can be nil as it is called as `role&.role`.
-This happens only when logged in user is Departmental Admin type and this can be possible because this module is only available in this repo.
-So, to avoid error when role_name passed is nil, we override this param check with a simple `role_name&.to_sym`
-
-In next versions, this issue will be patched in `decidim/decidim`, so this override could be removed:
-- lib/decidim/participatory_space_resourceable.rb
+`Decidim::Admin::UserRolesHelper#user_role_config` calls this method with `role&.role`, which is `nil` when the logged in user is a department admin without a role in the space. Decidim still calls `role_name.to_sym` (checked in 0.31), so the override is needed until this is fixed upstream.
 
 ### Run tests
 

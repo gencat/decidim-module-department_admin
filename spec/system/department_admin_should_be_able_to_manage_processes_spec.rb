@@ -99,7 +99,6 @@ describe "Admin manages participatory processes", :versioning do
         select group_name, from: :participatory_process_participatory_process_group_id
 
         fill_in :participatory_process_slug, with: "slug"
-        fill_in :participatory_process_hashtag, with: "#hashtag"
       end
 
       dynamically_attach_file(:participatory_process_hero_image, image1_path)

@@ -67,7 +67,7 @@ module Decidim::Admin
 
             action_log = Decidim::ActionLog.last
             expect(action_log.version).to be_present
-            expect(action_log.version.event).to eq "update"
+            expect(newsletter.reload.versions.collect(&:event)).to include("update")
           end
         end
       end
