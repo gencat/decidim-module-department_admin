@@ -95,6 +95,19 @@ module Decidim
           -> { same_department_permission_for?(requested_action, :admin, :publish, :component, restricted_rsrc: context[:component]&.participatory_space) },
           -> { same_department_permission_for?(requested_action, :admin, :unpublish, :component, restricted_rsrc: context[:component]&.participatory_space) },
           -> { same_department_permission_for?(requested_action, :admin, :export, :component_data, restricted_rsrc: context[:component]&.participatory_space) },
+          # TRASH (soft delete, restore and trash listing)
+          # The processes view checks the `:process` subject but the controller enforces `:participatory_process`.
+          -> { permission_for?(requested_action, :admin, :manage_trash, :process) },
+          -> { permission_for?(requested_action, :admin, :manage_trash, :participatory_process) },
+          -> { trash_permission_for?(requested_action, :process) },
+          -> { trash_permission_for?(requested_action, :participatory_process) },
+          -> { trash_link_permission_for?(requested_action, :process) },
+          -> { trash_link_permission_for?(requested_action, :assembly) },
+          -> { trash_link_permission_for?(requested_action, :conference) },
+          -> { permission_for?(requested_action, :admin, :manage_trash, :assembly) },
+          -> { trash_permission_for?(requested_action, :assembly) },
+          -> { same_department_permission_for?(requested_action, :admin, :manage_trash, :component, restricted_rsrc: context[:current_participatory_space]) },
+          -> { trash_permission_for?(requested_action, :component) },
           # TAXONOMIES
           -> { permission_for?(requested_action, :admin, :read, :taxonomy) },
           -> { permission_for?(requested_action, :admin, :create, :taxonomy) },
@@ -138,6 +151,9 @@ module Decidim
           -> { same_department_permission_for?(requested_action, :admin, :publish, :assembly, restricted_rsrc: context[:assembly]) },
           -> { same_department_permission_for?(requested_action, :admin, :unpublish, :assembly, restricted_rsrc: context[:assembly]) },
           -> { same_department_permission_for?(requested_action, :admin, :export, :assembly, restricted_rsrc: context[:assembly]) },
+          -> { same_department_permission_for?(requested_action, :admin, :preview, :assembly, restricted_rsrc: context[:assembly]) },
+          # "Duplicate" in the actions menu. The copy controller only enforces `:create, :assembly`, already allowed.
+          -> { permission_for?(requested_action, :admin, :copy, :assembly) },
           -> { permission_for?(requested_action, :admin, :import, :assembly) },
           # Assemly Admin: USER ROLES
           -> { permission_for?(requested_action, :admin, :index, :assembly_user_role) },
@@ -168,6 +184,8 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :create, :conference) },
           -> { permission_for?(requested_action, :admin, :preview, :conference) },
           -> { permission_for?(requested_action, :admin, :update, :conference) },
+          -> { permission_for?(requested_action, :admin, :manage_trash, :conference) },
+          -> { trash_permission_for?(requested_action, :conference, same_department: false) },
           # Conference Admin: USER ROLES
           -> { permission_for?(requested_action, :admin, :index, :conference_user_role) },
           -> { permission_for?(requested_action, :admin, :read, :conference_user_role) },
@@ -175,6 +193,12 @@ module Decidim
           -> { permission_for?(requested_action, :admin, :update, :conference_user_role) },
           -> { permission_for?(requested_action, :admin, :invite, :conference_user_role) },
           -> { permission_for?(requested_action, :admin, :destroy, :conference_user_role) },
+
+          # SHARE TOKENS ("Share" in the actions menu of processes and assemblies, and its management page)
+          -> { same_department_permission_for?(requested_action, :admin, :read, :share_token, restricted_rsrc: context[:current_participatory_space]) },
+          -> { same_department_permission_for?(requested_action, :admin, :create, :share_token, restricted_rsrc: context[:current_participatory_space]) },
+          -> { same_department_permission_for?(requested_action, :admin, :update, :share_token, restricted_rsrc: context[:current_participatory_space]) },
+          -> { same_department_permission_for?(requested_action, :admin, :destroy, :share_token, restricted_rsrc: context[:current_participatory_space]) },
 
           # EXPORT SPACE (shared controller action used by processes, assemblies and conferences)
           -> { same_department_permission_for?(requested_action, :admin, :create, :export_space, restricted_rsrc: context[:participatory_space]) },
@@ -215,6 +239,39 @@ module Decidim
         has ||= permission_for?(permission_action, :public, :read, :participatory_space)
         has &&= ALLOWED_SPACES.include?(context[:current_participatory_space].class.name)
         has
+      end
+
+      # Soft delete only non deleted resources and restore only deleted ones, as Decidim::Admin::Permissions does.
+      # Conferences are not restricted by department, so they pass `same_department: false`.
+      def trash_permission_for?(requested_action, subject, same_department: true)
+        resource = context[:trashable_deleted_resource]
+        return false unless resource.respond_to?(:deleted?)
+
+        allowed_for = lambda do |action|
+          if same_department
+            same_department_permission_for?(requested_action, :admin, action, subject, restricted_rsrc: resource)
+          else
+            permission_for?(requested_action, :admin, action, subject)
+          end
+        end
+
+        if allowed_for.call(:soft_delete)
+          !resource.deleted?
+        elsif allowed_for.call(:restore)
+          resource.deleted?
+        else
+          false
+        end
+      end
+
+      # The "View deleted ..." link in the spaces index checks `:read` with the listed collection as
+      # `trashable_deleted_resource`. Only allowed for that case, not to read any single space.
+      # The trash listing is already filtered by the user's departments.
+      def trash_link_permission_for?(requested_action, subject)
+        return false unless permission_for?(requested_action, :admin, :read, subject)
+
+        resource = context[:trashable_deleted_resource]
+        resource.is_a?(ActiveRecord::Relation) || resource.is_a?(Array)
       end
 
       # Private users (members) only make sense in private spaces, as in Decidim's own space permissions.
