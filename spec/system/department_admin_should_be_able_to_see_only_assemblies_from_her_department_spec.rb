@@ -26,17 +26,13 @@ describe "Admin manages assemblies", :versioning do
 
   it "sees the export button" do
     visit_admin_assemblies_list
-    within "tr", text: assembly_w_department.title["en"] do
-      find("button[data-controller='dropdown']").click
-      expect(page).to have_link("Export")
-    end
+    expect(page).to have_css(".action-icon--export")
   end
 
   it "can actually export an assembly in their own department" do
     visit_admin_assemblies_list
     within "tr", text: assembly_w_department.title["en"] do
-      find("button[data-controller='dropdown']").click
-      click_on "Export"
+      find(".action-icon--export").click
     end
     expect(page).to have_content("Your export is currently in progress")
   end

@@ -30,17 +30,13 @@ describe "Admin manages participatory processes", :versioning do
 
   it "sees the export button" do
     visit_admin_processes_list
-    within "tr", text: participatory_process_w_department.title["en"] do
-      find("button[data-controller='dropdown']").click
-      expect(page).to have_link("Export")
-    end
+    expect(page).to have_css(".action-icon--export")
   end
 
   it "can actually export a process in their own department" do
     visit_admin_processes_list
     within "tr", text: participatory_process_w_department.title["en"] do
-      find("button[data-controller='dropdown']").click
-      click_on "Export"
+      find(".action-icon--export").click
     end
     expect(page).to have_content("Your export is currently in progress")
   end

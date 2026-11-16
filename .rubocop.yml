@@ -771,7 +771,7 @@ Style/PercentQLiterals:
     - lower_case_q # Use %q when possible, %Q when necessary
     - upper_case_q # Always use %Q
 
-Naming/PredicatePrefix:
+Naming/PredicateName:
   # Predicate name prefixes.
   NamePrefix:
     - is_

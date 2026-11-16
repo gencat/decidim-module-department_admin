@@ -8,9 +8,7 @@ module Decidim::RansackableAttributesDecorator
   ADMIN_AUTH_OBJECT = Object.new.tap { |auth_object| auth_object.define_singleton_method(:admin?) { true } }.freeze
 
   def self.decorate
-    models = [Decidim::ParticipatoryProcess, Decidim::Assembly]
-    models << Decidim::Conference if Decidim::DepartmentAdmin.conferences_defined?
-    models.each do |model|
+    [Decidim::ParticipatoryProcess, Decidim::Assembly].each do |model|
       model.singleton_class.prepend(self)
     end
   end
